@@ -1,0 +1,99 @@
+<div class="filters-card">
+
+<div class="filters-header"> <div> <span class="filters-label">AFFINER</span> <h3>Filtres</h3> </div>
+
+<button
+  type="button"
+  class="reset-button"
+  (click)="reinitialiser()">
+  Réinitialiser
+</button>
+
+</div>
+
+<div class="filter-section">
+
+<h4>Catégorie</h4>
+
+<div class="category-list">
+
+  <button
+    type="button"
+    *ngFor="let categorie of categories"
+    class="category-button"
+    [class.active]="categorieSelectionnee === categorie"
+    (click)="selectionnerCategorie(categorie)">
+
+    <span>{{ categorie }}</span>
+
+    <span
+      class="check"
+      *ngIf="categorieSelectionnee === categorie">
+      ✓
+    </span>
+
+  </button>
+
+</div>
+
+</div>
+
+<div class="filter-section">
+
+<h4>Prix</h4>
+
+<div class="price-inputs">
+
+  <div class="price-field">
+    <label for="prixMin">Minimum</label>
+
+    <input
+      id="prixMin"
+      type="number"
+      [(ngModel)]="prixMin"
+      placeholder="0"
+      min="0">
+  </div>
+
+  <div class="price-separator">—</div>
+
+  <div class="price-field">
+    <label for="prixMax">Maximum</label>
+
+    <input
+      id="prixMax"
+      type="number"
+      [(ngModel)]="prixMax"
+      placeholder="500000"
+      min="0">
+  </div>
+
+</div>
+
+<button
+  type="button"
+  class="apply-button"
+  (click)="appliquerFiltres()">
+  Appliquer les filtres
+</button>
+
+</div>
+
+<div class="filter-section">
+
+<h4>Trier par</h4>
+
+<select
+  [(ngModel)]="tri"
+  (change)="changerTri()">
+
+  <option value="pertinence">Pertinence</option>
+  <option value="prix-croissant">Prix : croissant</option>
+  <option value="prix-decroissant">Prix : décroissant</option>
+  <option value="nouveautes">Nouveautés</option>
+
+</select>
+
+</div>
+
+</div>

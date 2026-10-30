@@ -1,0 +1,140 @@
+<app-client-header></app-client-header>
+
+<div class="securite-page">
+
+<div class="securite-header">
+
+<div>
+  <h1>Sécurité du compte</h1>
+  <p>Gérez votre mot de passe et la sécurité de votre compte.</p>
+</div>
+
+<button
+  type="button"
+  class="btn-retour"
+  (click)="retourProfil()">
+   Retour
+</button>
+
+</div>
+
+<div class="message erreur" *ngIf="erreur">
+
+{{ erreur }}
+
+</div>
+
+<div class="message succes" *ngIf="succes">
+
+{{ succes }}
+
+</div>
+
+<div class="securite-card">
+
+<div class="card-header">
+
+  <div class="icone-securite">
+    🔒
+  </div>
+
+  <div>
+    <h2>Modifier le mot de passe</h2>
+
+    <p>
+      Pour protéger votre compte, utilisez un mot de passe suffisamment sécurisé.
+    </p>
+  </div>
+
+</div>
+
+<div class="separateur"></div>
+
+<form
+  class="securite-form"
+  (ngSubmit)="modifierMotDePasse()">
+
+  <div class="form-group">
+
+    <label for="ancienMotDePasse">
+      Mot de passe actuel
+    </label>
+
+    <input
+      id="ancienMotDePasse"
+      type="password"
+      name="ancienMotDePasse"
+      [(ngModel)]="ancienMotDePasse"
+      placeholder="Entrez votre mot de passe actuel"
+      autocomplete="current-password">
+
+  </div>
+
+  <div class="form-group">
+
+    <label for="nouveauMotDePasse">
+      Nouveau mot de passe
+    </label>
+
+    <input
+      id="nouveauMotDePasse"
+      type="password"
+      name="nouveauMotDePasse"
+      [(ngModel)]="nouveauMotDePasse"
+      placeholder="Minimum 8 caractères"
+      autocomplete="new-password">
+
+    <small>
+      Le nouveau mot de passe doit contenir au moins 8 caractères.
+    </small>
+
+  </div>
+
+  <div class="form-group">
+
+    <label for="confirmationMotDePasse">
+      Confirmer le nouveau mot de passe
+    </label>
+
+    <input
+      id="confirmationMotDePasse"
+      type="password"
+      name="confirmationMotDePasse"
+      [(ngModel)]="confirmationMotDePasse"
+      placeholder="Confirmez votre nouveau mot de passe"
+      autocomplete="new-password">
+
+  </div>
+
+  <div class="form-actions">
+
+    <button
+      type="button"
+      class="btn-annuler"
+      (click)="retourProfil()"
+      [disabled]="sauvegarde">
+      Annuler
+    </button>
+
+    <button
+      type="submit"
+      class="btn-enregistrer"
+      [disabled]="sauvegarde">
+
+      <span *ngIf="!sauvegarde">
+        Modifier le mot de passe
+      </span>
+
+      <span *ngIf="sauvegarde">
+        Modification...
+      </span>
+
+    </button>
+
+  </div>
+
+</form>
+
+</div>
+
+</div>

@@ -1,0 +1,445 @@
+
+<div class="rapports-page">
+
+  <!-- EN-TÊTE -->
+  <header class="rapports-header">
+    <div>
+      
+      
+      <span class="surtitre">RAPPORTS ET EXPORTS</span>
+      
+    </div>
+
+    <span class="header-version">MAK &amp; MEL</span>
+  </header>
+
+  <!-- FILTRES -->
+  <section class="filtres-card">
+
+    <div class="champ champ-rapport">
+      <label for="typeRapport">Type de rapport</label>
+
+      <select
+        id="typeRapport"
+        name="rapportSelectionne"
+        [(ngModel)]="rapportSelectionne"
+        (ngModelChange)="invaliderApercu()"
+        [disabled]="chargement || exportEnCours">
+
+        <option
+          *ngFor="let rapport of typesRapports"
+          [ngValue]="rapport.valeur">
+          {{ rapport.libelle }}
+        </option>
+      </select>
+    </div>
+
+    <ng-container *ngIf="!rapportEstInventaire">
+
+      <div class="champ">
+        <label for="dateFrom">Du</label>
+
+        <input
+          id="dateFrom"
+          type="date"
+          name="dateFrom"
+          [(ngModel)]="dateFrom"
+          (ngModelChange)="invaliderApercu()"
+          [max]="dateTo"
+          [disabled]="chargement || exportEnCours"/>
+      </div>
+
+      <div class="champ">
+        <label for="dateTo">Au</label>
+
+        <input
+          id="dateTo"
+          type="date"
+          name="dateTo"
+          [(ngModel)]="dateTo"
+          (ngModelChange)="invaliderApercu()"
+          [min]="dateFrom"
+          [disabled]="chargement || exportEnCours"/>
+      </div>
+
+    </ng-container>
+
+    <button
+      type="button"
+      class="btn-principal btn-afficher"
+      (click)="chargerRapport()"
+      [disabled]="chargement || exportEnCours">
+
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path
+          d="M3 5h18M6 12h12M10 19h4"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.8"
+          stroke-linecap="round"/>
+      </svg>
+
+      {{ chargement ? 'Chargement…' : 'Afficher l’aperçu' }}
+    </button>
+
+  </section>
+
+  <!-- EXPORT -->
+  <section class="export-card">
+
+    <div class="export-description">
+      <span class="surtitre">EXPORT DU RAPPORT</span>
+
+      <h2>{{ titreRapport }}</h2>
+
+      <p *ngIf="!rapportEstInventaire">
+        Période :
+        {{ dateFrom | date:'dd/MM/yyyy' }}
+        au
+        {{ dateTo | date:'dd/MM/yyyy' }}
+      </p>
+
+      <p *ngIf="rapportEstInventaire">
+        État actuel de l’inventaire
+      </p>
+    </div>
+
+    <div class="export-actions">
+
+      <div class="champ champ-format">
+        <label for="formatExport">Format du fichier</label>
+
+        <select
+          id="formatExport"
+          name="formatSelectionne"
+          [(ngModel)]="formatSelectionne"
+          [disabled]="exportEnCours || chargement">
+
+          <option
+            *ngFor="let format of formats"
+            [ngValue]="format">
+            {{ format }}
+          </option>
+
+        </select>
+      </div>
+
+      <!-- BOUTON EXPORTER CORRIGÉ -->
+      <button
+        type="button"
+        class="btn-principal btn-exporter"
+        (click)="exporterRapport()"
+        [disabled]="chargement || exportEnCours">
+
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            d="M12 3v12m-5-5 5 5 5-5M5 17v3h14v-3"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"/>
+        </svg>
+
+        {{ exportEnCours ? 'Export en cours…' : 'Exporter' }}
+      </button>
+
+    </div>
+  </section>
+
+  <!-- ERREUR -->
+  <div
+    class="message message-erreur"
+    *ngIf="erreur"
+    role="alert">
+
+    <span class="message-icone" aria-hidden="true">!</span>
+
+    <div>
+      <strong>Une erreur est survenue</strong>
+      <p>{{ erreur }}</p>
+    </div>
+  </div>
+
+  <!-- INFORMATION -->
+  <div
+    class="message message-info"
+    *ngIf="message && !erreur"
+    aria-live="polite">
+
+    <span class="message-icone" aria-hidden="true">i</span>
+    <span>{{ message }}</span>
+  </div>
+
+  <!-- CHARGEMENT -->
+  <div
+    class="chargement"
+    *ngIf="chargement"
+    aria-live="polite">
+
+    <span class="spinner"></span>
+    <span>Chargement du rapport…</span>
+  </div>
+
+  <!-- CONTENU DU RAPPORT -->
+  <ng-container *ngIf="apercuCharge && !chargement">
+
+    <!-- INDICATEURS CLÉS -->
+    <section
+      class="resume-section"
+      *ngIf="resume.length > 0">
+
+      <div class="section-heading">
+        <div>
+          <span class="surtitre">SYNTHÈSE</span>
+          <h2>Indicateurs clés</h2>
+        </div>
+      </div>
+
+      <div class="resume-grid">
+
+        <article
+          class="resume-card"
+          *ngFor="let element of resume">
+
+          <span class="resume-indicateur">
+            {{ element.libelle }}
+          </span>
+
+          <strong>{{ element.valeur }}</strong>
+
+        </article>
+
+      </div>
+    </section>
+
+    <!-- TABLEAU DU RAPPORT -->
+    <section class="table-card">
+
+      <header class="table-entete">
+        <div>
+          <span class="surtitre">PRÉVISUALISATION</span>
+          <h2>{{ titreRapport }}</h2>
+
+          <p *ngIf="lignes.length > 0">
+            {{ lignes.length }} ligne(s) dans le rapport
+          </p>
+
+          <p *ngIf="lignes.length === 0">
+            Aucun détail tabulaire disponible
+          </p>
+        </div>
+
+        <button
+          type="button"
+          class="btn-secondaire"
+          (click)="chargerRapport()"
+          [disabled]="chargement || exportEnCours">
+
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              d="M20 7v5h-5M4 17v-5h5M5.6 9a7 7 0 0 1 11.7-2L20 12M4 12l2.7 5a7 7 0 0 0 11.7-2"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.7"
+              stroke-linecap="round"
+              stroke-linejoin="round"/>
+          </svg>
+
+          Actualiser
+        </button>
+      </header>
+
+      <!-- DONNÉES DU TABLEAU -->
+      <div
+        class="table-responsive"
+        *ngIf="colonnes.length > 0 && lignes.length > 0">
+
+        <table>
+          <thead>
+            <tr>
+              <th *ngFor="let colonne of colonnes">
+                {{ libelleChamp(colonne) }}
+              </th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr *ngFor="let ligne of lignesPagees">
+
+              <td *ngFor="let colonne of colonnes">
+
+                <ng-container
+                  *ngIf="
+                    normaliserCle(colonne) === 'date';
+                    else valeurStandard
+                  ">
+
+                  {{ ligne[colonne] | date:'dd/MM/yyyy' }}
+
+                </ng-container>
+
+                <ng-template #valeurStandard>
+                  {{ formaterCellule(colonne, ligne[colonne]) }}
+                </ng-template>
+
+              </td>
+
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+
+      <!-- PAGINATION -->
+      <div
+        class="pagination-container"
+        *ngIf="colonnes.length > 0 && lignes.length > 0">
+
+        <div class="pagination-info">
+          Affichage de
+          <strong>{{ debutLigne }}</strong>
+          à
+          <strong>{{ finLigne }}</strong>
+          sur
+          <strong>{{ lignes.length }}</strong>
+          ligne(s)
+        </div>
+
+        <div class="pagination-actions">
+
+          <div class="pagination-taille">
+            <label for="taillePage">Lignes par page</label>
+
+            <select
+              id="taillePage"
+              name="taillePage"
+              [ngModel]="taillePage"
+              (ngModelChange)="changerTaillePage($event)"
+              [disabled]="chargement || exportEnCours">
+
+              <option
+                *ngFor="let taille of taillesPage"
+                [ngValue]="taille">
+                {{ taille }}
+              </option>
+
+            </select>
+          </div>
+
+          <nav
+            class="pagination-navigation"
+            aria-label="Pagination du tableau">
+
+            <button
+              type="button"
+              class="pagination-btn"
+              (click)="pagePrecedente()"
+              [disabled]="pageActuelle === 1"
+              aria-label="Page précédente">
+              ‹ Précédent
+            </button>
+
+            <span class="pagination-indication">
+              Page <strong>{{ pageActuelle }}</strong>
+              sur <strong>{{ totalPages }}</strong>
+            </span>
+
+            <button
+              type="button"
+              class="pagination-btn"
+              (click)="pageSuivante()"
+              [disabled]="pageActuelle === totalPages"
+              aria-label="Page suivante">
+              Suivant ›
+            </button>
+
+          </nav>
+
+        </div>
+      </div>
+
+      <!-- INFORMATIONS COMPLÉMENTAIRES -->
+      <div
+        class="informations-rapport"
+        *ngIf="
+          colonnes.length === 0 &&
+          lignes.length === 0 &&
+          informations.length > 0
+        ">
+
+        <div
+          class="information-ligne"
+          *ngFor="let information of informations">
+
+          <span>{{ information.libelle }}</span>
+          <strong>{{ information.valeur }}</strong>
+
+        </div>
+
+      </div>
+
+      <!-- AUCUNE DONNÉE -->
+      <div
+        class="etat-vide"
+        *ngIf="
+          colonnes.length === 0 &&
+          lignes.length === 0 &&
+          informations.length === 0
+        ">
+
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            d="M5 3h9l5 5v13H5zM14 3v5h5M8 13h8M8 17h8"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"/>
+        </svg>
+
+        <h3>Aucune donnée à afficher</h3>
+
+        <p>
+          Aucune ligne exploitable n’a été retournée par l’API.
+        </p>
+
+        <button
+          type="button"
+          class="btn-secondaire"
+          (click)="chargerRapport()"
+          [disabled]="chargement || exportEnCours">
+          Réessayer
+        </button>
+
+      </div>
+
+    </section>
+
+  </ng-container>
+
+  <!-- ÉTAT INITIAL -->
+  <section
+    class="etat-initial"
+    *ngIf="!apercuCharge && !chargement && !erreur">
+
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path
+        d="M4 4h16v16H4zM8 8h8M8 12h8M8 16h5"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"/>
+    </svg>
+
+    <h2>Prévisualisation du rapport</h2>
+
+    <p>
+      Choisissez un rapport, sélectionnez une période,
+      puis affichez son contenu avant de l’exporter.
+    </p>
+
+  </section>
+
+</div>

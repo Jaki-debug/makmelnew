@@ -1,0 +1,360 @@
+
+<ng-container *ngIf="ouvert">
+
+  <!-- Arrière-plan -->
+  <button
+    type="button"
+    class="cart-overlay"
+    aria-label="Fermer le panier"
+    (click)="fermerTiroir()">
+  </button>
+
+  <!-- Tiroir du panier -->
+  <aside
+    class="cart-drawer"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="cart-title">
+
+    <!-- En-tête -->
+    <header class="cart-header">
+      <div class="cart-heading">
+
+        <div class="cart-icon">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true">
+            <path d="M3 4h2l2.2 11.2a2 2 0 0 0 2 1.6h8.6a2 2 0 0 0 2-1.6L21 8H6"></path>
+            <circle cx="10" cy="20" r="1"></circle>
+            <circle cx="18" cy="20" r="1"></circle>
+          </svg>
+        </div>
+
+        <div class="cart-heading-text">
+          <h2 id="cart-title">Mon panier</h2>
+          <p>
+            {{ totalQuantite }}
+            {{ totalQuantite > 1 ? 'articles' : 'article' }}
+          </p>
+        </div>
+
+      </div>
+
+      <button
+        type="button"
+        class="close-button"
+        aria-label="Fermer le panier"
+        (click)="fermerTiroir()">
+
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          aria-hidden="true">
+          <path d="M18 6 6 18"></path>
+          <path d="m6 6 12 12"></path>
+        </svg>
+
+      </button>
+    </header>
+
+    <!-- Barre de chargement -->
+    <div
+      class="loading-bar"
+      *ngIf="chargement"
+      aria-label="Chargement du panier">
+      <span></span>
+    </div>
+
+    <!-- Message de succès -->
+    <div
+      class="cart-alert success-alert"
+      *ngIf="messageSucces"
+      role="status">
+
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true">
+        <path d="m5 12 4 4L19 6"></path>
+      </svg>
+
+      <span>{{ messageSucces }}</span>
+    </div>
+
+    <!-- Message d'erreur -->
+    <div
+      class="cart-alert error-alert"
+      *ngIf="erreur"
+      role="alert">
+
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true">
+        <circle cx="12" cy="12" r="10"></circle>
+        <path d="M12 8v4"></path>
+        <path d="M12 16h.01"></path>
+      </svg>
+
+      <span>{{ erreur }}</span>
+    </div>
+
+    <!-- Contenu du panier -->
+    <div class="cart-content">
+
+      <!-- Chargement -->
+      <div class="cart-loading" *ngIf="chargement">
+        <div class="spinner"></div>
+        <p>Chargement de votre panier...</p>
+      </div>
+
+      <!-- Panier vide -->
+      <div
+        class="empty-cart"
+        *ngIf="!chargement && articles.length === 0">
+
+        <div class="empty-cart-illustration">
+          <svg
+            viewBox="0 0 160 140"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true">
+
+            <ellipse
+              cx="80"
+              cy="122"
+              rx="57"
+              ry="8"
+              fill="#E8EDF4"/>
+
+            <path
+              d="M43 43h74l-6 65H49l-6-65Z"
+              fill="#EAF0F8"
+              stroke="#123B63"
+              stroke-width="2.5"
+              stroke-linejoin="round"/>
+
+            <path
+              d="M59 49V37a21 21 0 0 1 42 0v12"
+              stroke="#123B63"
+              stroke-width="3"
+              stroke-linecap="round"/>
+
+            <path
+              d="M61 71h38"
+              stroke="#B9C9DD"
+              stroke-width="3"
+              stroke-linecap="round"/>
+
+            <circle
+              cx="119"
+              cy="34"
+              r="15"
+              fill="#D8E7F7"/>
+
+            <path
+              d="m112 34 5 5 9-10"
+              stroke="#123B63"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"/>
+
+            <circle
+              cx="35"
+              cy="76"
+              r="7"
+              fill="#D8E7F7"/>
+
+            <path
+              d="M29 92h12"
+              stroke="#123B63"
+              stroke-width="2.5"
+              stroke-linecap="round"/>
+
+          </svg>
+        </div>
+
+        <h3>Votre panier est vide</h3>
+
+        <p>
+          Découvrez nos produits et ajoutez vos articles
+          préférés à votre panier.
+        </p>
+
+        <button
+          type="button"
+          class="primary-button empty-cart-button"
+          (click)="fermerTiroir()">
+          Continuer mes achats
+        </button>
+
+      </div>
+
+      <!-- Liste des articles -->
+      <div
+        class="cart-items"
+        *ngIf="!chargement && articles.length > 0">
+
+        <article
+          class="cart-item"
+          *ngFor="let article of articles">
+
+          <!-- Image du produit -->
+          <div class="product-image-container">
+            <img
+              class="product-image"
+              [src]="obtenirImage(article)"
+              [alt]="obtenirNomArticle(article)"
+              (error)="gererErreurImage($event)"
+              loading="lazy">
+          </div>
+
+          <!-- Informations du produit -->
+          <div class="product-details">
+
+            <h3 class="product-name">
+              {{ obtenirNomArticle(article) }}
+            </h3>
+
+            <p
+              class="product-variant"
+              *ngIf="obtenirVariante(article)">
+              {{ obtenirVariante(article) }}
+            </p>
+
+            <p class="product-unit-price">
+              {{ formaterPrix(obtenirPrix(article)) }}
+              <span>/ unité</span>
+            </p>
+
+            <!-- Quantité et suppression -->
+            <app-client-panier-produit-mak-actions
+              [quantite]="obtenirQuantite(article)"
+              [disabled]="actionEnCours || chargement"
+              (quantiteChange)="modifierQuantite(article, $event)"
+              (suppression)="supprimerArticle(article)">
+            </app-client-panier-produit-mak-actions>
+
+            <!-- Total de la ligne -->
+            <div class="product-line-total">
+              <span>Total</span>
+              <strong>
+                {{ formaterPrix(obtenirTotalLigne(article)) }}
+              </strong>
+            </div>
+
+          </div>
+        </article>
+
+        <!-- Mise à jour des quantités -->
+        <div
+          class="quantity-update-info"
+          *ngIf="miseAJourQuantiteEnCours"
+          role="status">
+
+          <span class="mini-spinner"></span>
+          <span>Enregistrement des modifications...</span>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Pied du panier -->
+    <footer
+      class="cart-footer"
+      *ngIf="!chargement && articles.length > 0">
+
+      <!-- Sous-total -->
+      <div class="cart-summary">
+        <span class="summary-label">Sous-total</span>
+
+        <strong class="summary-price">
+          {{ formaterPrix(totalPanier) }}
+        </strong>
+      </div>
+
+      <!-- Information sur la livraison -->
+      <p class="summary-note">
+        Les frais de livraison seront calculés lors de la commande.
+      </p>
+
+      <!-- Passage à la commande -->
+      <button
+        type="button"
+        class="primary-button checkout-button"
+        [disabled]="
+          actionEnCours ||
+          chargement ||
+          miseAJourQuantiteEnCours ||
+          articles.length === 0
+        "
+        (click)="passerCommande()">
+
+        Passer la commande
+
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true">
+          <path d="M5 12h14"></path>
+          <path d="m12 5 7 7-7 7"></path>
+        </svg>
+
+      </button>
+
+      <!-- Vider le panier -->
+      <button
+        type="button"
+        class="clear-cart-button"
+        [disabled]="
+          actionEnCours ||
+          chargement ||
+          miseAJourQuantiteEnCours
+        "
+        (click)="viderPanier()">
+
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.8"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true">
+          <path d="M3 6h18"></path>
+          <path d="M8 6V4h8v2"></path>
+          <path d="m19 6-1 14H6L5 6"></path>
+          <path d="M10 10v6"></path>
+          <path d="M14 10v6"></path>
+        </svg>
+
+        Vider le panier
+      </button>
+
+    </footer>
+
+  </aside>
+
+</ng-container>

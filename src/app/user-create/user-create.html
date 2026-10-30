@@ -1,0 +1,190 @@
+<div class="page"> <div class="page-header">
+<div>
+  <button
+    type="button"
+    class="back-button"
+    (click)="retourListe()">
+    ← Retour aux utilisateurs
+  </button>
+
+  <h1>Ajouter un utilisateur</h1>
+
+  <p>
+    Créer un nouveau compte utilisateur pour le back-office.
+  </p>
+</div>
+</div> <div class="card">
+<form (ngSubmit)="creerUtilisateur()">
+
+  <div class="form-grid">
+
+    <div class="form-group">
+
+      <label for="firstName">
+        Prénom
+      </label>
+
+      <input
+        id="firstName"
+        name="firstName"
+        type="text"
+        [(ngModel)]="firstName"
+        placeholder="Prénom"
+        required>
+
+    </div>
+
+    <div class="form-group">
+
+      <label for="lastName">
+        Nom
+      </label>
+
+      <input
+        id="lastName"
+        name="lastName"
+        type="text"
+        [(ngModel)]="lastName"
+        placeholder="Nom"
+        required>
+
+    </div>
+
+    <div class="form-group">
+
+      <label for="email">
+        Email
+      </label>
+
+      <input
+        id="email"
+        name="email"
+        type="email"
+        [(ngModel)]="email"
+        placeholder="exemple@makmel.tg"
+        required>
+
+    </div>
+
+    <div class="form-group">
+
+      <label for="phone">
+        Téléphone
+      </label>
+
+      <input
+        id="phone"
+        name="phone"
+        type="text"
+        [(ngModel)]="phone"
+        placeholder="Téléphone">
+
+    </div>
+
+    <div class="form-group">
+
+      <label for="password">
+        Mot de passe
+      </label>
+
+      <input
+        id="password"
+        name="password"
+        type="password"
+        [(ngModel)]="password"
+        placeholder="Laisser vide pour générer un mot de passe temporaire">
+
+      <small>
+        Laisser vide pour laisser le backend générer un mot de passe temporaire.
+      </small>
+
+    </div>
+
+    <div class="form-group">
+
+      <label for="roleId">
+        Rôle
+      </label>
+
+      <select
+        id="roleId"
+        name="roleId"
+        [(ngModel)]="roleId"
+        [disabled]="chargementRoles">
+
+        <option value="">
+          {{ chargementRoles ? 'Chargement des rôles...' : 'Sélectionner un rôle' }}
+        </option>
+
+        <option
+          *ngFor="let role of roles"
+          [value]="role.id">
+
+          {{ role.label }}
+
+        </option>
+
+      </select>
+
+      <small
+        class="field-error"
+        *ngIf="erreurRoles">
+        {{ erreurRoles }}
+      </small>
+
+    </div>
+
+  </div>
+
+  <div
+    class="error-message"
+    *ngIf="erreur">
+
+    {{ erreur }}
+
+  </div>
+
+  <div
+    class="success-message"
+    *ngIf="succes">
+
+    {{ succes }}
+
+    <div
+      class="temporary-password"
+      *ngIf="temporaryPassword">
+
+      <span>
+        Mot de passe temporaire :
+      </span>
+
+      <strong>
+        {{ temporaryPassword }}
+      </strong>
+
+    </div>
+
+  </div>
+
+  <div class="actions">
+
+    <button
+      type="button"
+      class="secondary-button"
+      (click)="annuler()">
+      Annuler
+    </button>
+
+    <button
+      type="submit"
+      class="primary-button"
+      [disabled]="chargement || chargementRoles || roles.length === 0">
+
+      {{ chargement ? 'Création...' : 'Créer l’utilisateur' }}
+
+    </button>
+
+  </div>
+
+</form>
+</div> </div>

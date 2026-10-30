@@ -1,0 +1,373 @@
+<div class="page-container">
+
+<div class="page-header"> <div> <button class="btn-retour" type="button" (click)="retournerProduits()"> ← Retour aux produits </button>
+
+  <h1>Détail du produit</h1>
+
+  <p *ngIf="produitActuel">
+    Consultez les informations détaillées de ce produit.
+  </p>
+</div>
+
+<div
+  class="header-actions"
+  *ngIf="produitActuel">
+
+  <button
+    type="button"
+    class="btn-secondary"
+    (click)="modifierProduit()">
+    Modifier
+  </button>
+
+  <button
+    type="button"
+    class="btn-danger"
+    (click)="supprimerProduit()">
+    Supprimer
+  </button>
+</div>
+
+</div>
+
+<!-- Chargement -->
+
+<div *ngIf="chargement" class="loading-container">
+
+<div class="spinner"></div>
+<p>Chargement du produit...</p>
+
+</div>
+
+<!-- Erreur -->
+
+<div *ngIf="!chargement && erreur" class="error-container">
+
+<div class="error-icon">!</div>
+
+<div>
+  <h3>Une erreur est survenue</h3>
+  <p>{{ erreur }}</p>
+</div>
+
+<button
+  type="button"
+  class="btn-secondary"
+  (click)="recharger()">
+  Réessayer
+</button>
+
+</div>
+
+<!-- Détails du produit -->
+
+<div *ngIf="!chargement && produitActuel" class="product-container">
+
+<section class="product-card">
+
+  <!-- Images -->
+  <div class="product-images-section">
+
+    <div class="main-image-container">
+
+      <div
+        *ngIf="chargementImages"
+        class="image-loading">
+
+        <div class="spinner"></div>
+        <span>Chargement des images...</span>
+      </div>
+
+      <img
+        *ngIf="
+          !chargementImages &&
+          images.length > 0 &&
+          getImagePrincipale()
+        "
+        [src]="getImagePrincipale()"
+        [alt]="produitActuel.name || 'Produit'"
+        class="main-image">
+
+      <div
+        *ngIf="
+          !chargementImages &&
+          images.length === 0
+        "
+        class="no-image">
+
+        <div class="no-image-icon">🖼️</div>
+        <p>Aucune image disponible</p>
+      </div>
+    </div>
+
+    <div
+      *ngIf="images.length > 1"
+      class="gallery">
+
+      <div
+        *ngFor="let image of images; let i = index"
+        class="gallery-item"
+        [class.active]="i === 0">
+
+        <img
+          [src]="getImageUrl(image)"
+          [alt]="produitActuel.name || 'Produit'"
+          loading="lazy">
+      </div>
+    </div>
+
+    <div
+      *ngIf="erreurImages"
+      class="image-error">
+      {{ erreurImages }}
+    </div>
+
+  </div>
+
+  <!-- Informations générales -->
+  <div class="product-info-section">
+
+    <div class="product-title-row">
+
+      <div>
+        <span class="product-label">PRODUIT</span>
+
+        <h2>
+          {{ produitActuel.name }}
+        </h2>
+      </div>
+
+      <span
+        class="status-badge"
+        [class.status-active]="produitActuel.status === 'ACTIVE'"
+        [class.status-inactive]="produitActuel.status === 'INACTIVE'"
+        [class.status-draft]="produitActuel.status === 'DRAFT'"
+        [class.status-archived]="produitActuel.status === 'ARCHIVED'">
+
+        {{ getStatutProduit() }}
+      </span>
+
+    </div>
+
+    <p
+      class="product-description"
+      *ngIf="produitActuel.description">
+
+      {{ produitActuel.description }}
+    </p>
+
+    <div class="product-info-grid">
+
+      <!-- Catégorie principale -->
+      <div class="info-item">
+        <span class="info-label">
+          Catégorie principale
+        </span>
+
+        <span class="info-value">
+          {{ getNomCategoriePrincipale() }}
+        </span>
+      </div>
+
+      <!-- Sous-catégorie -->
+      <div class="info-item">
+        <span class="info-label">
+          Sous-catégorie
+        </span>
+
+        <span class="info-value">
+          {{ getNomSousCategorie() }}
+        </span>
+      </div>
+
+      <!-- Marque -->
+      <div class="info-item">
+        <span class="info-label">Marque</span>
+
+        <span class="info-value">
+          {{ produitActuel.brand || 'Non renseignée' }}
+        </span>
+      </div>
+
+      <!-- Nombre de variantes -->
+      <div class="info-item">
+        <span class="info-label">
+          Nombre de variantes
+        </span>
+
+        <span class="info-value">
+          {{ variantes.length }}
+        </span>
+      </div>
+
+      <!-- Date de création -->
+      <div class="info-item">
+        <span class="info-label">Créé le</span>
+
+        <span class="info-value">
+          {{
+            produitActuel.createdAt
+              ? (produitActuel.createdAt | date:'dd/MM/yyyy HH:mm')
+              : 'Non renseignée'
+          }}
+        </span>
+      </div>
+
+      <!-- Dernière modification -->
+      <div class="info-item">
+        <span class="info-label">
+          Dernière modification
+        </span>
+
+        <span class="info-value">
+          {{
+            produitActuel.updatedAt
+              ? (produitActuel.updatedAt | date:'dd/MM/yyyy HH:mm')
+              : 'Non renseignée'
+          }}
+        </span>
+      </div>
+
+    </div>
+
+    <!-- Description -->
+    <div
+      class="description-section"
+      *ngIf="produitActuel.description">
+
+      <h3>Description</h3>
+      <p>{{ produitActuel.description }}</p>
+    </div>
+
+    <!-- Référencement SEO -->
+    <div
+      class="description-section"
+      *ngIf="
+        produitActuel.seoTitle ||
+        produitActuel.seoDescription
+      ">
+
+      <h3>Référencement</h3>
+
+      <div *ngIf="produitActuel.seoTitle">
+        <span class="info-label">Titre SEO</span>
+        <p>{{ produitActuel.seoTitle }}</p>
+      </div>
+
+      <div *ngIf="produitActuel.seoDescription">
+        <span class="info-label">Description SEO</span>
+        <p>{{ produitActuel.seoDescription }}</p>
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- Variantes -->
+<section
+  *ngIf="variantes && variantes.length > 0"
+  class="variants-card">
+
+  <div class="section-header">
+
+    <div>
+      <span class="section-label">CONFIGURATION</span>
+      <h2>Variantes du produit</h2>
+    </div>
+
+    <span class="count-badge">
+      {{ variantes.length }}
+    </span>
+
+  </div>
+
+  <div class="table-container">
+
+    <table>
+      <thead>
+        <tr>
+          <th>Nom</th>
+          <th>Référence (SKU)</th>
+          <th>Taille</th>
+          <th>Couleur</th>
+          <th>Modèle</th>
+          <th>Prix</th>
+          <th>Stock</th>
+          <th>Statut</th>
+        </tr>
+      </thead>
+
+      <tbody>
+
+        <tr *ngFor="let variante of variantes">
+
+          <td>
+            <strong>
+              {{ variante.name || 'Sans nom' }}
+            </strong>
+          </td>
+
+          <td>
+            {{ variante.sku || '—' }}
+          </td>
+
+          <td>
+            {{ variante.size || '—' }}
+          </td>
+
+          <td>
+            {{ variante.color || '—' }}
+          </td>
+
+          <td>
+            {{ variante.model || '—' }}
+          </td>
+
+          <td>
+            {{ variante.price | number:'1.0-0' }}
+            FCFA
+          </td>
+
+          <td>
+            {{ variante.quantityAvailable ?? 0 }}
+          </td>
+
+          <td>
+            <span
+              class="variant-status"
+              [class.status-active]="variante.isActive"
+              [class.status-inactive]="!variante.isActive">
+
+              {{ variante.isActive ? 'Actif' : 'Inactif' }}
+            </span>
+          </td>
+
+        </tr>
+
+      </tbody>
+    </table>
+
+  </div>
+
+</section>
+
+<!-- Aucune variante -->
+<section
+  *ngIf="!variantes || variantes.length === 0"
+  class="variants-card empty-variants">
+
+  <div class="empty-icon">📦</div>
+
+  <h3>Aucune variante</h3>
+
+  <p>
+    Ce produit ne possède aucune variante enregistrée.
+  </p>
+
+</section>
+
+</div>
+
+</div>

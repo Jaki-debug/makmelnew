@@ -1,0 +1,101 @@
+:host {
+  display: block;
+  min-width: 0;
+}
+
+.article-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 15px;
+}
+
+/* Quantité */
+
+.quantity-control {
+  display: inline-flex;
+  align-items: center;
+  height: 36px;
+  overflow: hidden;
+  border: 1px solid #d4deea;
+  border-radius: 5px;
+  background: #ffffff;
+}
+
+.quantity-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 100%;
+  padding: 0;
+  border: none;
+  background: #edf3f9;
+  color: #123b63;
+  font-size: 20px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.quantity-button:hover:not(:disabled) {
+  background: #dce8f4;
+}
+
+.quantity-button:disabled {
+  color: #a7b3c2;
+  cursor: not-allowed;
+}
+
+.quantity-value {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 38px;
+  padding: 0 6px;
+  color: #102a43;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* Suppression */
+
+.remove-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 0;
+  border: none;
+  background: transparent;
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.remove-button svg {
+  flex-shrink: 0;
+}
+
+.remove-button:hover:not(:disabled) {
+  color: #b42318;
+}
+
+.remove-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.quantity-button:focus-visible,
+.remove-button:focus-visible {
+  outline: 2px solid #123b63;
+  outline-offset: 2px;
+}
+
+@media (max-width: 600px) {
+  .article-actions {
+    gap: 10px;
+    margin-top: 12px;
+  }
+}

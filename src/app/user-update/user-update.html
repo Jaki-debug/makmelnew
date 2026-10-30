@@ -1,0 +1,174 @@
+<div class="page"> <div class="page-header">
+<div>
+
+  <button
+    type="button"
+    class="back-button"
+    (click)="retourDetail()">
+
+    ← Retour au détail
+
+  </button>
+
+  <h1>
+    Modifier un utilisateur
+  </h1>
+
+  <p>
+    Modifier les informations du compte back-office.
+  </p>
+
+</div>
+</div> <div class="loading" *ngIf="chargement">
+Chargement des informations...
+</div> <div class="error-message" *ngIf="!chargement && !hasPermission('users.update')">
+Vous n’avez pas la permission de modifier cet utilisateur.
+</div> <div class="card" *ngIf="!chargement && hasPermission('users.update')">
+<form
+  (ngSubmit)="modifierUtilisateur()">
+
+  <div class="form-grid">
+
+    <div class="form-group">
+
+      <label for="firstName">
+        Prénom
+      </label>
+
+      <input
+        id="firstName"
+        name="firstName"
+        type="text"
+        [(ngModel)]="firstName"
+        placeholder="Prénom"
+        required>
+
+    </div>
+
+    <div class="form-group">
+
+      <label for="lastName">
+        Nom
+      </label>
+
+      <input
+        id="lastName"
+        name="lastName"
+        type="text"
+        [(ngModel)]="lastName"
+        placeholder="Nom"
+        required>
+
+    </div>
+
+    <div class="form-group">
+
+      <label for="email">
+        Email
+      </label>
+
+      <input
+        id="email"
+        name="email"
+        type="email"
+        [(ngModel)]="email"
+        placeholder="exemple@makmel.tg"
+        required>
+
+    </div>
+
+    <div class="form-group">
+
+      <label for="phone">
+        Téléphone
+      </label>
+
+      <input
+        id="phone"
+        name="phone"
+        type="text"
+        [(ngModel)]="phone"
+        placeholder="Téléphone">
+
+    </div>
+
+    <div class="form-group">
+
+      <label for="roleId">
+        Rôle
+      </label>
+
+      <select
+        id="roleId"
+        name="roleId"
+        [(ngModel)]="roleId"
+        (change)="selectionnerRole()"
+        [disabled]="chargementRoles || enregistrement">
+
+        <option value="">
+          {{ chargementRoles ? 'Chargement des rôles...' : 'Sélectionner un rôle' }}
+        </option>
+
+        <option
+          *ngFor="let role of roles"
+          [value]="role.id">
+
+          {{ role.label }}
+
+        </option>
+
+      </select>
+
+      <small
+        class="field-error"
+        *ngIf="erreurRoles">
+
+        {{ erreurRoles }}
+
+      </small>
+
+    </div>
+
+  </div>
+
+  <div
+    class="error-message"
+    *ngIf="erreur">
+
+    {{ erreur }}
+
+  </div>
+
+  <div
+    class="success-message"
+    *ngIf="succes">
+
+    {{ succes }}
+
+  </div>
+
+  <div class="actions">
+
+    <button
+      type="button"
+      class="secondary-button"
+      (click)="annuler()"
+      [disabled]="enregistrement">
+
+      Annuler
+
+    </button>
+
+    <button
+      type="submit"
+      class="primary-button"
+      [disabled]="enregistrement || chargementRoles">
+
+      {{ enregistrement ? 'Enregistrement...' : 'Enregistrer les modifications' }}
+
+    </button>
+
+  </div>
+
+</form>
+</div> </div>

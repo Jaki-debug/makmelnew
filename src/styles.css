@@ -1,0 +1,387 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* ========================= /
+/ NOTIFICATIONS MATERIAL /
+/ ========================= */
+
+.notification-success {
+--mdc-snackbar-container-color: #166534;
+--mdc-snackbar-supporting-text-color: #ffffff;
+--mat-snack-bar-button-color: #ffffff;
+
+min-width: 380px !important;
+max-width: 500px !important;
+
+font-size: 15px !important;
+font-weight: 600 !important;
+
+border-radius: 10px !important;
+}
+
+.notification-error {
+--mdc-snackbar-container-color: #b91c1c;
+--mdc-snackbar-supporting-text-color: #ffffff;
+--mat-snack-bar-button-color: #ffffff;
+
+min-width: 380px !important;
+max-width: 500px !important;
+
+font-size: 15px !important;
+font-weight: 600 !important;
+
+border-radius: 10px !important;
+}
+
+.mat-mdc-snack-bar-container {
+margin-top: 20px !important;
+margin-right: 20px !important;
+}
+
+/* ========================= /
+/ STYLES GLOBAUX /
+/ ========================= */
+
+html {
+margin: 0;
+padding: 0;
+min-height: 100%;
+}
+
+body {
+margin: 0;
+padding: 0;
+min-height: 100vh;
+
+background: #f5f7fb;
+color: #172033;
+
+transition:
+background 0.2s ease,
+color 0.2s ease;
+}
+
+*,
+*::before,
+*::after {
+box-sizing: border-box;
+}
+
+/* ========================= /
+/ STRUCTURE APPLICATION /
+/ ========================= */
+
+.app-container {
+display: flex;
+
+width: 100%;
+min-height: 100vh;
+
+background: #f5f7fb;
+}
+
+app-sidebar {
+display: block;
+
+flex: 0 0 260px;
+
+width: 260px;
+min-width: 260px;
+min-height: 100vh;
+}
+
+.main-content {
+position: relative;
+
+flex: 1 1 auto;
+
+min-width: 0;
+min-height: 100vh;
+
+display: flex;
+flex-direction: column;
+
+background: #f5f7fb;
+}
+
+app-backoffice-header {
+display: block;
+
+width: 100%;
+height: 72px;
+
+flex: 0 0 72px;
+}
+
+.page-content {
+flex: 1 1 auto;
+
+min-width: 0;
+min-height: calc(100vh - 72px);
+
+width: 100%;
+
+box-sizing: border-box;
+
+padding: 0;
+}
+
+/* ========================= /
+/ MODE SOMBRE /
+/ ========================= */
+
+body.theme-dark {
+background: #0f172a;
+color: #e2e8f0;
+}
+
+body.theme-dark .app-container,
+body.theme-dark .main-content,
+body.theme-dark .page-content {
+background: #0f172a;
+}
+
+body.theme-dark .backoffice-header {
+background: #111827;
+border-color: #334155;
+}
+
+body.theme-dark .notification-button {
+background: #111827;
+border-color: #334155;
+color: #e2e8f0;
+}
+
+body.theme-dark .notification-button:hover {
+background: #1e293b;
+}
+
+body.theme-dark .profile-button:hover {
+background: #1e293b;
+}
+
+body.theme-dark .profile-name {
+color: #f1f5f9;
+}
+
+body.theme-dark .profile-role {
+color: #94a3b8;
+}
+
+body.theme-dark .profile-dropdown {
+background: #111827;
+border-color: #334155;
+}
+
+body.theme-dark .dropdown-name {
+color: #f1f5f9;
+}
+
+body.theme-dark .dropdown-email {
+color: #94a3b8;
+}
+
+body.theme-dark .dropdown-role {
+color: #94a3b8;
+}
+
+body.theme-dark .dropdown-divider {
+background: #334155;
+}
+
+body.theme-dark .dropdown-item {
+color: #e2e8f0;
+}
+
+body.theme-dark .dropdown-item:hover {
+background: #1e293b;
+}
+
+body.theme-dark .produits-page,
+body.theme-dark .profil-page,
+body.theme-dark .parametres-page,
+body.theme-dark .categories-page {
+background: #0f172a;
+}
+
+body.theme-dark .products-card,
+body.theme-dark .filters-card,
+body.theme-dark .profil-card,
+body.theme-dark .parametres-card,
+body.theme-dark .main-category-card {
+background: #111827;
+border-color: #334155;
+}
+
+body.theme-dark .loading-state {
+background: #111827;
+border-color: #334155;
+}
+
+body.theme-dark .page-header h1,
+body.theme-dark .profil-header h1,
+body.theme-dark .parametres-header h1,
+body.theme-dark .products-header h2,
+body.theme-dark .card-header h2,
+body.theme-dark .profile-summary h3,
+body.theme-dark .setting-information h3,
+body.theme-dark .content-header h2,
+body.theme-dark .category-title {
+color: #f1f5f9;
+}
+
+body.theme-dark .page-header p,
+body.theme-dark .profil-header p,
+body.theme-dark .parametres-header p,
+body.theme-dark .products-header p,
+body.theme-dark .card-header p,
+body.theme-dark .setting-information p,
+body.theme-dark .content-header p,
+body.theme-dark .category-meta {
+color: #94a3b8;
+}
+
+body.theme-dark .information-item,
+body.theme-dark .setting-item {
+border-color: #334155;
+}
+
+body.theme-dark .label {
+color: #94a3b8;
+}
+
+body.theme-dark .value {
+color: #e2e8f0;
+}
+
+body.theme-dark .setting-item select {
+background: #0f172a;
+border-color: #475569;
+color: #e2e8f0;
+}
+
+body.theme-dark .btn-secondary {
+background: #111827;
+border-color: #475569;
+color: #e2e8f0;
+}
+
+body.theme-dark .btn-secondary:hover {
+background: #1e293b;
+}
+
+body.theme-dark thead {
+background: #1e293b;
+}
+
+body.theme-dark th {
+color: #94a3b8;
+border-color: #334155;
+}
+
+body.theme-dark td {
+color: #cbd5e1;
+border-color: #334155;
+}
+
+/* ========================= /
+/ DENSITÉ COMPACTE /
+/ ========================= */
+
+body.density-compact .produits-page,
+body.density-compact .profil-page,
+body.density-compact .parametres-page,
+body.density-compact .categories-page {
+padding: 20px;
+}
+
+body.density-compact .page-header,
+body.density-compact .profil-header,
+body.density-compact .parametres-header {
+margin-bottom: 20px;
+}
+
+body.density-compact .products-header,
+body.density-compact .card-header {
+padding: 16px 20px;
+}
+
+body.density-compact .information-item {
+padding: 13px 20px;
+}
+
+body.density-compact .setting-item {
+padding: 14px 20px;
+}
+
+body.density-compact th {
+padding: 10px 14px;
+}
+
+body.density-compact td {
+padding: 11px 14px;
+}
+
+body.density-compact .filters-card {
+padding: 15px;
+gap: 12px;
+}
+
+body.density-compact .profil-content,
+body.density-compact .parametres-content {
+gap: 16px;
+}
+
+body.density-compact .setting-item select {
+height: 36px;
+}
+
+body.density-compact .btn-primary,
+body.density-compact .btn-secondary {
+min-height: 36px;
+}
+
+/* ========================= /
+/ RESPONSIVE TABLETTE /
+/ ========================= */
+
+@media (max-width: 900px) {
+
+app-sidebar {
+flex: 0 0 240px;
+width: 240px;
+min-width: 240px;
+}
+
+app-backoffice-header {
+height: 72px;
+flex-basis: 72px;
+}
+
+.page-content {
+min-height: calc(100vh - 72px);
+}
+
+}
+
+/* ========================= /
+/ RESPONSIVE MOBILE /
+/ ========================= */
+
+@media (max-width: 700px) {
+
+app-sidebar {
+flex: 0 0 220px;
+width: 220px;
+min-width: 220px;
+}
+
+app-backoffice-header {
+height: 64px;
+flex-basis: 64px;
+}
+
+.page-content {
+min-height: calc(100vh - 64px);
+}
+
+}

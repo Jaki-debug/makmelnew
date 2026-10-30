@@ -1,0 +1,122 @@
+<div class="profil-page"> <div class="profil-header">
+<div>
+
+  <span class="breadcrumb">
+    MON COMPTE
+  </span>
+
+  <h1>
+    Mon profil
+  </h1>
+
+  <p>
+    Consultez les informations associées à votre compte.
+  </p>
+
+</div>
+</div> <div *ngIf="erreur" class="error-message">
+{{ erreur }}
+</div> <div *ngIf="chargement" class="loading-state">
+<div class="spinner"></div>
+
+<p>
+  Chargement du profil...
+</p>
+</div> <div *ngIf="!chargement && utilisateur" class="profil-content">
+<section class="profil-card">
+
+  <div class="card-header">
+
+    <div>
+
+      <h2>
+        Informations du compte
+      </h2>
+
+      <p>
+        Informations associées à votre compte administrateur.
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <div class="profile-summary">
+
+    <div class="profile-avatar">
+      {{ initiales }}
+    </div>
+
+    <div class="profile-summary-info">
+
+      <h3>
+        {{ nomComplet }}
+      </h3>
+
+      <span class="role-badge">
+        {{ rolePrincipal }}
+      </span>
+
+    </div>
+
+  </div>
+
+
+  <div class="information-grid">
+
+    <div class="information-item">
+
+      <span class="label">
+        Prénom
+      </span>
+
+      <span class="value">
+        {{ utilisateur.firstName }}
+      </span>
+
+    </div>
+
+
+    <div class="information-item">
+
+      <span class="label">
+        Nom
+      </span>
+
+      <span class="value">
+        {{ utilisateur.lastName }}
+      </span>
+
+    </div>
+
+
+    <div class="information-item full-width">
+
+      <span class="label">
+        Adresse e-mail
+      </span>
+
+      <span class="value">
+        {{ utilisateur.email }}
+      </span>
+
+    </div>
+
+
+    <div class="information-item full-width">
+
+      <span class="label">
+        Rôle
+      </span>
+
+      <span class="value">
+        {{ rolePrincipal }}
+      </span>
+
+    </div>
+
+  </div>
+
+</section>
+</div> </div>

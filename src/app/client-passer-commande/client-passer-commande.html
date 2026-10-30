@@ -1,0 +1,450 @@
+
+<app-client-header></app-client-header>
+
+<div class="commande-page">
+  <div class="commande-container">
+
+    <!-- Navigation -->
+    <button
+      type="button"
+      class="retour-button"
+      (click)="retournerAuPanier()">
+       Retour au panier
+    </button>
+
+    <!-- En-tête -->
+    <div class="page-heading">
+      <div>
+        <span class="sur-titre">MAK &amp; MEL</span>
+        <h1>Finaliser ma commande</h1>
+        <p>
+          Vérifiez vos informations avant de confirmer votre commande.
+        </p>
+
+      <div class="secure-badge">
+        <span class="secure-icon">✓</span>
+        <span>Commande sécurisée</span>
+      </div>
+    </div>
+
+    <!-- Chargement du profil -->
+    <div
+      class="profil-loading"
+      *ngIf="chargementProfil"
+      role="status">
+      <span class="mini-spinner"></span>
+      <span>Chargement de vos informations...</span>
+    </div>
+
+    <div class="commande-layout">
+
+      <!-- FORMULAIRE DE COMMANDE -->
+      <main class="commande-form">
+
+        <!-- Coordonnées du client -->
+        <section class="form-card">
+
+          <div class="section-heading">
+            <h2>Vos coordonnées</h2>
+            <p>
+              Ces informations seront utilisées pour votre commande.
+            </p>
+          </div>
+
+          <div class="form-grid">
+
+            <div class="form-group">
+              <label for="prenom">
+                Prénom <span>*</span>
+              </label>
+
+              <input
+                id="prenom"
+                type="text"
+                [(ngModel)]="formulaire.prenom"
+                name="prenom"
+                placeholder="Votre prénom"
+                autocomplete="given-name"
+                required>
+            </div>
+
+            <div class="form-group">
+              <label for="nom">
+                Nom <span>*</span>
+              </label>
+
+              <input
+                id="nom"
+                type="text"
+                [(ngModel)]="formulaire.nom"
+                name="nom"
+                placeholder="Votre nom"
+                autocomplete="family-name"
+                required>
+            </div>
+
+            <div class="form-group">
+              <label for="telephone">
+                Téléphone <span>*</span>
+              </label>
+
+              <input
+                id="telephone"
+                type="tel"
+                [(ngModel)]="formulaire.telephone"
+                name="telephone"
+                placeholder="Ex. : 90 00 00 00"
+                autocomplete="tel"
+                required>
+            </div>
+
+            <div class="form-group">
+              <label for="email">
+                Adresse e-mail (facultatif)
+              </label>
+
+              <input
+                id="email"
+                type="email"
+                [(ngModel)]="formulaire.email"
+                name="email"
+                placeholder="exemple@email.com"
+                autocomplete="email">
+            </div>
+
+          </div>
+        </section>
+
+        <!-- Mode de réception -->
+        <section class="form-card">
+
+          <div class="section-heading">
+            <h2>Retrait de la commande</h2>
+            <p>
+              Le retrait en boutique est actuellement proposé.
+            </p>
+          </div>
+
+          <div class="mode-option selected">
+
+            <span class="mode-icon">▣</span>
+
+            <span class="mode-text">
+              <strong>Retrait en boutique</strong>
+              <small>
+                Le lieu et les modalités seront confirmés par la boutique.
+              </small>
+            </span>
+
+            <span class="radio-indicator"></span>
+
+          </div>
+
+          <p class="info-notice">
+            La livraison à domicile n'est pas encore disponible.
+          </p>
+
+        </section>
+
+        <!-- Paiement -->
+        <section class="form-card">
+
+          <div class="section-heading">
+            <h2>Paiement</h2>
+            <p>
+              Consultez les moyens de paiement actuellement disponibles.
+            </p>
+          </div>
+
+          <div class="form-group">
+
+            <label for="paiement">
+              Mode de paiement
+            </label>
+
+            <select
+              id="paiement"
+              [(ngModel)]="formulaire.methodePaiement"
+              name="methodePaiement"
+              required>
+
+              <option value="CASH_ON_DELIVERY">
+                Paiement à la réception
+              </option>
+
+            </select>
+
+          </div>
+
+          <div class="payment-notice" role="status">
+
+            <strong>Autres moyens de paiement</strong>
+
+            <p>
+              Mobile Money et carte bancaire ne sont pas encore disponibles.
+              Ils seront proposés dès que le service sera opérationnel.
+            </p>
+
+            <div class="payment-unavailable-list">
+
+              <div class="payment-unavailable-item">
+                <span>Mobile Money</span>
+                <span class="payment-status">
+                  Bientôt disponible
+                </span>
+              </div>
+
+              <div class="payment-unavailable-item">
+                <span>Carte bancaire</span>
+                <span class="payment-status">
+                  Bientôt disponible
+                </span>
+              </div>
+
+            </div>
+
+          </div>
+
+        </section>
+
+        <!-- Instructions complémentaires -->
+        <section class="form-card">
+
+          <div class="section-heading">
+            <h2>Instructions complémentaires</h2>
+            <p>Facultatif</p>
+          </div>
+
+          <div class="form-group">
+
+            <label for="notes">
+              Votre message
+            </label>
+
+            <textarea
+              id="notes"
+              [(ngModel)]="formulaire.notes"
+              name="notes"
+              rows="3"
+              placeholder="Une précision concernant votre commande...">
+            </textarea>
+
+          </div>
+
+        </section>
+
+        <!-- Message d'erreur -->
+        <div
+          class="message-erreur"
+          *ngIf="erreur"
+          role="alert">
+
+          <span class="message-icon">!</span>
+          <p>{{ erreur }}</p>
+
+        </div>
+
+        <!-- Message de succès hors fenêtre de confirmation -->
+        <div
+          class="message-succes"
+          *ngIf="messageSucces && !numeroCommande"
+          role="status">
+
+          <p>{{ messageSucces }}</p>
+
+          <p>
+            La référence publique de la commande n'a pas encore été récupérée.
+          </p>
+
+        </div>
+
+        <!-- Bouton de confirmation -->
+        <button
+          type="button"
+          class="confirmer-button"
+          (click)="confirmerCommande()"
+          [disabled]="chargement || chargementProfil || !!messageSucces">
+
+          <span *ngIf="chargementProfil">
+            Chargement des informations...
+          </span>
+
+          <span *ngIf="!chargementProfil && chargement">
+            Création de la commande...
+          </span>
+
+          <span *ngIf="!chargementProfil && !chargement">
+            Confirmer ma commande
+          </span>
+
+          <span
+            class="button-arrow"
+            *ngIf="!chargement && !chargementProfil">
+            →
+          </span>
+
+        </button>
+
+        <p class="terms-note">
+          En confirmant, vous soumettez votre commande à la boutique.
+        </p>
+
+      </main>
+
+      <!-- RÉCAPITULATIF CLIENT -->
+      <aside class="commande-aside">
+
+        <div class="aside-card">
+
+          <div class="aside-heading">
+
+            <div>
+              <span class="aside-kicker">MAK &amp; MEL</span>
+              <h2>Récapitulatif</h2>
+            </div>
+
+            <span class="aside-brand">M&amp;M</span>
+
+          </div>
+
+          <div class="aside-divider"></div>
+
+          <div class="summary-row">
+            <span>Réception</span>
+            <strong>Retrait en boutique</strong>
+          </div>
+
+          <div class="summary-row">
+            <span>Client</span>
+
+            <strong class="summary-value">
+              {{
+                formulaire.prenom || formulaire.nom
+                  ? (formulaire.prenom + ' ' + formulaire.nom).trim()
+                  : 'À renseigner'
+              }}
+            </strong>
+          </div>
+
+          <div class="summary-row">
+            <span>Téléphone</span>
+
+            <strong class="summary-value">
+              {{ formulaire.telephone || 'À renseigner' }}
+            </strong>
+          </div>
+
+          <div
+            class="summary-row"
+            *ngIf="formulaire.email">
+
+            <span>E-mail</span>
+
+            <strong class="summary-value">
+              {{ formulaire.email }}
+            </strong>
+
+          </div>
+
+          <div class="summary-row">
+            <span>Paiement</span>
+            <strong>Paiement à la réception</strong>
+          </div>
+
+          <div class="aside-divider"></div>
+
+          <div class="summary-info">
+            <span>ⓘ</span>
+
+            <p>
+              La boutique vous confirmera le lieu de retrait
+              et les modalités de prise en charge de votre commande.
+            </p>
+          </div>
+
+        </div>
+
+      </aside>
+
+    </div>
+  </div>
+</div>
+
+<!-- FENÊTRE DE CONFIRMATION DE COMMANDE -->
+<div
+  class="confirmation-overlay"
+  *ngIf="messageSucces"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="confirmation-title">
+
+  <div class="confirmation-modal">
+
+    <!-- Icône de réussite -->
+    <div class="confirmation-check">
+      <span>✓</span>
+    </div>
+
+    <span class="confirmation-eyebrow">
+      MAK &amp; MEL
+    </span>
+
+    <h2 id="confirmation-title">
+      Commande confirmée !
+    </h2>
+
+    <p class="confirmation-description">
+      {{ messageSucces }}
+    </p>
+
+    <!-- Numéro public de commande -->
+    <div
+      class="confirmation-order"
+      *ngIf="numeroCommande">
+
+      <span>Numéro de commande</span>
+
+      <strong>#{{ numeroCommande }}</strong>
+
+      <p class="confirmation-order-note">
+       Conservez cette référence pour toute demande concernant votre commande.
+      </p>
+
+    </div>
+
+    <!-- Si le backend n'a pas retourné la référence publique -->
+    <div
+      class="confirmation-order-missing"
+      *ngIf="!numeroCommande"
+      role="status">
+
+      La commande a été créée. La référence publique n'a pas pu être
+      récupérée. Consultez votre espace client pour retrouver votre commande.
+
+    </div>
+
+    <p class="confirmation-redirect">
+      Vous pouvez consulter le détail de votre commande dans votre espace client.
+    </p>
+
+    <!-- Barre de progression -->
+    <div
+      class="confirmation-progress"
+      aria-hidden="true">
+      <span></span>
+    </div>
+
+    <!-- Accès aux commandes du client -->
+    <button
+      type="button"
+      class="confirmation-button"
+      (click)="allerAuxCommandes()">
+
+      Voir mes commandes
+      <span>→</span>
+
+    </button>
+
+  </div>
+
+</div>

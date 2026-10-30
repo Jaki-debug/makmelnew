@@ -1,0 +1,456 @@
+
+<div class="commandes-page">
+
+  <!-- EN-TÊTE -->
+  <header class="page-header">
+    <div class="page-heading">
+      <span class="surtitre">GESTION DES VENTES</span>
+      <h1>Commandes reçues</h1>
+      <p>Consultez et suivez les commandes de vos clients.</p>
+    </div>
+
+    <button
+      class="btn-primary"
+      type="button"
+      (click)="chargerCommandes()"
+      [disabled]="chargement">
+
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M20 7v5h-5M4 17v-5h5"></path>
+        <path d="M5.6 9a7 7 0 0 1 11.7-2L20 12M4 12l2.7 5a7 7 0 0 0 11.7-2"></path>
+      </svg>
+
+      {{ chargement ? 'Actualisation...' : 'Actualiser' }}
+    </button>
+  </header>
+
+  <!-- STATISTIQUES -->
+  <section class="stats-grid" aria-label="Statistiques des commandes">
+
+    <article class="stat-card">
+      <div class="stat-icon blue">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="5" y="3" width="14" height="18" rx="2"></rect>
+          <path d="M8.5 8h7M8.5 12h7M8.5 16h4"></path>
+        </svg>
+      </div>
+
+      <div class="stat-content">
+        <span class="stat-label">Total des commandes</span>
+        <strong>{{ total }}</strong>
+        <span class="stat-description">Résultats correspondants</span>
+      </div>
+    </article>
+
+    <article class="stat-card">
+      <div class="stat-icon blue-light">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="12" r="9"></circle>
+          <path d="M12 7v5l3 2"></path>
+        </svg>
+      </div>
+
+      <div class="stat-content">
+        <span class="stat-label">En attente</span>
+        <strong>{{ compterStatut('PENDING') }}</strong>
+        <span class="stat-description">Sur la page affichée</span>
+      </div>
+    </article>
+
+    <article class="stat-card">
+      <div class="stat-icon blue-dark">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="m7 12 3.2 3.2L17.5 8"></path>
+          <circle cx="12" cy="12" r="9"></circle>
+        </svg>
+      </div>
+
+      <div class="stat-content">
+        <span class="stat-label">Livrées et terminées</span>
+        <strong>{{ compterTerminees() }}</strong>
+        <span class="stat-description">Sur la page affichée</span>
+      </div>
+    </article>
+
+  </section>
+
+  <!-- LISTE DES COMMANDES -->
+  <section class="content-card">
+
+    <div class="section-header">
+      <div>
+        <h2>Liste des commandes</h2>
+        <p>Recherchez une commande et filtrez les résultats.</p>
+      </div>
+
+      <span class="result-count">
+        {{ commandes.length }} résultat(s)
+      </span>
+    </div>
+
+    <!-- FILTRES -->
+    <form
+      class="filters"
+      (submit)="$event.preventDefault(); rechercher()">
+
+      <!-- RECHERCHE -->
+      <div class="filter-field search-field">
+        <label for="recherche">Recherche</label>
+
+        <div class="input-with-icon">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="10.8" cy="10.8" r="6.8"></circle>
+            <path d="m16 16 4 4"></path>
+          </svg>
+
+          <input
+            id="recherche"
+            type="search"
+            name="recherche"
+            placeholder="N° commande, client..."
+            autocomplete="off"
+            [(ngModel)]="recherche"
+            (input)="rechercheChange()">
+        </div>
+      </div>
+
+      <!-- STATUT -->
+      <div class="filter-field">
+        <label for="statut">Statut</label>
+
+        <select
+          id="statut"
+          name="statut"
+          [(ngModel)]="statut"
+          (change)="changerFiltres()">
+
+          <option value="">Tous les statuts</option>
+          <option value="PENDING">En attente</option>
+          <option value="CONFIRMED">Confirmée</option>
+          <option value="PROCESSING">En préparation</option>
+          <option value="READY_FOR_PICKUP">Prête au retrait</option>
+          <option value="OUT_FOR_DELIVERY">En livraison</option>
+          <option value="DELIVERED">Livrée</option>
+          <option value="COMPLETED">Terminée</option>
+          <option value="CANCELLED">Annulée</option>
+          <option value="REFUNDED">Remboursée</option>
+        </select>
+      </div>
+
+      <!-- MODE DE RÉCEPTION -->
+      <div class="filter-field">
+        <label for="reception">Mode de réception</label>
+
+        <select
+          id="reception"
+          name="reception"
+          [(ngModel)]="typeReception"
+          (change)="changerFiltres()">
+
+          <option value="">Tous les modes</option>
+          <option value="DELIVERY">Livraison</option>
+          <option value="PICKUP">Retrait</option>
+        </select>
+      </div>
+
+      <!-- DATE DE DÉBUT -->
+      <div class="filter-field">
+        <label for="dateFrom">Date de début</label>
+
+        <input
+          id="dateFrom"
+          type="date"
+          name="dateFrom"
+          [(ngModel)]="dateFrom"
+          (change)="changerFiltres()">
+      </div>
+
+      <!-- DATE DE FIN -->
+      <div class="filter-field">
+        <label for="dateTo">Date de fin</label>
+
+        <input
+          id="dateTo"
+          type="date"
+          name="dateTo"
+          [(ngModel)]="dateTo"
+          (change)="changerFiltres()">
+      </div>
+
+      <!-- BOUTONS -->
+      <div class="filter-actions">
+
+        <button
+          class="btn-primary"
+          type="submit"
+          [disabled]="chargement">
+
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="10.8" cy="10.8" r="6.8"></circle>
+            <path d="m16 16 4 4"></path>
+          </svg>
+
+          Rechercher
+        </button>
+
+        <button
+          class="btn-secondary"
+          type="button"
+          (click)="reinitialiserFiltres()"
+          [disabled]="chargement">
+
+          Réinitialiser
+        </button>
+
+      </div>
+    </form>
+
+    <!-- ERREUR -->
+    <div
+      class="error-message"
+      *ngIf="erreur"
+      role="alert">
+
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="12" cy="12" r="9"></circle>
+        <path d="M12 7v5M12 16h.01"></path>
+      </svg>
+
+      <div class="error-text">
+        {{ erreur }}
+      </div>
+
+      <button
+        type="button"
+        (click)="chargerCommandes()"
+        [disabled]="chargement">
+
+        Réessayer
+      </button>
+    </div>
+
+    <!-- CHARGEMENT INITIAL UNIQUEMENT -->
+    <div
+      class="loading-state"
+      *ngIf="chargement && commandes.length === 0 && !erreur"
+      role="status">
+
+      <span class="spinner" aria-hidden="true"></span>
+      <p>Chargement des commandes...</p>
+    </div>
+
+    <!-- INDICATEUR DISCRET PENDANT UNE ACTUALISATION -->
+    <div
+      class="refresh-indicator"
+      *ngIf="chargement && commandes.length > 0"
+      role="status"
+      aria-live="polite">
+
+      <span class="spinner spinner-small" aria-hidden="true"></span>
+      <span>Actualisation des commandes...</span>
+    </div>
+
+    <!-- TABLEAU : LES COMMANDES EXISTANTES RESTENT VISIBLES -->
+    <div
+      class="table-wrapper"
+      *ngIf="commandes.length > 0">
+
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Commande</th>
+            <th scope="col">Client</th>
+            <th scope="col">Téléphone</th>
+            <th scope="col">Date</th>
+            <th scope="col">Réception</th>
+            <th scope="col" class="numeric-cell">Montant</th>
+            <th scope="col">Statut</th>
+            <th scope="col" class="actions-heading">Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr
+            *ngFor="let commande of commandes; trackBy: trackByCommande">
+
+            <!-- NUMÉRO -->
+            <td>
+              <span class="order-number">
+                #{{ numeroCommande(commande) }}
+              </span>
+            </td>
+
+            <!-- CLIENT -->
+            <td>
+              <span class="customer-name">
+                {{ nomClient(commande) }}
+              </span>
+
+              <ng-container *ngIf="emailClient(commande) as email">
+                <span
+                  class="customer-email"
+                  *ngIf="email !== '—'">
+
+                  {{ email }}
+                </span>
+              </ng-container>
+            </td>
+
+            <!-- TÉLÉPHONE -->
+            <td>
+              {{ telephoneClient(commande) }}
+            </td>
+
+            <!-- DATE -->
+            <td>
+              <ng-container *ngIf="dateCommande(commande) as date">
+                <span class="date-value">
+                  {{ date | date:'dd/MM/yyyy' }}
+                </span>
+
+                <span class="date-time">
+                  {{ date | date:'HH:mm' }}
+                </span>
+              </ng-container>
+
+              <span *ngIf="!dateCommande(commande)">—</span>
+            </td>
+
+            <!-- RÉCEPTION -->
+            <td>
+              {{
+                typeReceptionLibelle(
+                  commande.fulfillmentType ||
+                  commande.fulfillment_type ||
+                  commande.deliveryType ||
+                  ''
+                )
+              }}
+            </td>
+
+            <!-- MONTANT -->
+            <td class="amount numeric-cell">
+              {{ montant(commande) | number:'1.0-0' }} FCFA
+            </td>
+
+            <!-- STATUT -->
+            <td>
+              <span
+                class="status-badge"
+                [class.status-pending]="getStatutClass((commande.status || '').toUpperCase()) === 'status-pending'"
+                [class.status-confirmed]="getStatutClass((commande.status || '').toUpperCase()) === 'status-confirmed'"
+                [class.status-processing]="getStatutClass((commande.status || '').toUpperCase()) === 'status-processing'"
+                [class.status-ready]="getStatutClass((commande.status || '').toUpperCase()) === 'status-ready'"
+                [class.status-delivery]="getStatutClass((commande.status || '').toUpperCase()) === 'status-delivery'"
+                [class.status-delivered]="getStatutClass((commande.status || '').toUpperCase()) === 'status-delivered'"
+                [class.status-cancelled]="getStatutClass((commande.status || '').toUpperCase()) === 'status-cancelled'"
+                [class.status-refunded]="getStatutClass((commande.status || '').toUpperCase()) === 'status-refunded'"
+                [class.status-default]="getStatutClass((commande.status || '').toUpperCase()) === 'status-default'">
+
+                {{ statutLibelle(commande.status || '') }}
+              </span>
+            </td>
+
+            <!-- ACTIONS -->
+            <td class="actions-cell">
+              <button
+                type="button"
+                class="btn-detail"
+                (click)="ouvrirDetail(commande)"
+                [attr.aria-label]="'Voir le détail de la commande ' + numeroCommande(commande)"
+                title="Voir le détail">
+
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"></path>
+                  <circle cx="12" cy="12" r="2.8"></circle>
+                </svg>
+              </button>
+            </td>
+
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- AUCUNE COMMANDE -->
+    <div
+      class="empty-state"
+      *ngIf="!chargement && !erreur && commandes.length === 0">
+
+      <div class="empty-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24">
+          <rect x="5" y="3" width="14" height="18" rx="2"></rect>
+          <path d="M8.5 8h7M8.5 12h7M8.5 16h4"></path>
+        </svg>
+      </div>
+
+      <strong>Aucune commande trouvée</strong>
+
+      <p>
+        Modifiez vos critères ou réinitialisez les filtres.
+      </p>
+
+      <button
+        class="btn-secondary"
+        type="button"
+        (click)="reinitialiserFiltres()">
+
+        Réinitialiser les filtres
+      </button>
+    </div>
+
+    <!-- PAGINATION -->
+    <footer
+      class="table-footer"
+      *ngIf="commandes.length > 0">
+
+      <div class="page-size">
+        <label for="limit">Lignes par page</label>
+
+        <select
+          id="limit"
+          name="limit"
+          [(ngModel)]="limit"
+          (change)="changerLimite()"
+          [disabled]="chargement">
+
+          <option [ngValue]="10">10</option>
+          <option [ngValue]="20">20</option>
+          <option [ngValue]="50">50</option>
+          <option [ngValue]="100">100</option>
+        </select>
+      </div>
+
+      <div class="pagination">
+        <span class="pagination-info">
+          Page {{ page }} sur {{ totalPages || 1 }}
+        </span>
+
+        <button
+          type="button"
+          class="page-btn"
+          [disabled]="page <= 1 || chargement"
+          (click)="allerPage(page - 1)"
+          aria-label="Page précédente">
+
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="m14.5 18-6-6 6-6"></path>
+          </svg>
+        </button>
+
+        <button
+          type="button"
+          class="page-btn"
+          [disabled]="!totalPages || page >= totalPages || chargement"
+          (click)="allerPage(page + 1)"
+          aria-label="Page suivante">
+
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="m9.5 18 6-6-6-6"></path>
+          </svg>
+        </button>
+      </div>
+    </footer>
+
+  </section>
+</div>

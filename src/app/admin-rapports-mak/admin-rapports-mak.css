@@ -1,0 +1,999 @@
+
+:host {
+  display: block;
+  min-width: 0;
+  color: #1e293b;
+  font-family: "Inter", "Segoe UI", Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+
+  --rapport-bleu: #173b67;
+  --rapport-bleu-fonce: #102b4d;
+  --rapport-bleu-clair: #eaf1f9;
+  --rapport-bordure: #e2e8f0;
+  --rapport-texte: #1e293b;
+  --rapport-texte-secondaire: #64748b;
+  --rapport-fond: #f5f7fb;
+  --rapport-blanc: #ffffff;
+}
+
+:host * {
+  box-sizing: border-box;
+}
+
+/* ========================================
+   PAGE PRINCIPALE
+======================================== */
+
+.rapports-page {
+  width: 100%;
+  min-width: 0;
+  min-height: 100%;
+  padding: 28px;
+  background: var(--rapport-fond);
+  color: var(--rapport-texte);
+}
+
+/* ========================================
+   EN-TÊTE
+======================================== */
+
+.rapports-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 28px;
+}
+
+.breadcrumb {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--rapport-texte-secondaire);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+}
+
+.rapports-header h1 {
+  margin: 0;
+  color: var(--rapport-bleu-fonce);
+  font-size: 27px;
+  font-weight: 750;
+  line-height: 1.25;
+  letter-spacing: -0.6px;
+}
+
+.header-description {
+  margin: 9px 0 0;
+  color: var(--rapport-texte-secondaire);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.header-version {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  padding: 9px 14px;
+  border: 1px solid #d5e2f1;
+  border-radius: 8px;
+  background: var(--rapport-blanc);
+  color: var(--rapport-bleu);
+  font-size: 11px;
+  font-weight: 750;
+  letter-spacing: 0.8px;
+}
+
+/* ========================================
+   CARTES
+======================================== */
+
+.filtres-card,
+.export-card,
+.table-card {
+  width: 100%;
+  min-width: 0;
+  border: 1px solid var(--rapport-bordure);
+  border-radius: 12px;
+  background: var(--rapport-blanc);
+  box-shadow: 0 2px 5px rgb(15 23 42 / 3%);
+}
+
+/* ========================================
+   FILTRES
+======================================== */
+
+.filtres-card {
+  display: grid;
+  grid-template-columns:
+    minmax(180px, 1.4fr)
+    minmax(140px, 1fr)
+    minmax(140px, 1fr)
+    auto;
+  align-items: end;
+  gap: 18px;
+  padding: 22px;
+  margin-bottom: 20px;
+}
+
+.champ {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  gap: 7px;
+}
+
+.champ label,
+.pagination-taille label {
+  color: #334155;
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.champ select,
+.champ input,
+.pagination-taille select {
+  width: 100%;
+  min-width: 0;
+  height: 42px;
+  padding: 0 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 7px;
+  outline: none;
+  background-color: #fff;
+  color: #1e293b;
+  font-family: inherit;
+  font-size: 13px;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.champ select:focus,
+.champ input:focus,
+.pagination-taille select:focus {
+  border-color: var(--rapport-bleu);
+  box-shadow: 0 0 0 3px rgb(23 59 103 / 10%);
+}
+
+.champ select:disabled,
+.champ input:disabled,
+.pagination-taille select:disabled {
+  cursor: not-allowed;
+  background: #f1f5f9;
+  color: #94a3b8;
+}
+
+/* ========================================
+   BOUTONS
+======================================== */
+
+.btn-principal,
+.btn-secondaire {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-height: 42px;
+  padding: 10px 16px;
+  border-radius: 7px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 650;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.btn-principal {
+  border: 1px solid var(--rapport-bleu);
+  background: var(--rapport-bleu);
+  color: #fff;
+}
+
+.btn-principal:hover:not(:disabled) {
+  border-color: var(--rapport-bleu-fonce);
+  background: var(--rapport-bleu-fonce);
+  box-shadow: 0 3px 8px rgb(16 43 77 / 14%);
+}
+
+.btn-secondaire {
+  border: 1px solid #d7e0eb;
+  background: #fff;
+  color: var(--rapport-bleu);
+}
+
+.btn-secondaire:hover:not(:disabled) {
+  border-color: #a9bfd9;
+  background: #f4f8fc;
+}
+
+.btn-principal:disabled,
+.btn-secondaire:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+  box-shadow: none;
+}
+
+.btn-principal svg,
+.btn-secondaire svg {
+  width: 17px;
+  height: 17px;
+  flex-shrink: 0;
+}
+
+.btn-afficher {
+  min-width: 165px;
+}
+
+/* ========================================
+   EXPORT
+======================================== */
+
+.export-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 22px;
+  margin-bottom: 24px;
+}
+
+.export-description {
+  min-width: 0;
+}
+
+.surtitre {
+  display: block;
+  margin-bottom: 7px;
+  color: #64748b;
+  font-size: 10px;
+  font-weight: 750;
+  letter-spacing: 1.2px;
+}
+
+.export-description h2,
+.table-entete h2,
+.section-heading h2 {
+  margin: 0;
+  color: var(--rapport-bleu-fonce);
+  font-size: 18px;
+  font-weight: 750;
+  line-height: 1.4;
+}
+
+.export-description p {
+  margin: 7px 0 0;
+  color: var(--rapport-texte-secondaire);
+  font-size: 12px;
+}
+
+.export-actions {
+  display: flex;
+  align-items: end;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.champ-format {
+  width: 150px;
+}
+
+.btn-exporter {
+  min-width: 125px;
+}
+
+/* ========================================
+   MESSAGES
+======================================== */
+
+.message {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 16px;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+.message-icone {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  font-weight: 800;
+}
+
+.message-erreur {
+  border-color: #fecaca;
+  background: #fff5f5;
+  color: #991b1b;
+}
+
+.message-erreur .message-icone {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.message-erreur strong {
+  display: block;
+  margin-bottom: 3px;
+  font-size: 13px;
+}
+
+.message-erreur p {
+  margin: 0;
+  overflow-wrap: anywhere;
+  line-height: 1.6;
+}
+
+.message-info {
+  align-items: center;
+  border-color: #cfe0f5;
+  background: #f1f7fd;
+  color: #234c79;
+}
+
+.message-info .message-icone {
+  background: #dceafa;
+  color: var(--rapport-bleu);
+}
+
+/* ========================================
+   CHARGEMENT
+======================================== */
+
+.chargement {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 180px;
+  margin-bottom: 24px;
+  border: 1px solid var(--rapport-bordure);
+  border-radius: 12px;
+  background: #fff;
+  color: var(--rapport-texte-secondaire);
+  font-size: 13px;
+}
+
+.spinner {
+  width: 23px;
+  height: 23px;
+  border: 3px solid #dbe5f0;
+  border-top-color: var(--rapport-bleu);
+  border-radius: 50%;
+  animation: rotation 0.75s linear infinite;
+}
+
+@keyframes rotation {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ========================================
+   SYNTHÈSE ET INDICATEURS
+======================================== */
+
+.resume-section {
+  margin-bottom: 24px;
+}
+
+.section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.resume-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 16px;
+}
+
+.resume-card {
+  position: relative;
+  min-width: 0;
+  padding: 20px;
+  overflow-wrap: anywhere;
+  border: 1px solid var(--rapport-bordure);
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 2px 5px rgb(15 23 42 / 2%);
+}
+
+.resume-card::before {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 3px;
+  border-radius: 10px 0 0 10px;
+  background: var(--rapport-bleu);
+  content: "";
+}
+
+.resume-indicateur {
+  display: block;
+  margin-bottom: 10px;
+  color: var(--rapport-texte-secondaire);
+  font-size: 12px;
+  font-weight: 550;
+}
+
+.resume-card strong {
+  display: block;
+  color: var(--rapport-bleu-fonce);
+  font-size: 23px;
+  font-weight: 750;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+/* ========================================
+   TABLEAU
+======================================== */
+
+.table-card {
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+.table-entete {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 22px;
+  border-bottom: 1px solid var(--rapport-bordure);
+}
+
+.table-entete > div {
+  min-width: 0;
+}
+
+.table-entete h2 {
+  font-size: 17px;
+}
+
+.table-entete p {
+  margin: 6px 0 0;
+  color: var(--rapport-texte-secondaire);
+  font-size: 12px;
+}
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-color: #cbd5e1 #f8fafc;
+  scrollbar-width: thin;
+}
+
+.table-responsive table {
+  width: 100%;
+  min-width: 560px;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: #fff;
+  font-size: 13px;
+}
+
+.table-responsive thead {
+  background: #f1f5f9;
+}
+
+.table-responsive th {
+  padding: 14px 20px;
+  border-bottom: 1px solid #dbe3ed;
+  background: #f1f5f9;
+  color: #334155;
+  font-size: 11px;
+  font-weight: 750;
+  letter-spacing: 0.15px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.table-responsive td {
+  padding: 15px 20px;
+  border-bottom: 1px solid #edf1f5;
+  color: #334155;
+  text-align: left;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.table-responsive tbody tr {
+  transition: background-color 0.15s ease;
+}
+
+.table-responsive tbody tr:nth-child(even) {
+  background: #fbfcfe;
+}
+
+.table-responsive tbody tr:hover {
+  background: #f2f7fc;
+}
+
+.table-responsive tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* ========================================
+   PAGINATION COMPACTE
+======================================== */
+
+.pagination-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  min-height: 76px;
+  padding: 16px 20px;
+  border-top: 1px solid var(--rapport-bordure);
+  background: #fff;
+}
+
+.pagination-info {
+  color: var(--rapport-texte-secondaire);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.pagination-info strong,
+.pagination-indication strong {
+  color: #334155;
+  font-weight: 750;
+}
+
+.pagination-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 20px;
+  min-width: 0;
+}
+
+.pagination-taille {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.pagination-taille label {
+  color: var(--rapport-texte-secondaire);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.pagination-taille select {
+  width: 72px;
+  height: 35px;
+  padding: 0 8px;
+  font-size: 12px;
+}
+
+.pagination-navigation {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.pagination-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 35px;
+  padding: 7px 11px;
+  border: 1px solid #dbe3ed;
+  border-radius: 6px;
+  background: #fff;
+  color: var(--rapport-bleu);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 650;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.pagination-btn:hover:not(:disabled) {
+  border-color: #b9cadd;
+  background: #f1f6fc;
+}
+
+.pagination-btn:disabled {
+  border-color: #e8edf3;
+  background: #f8fafc;
+  color: #a0acbb;
+  cursor: not-allowed;
+}
+
+.pagination-indication {
+  color: var(--rapport-texte-secondaire);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+/* ========================================
+   INFORMATIONS DU RAPPORT
+======================================== */
+
+.informations-rapport {
+  padding: 8px 22px;
+}
+
+.information-ligne {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 14px 0;
+  border-bottom: 1px solid #edf1f5;
+}
+
+.information-ligne:last-child {
+  border-bottom: none;
+}
+
+.information-ligne span {
+  color: var(--rapport-texte-secondaire);
+  font-size: 13px;
+}
+
+.information-ligne strong {
+  color: var(--rapport-bleu-fonce);
+  font-size: 13px;
+  font-weight: 700;
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
+/* ========================================
+   ÉTATS VIDES
+======================================== */
+
+.etat-vide,
+.etat-initial {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 50px 24px;
+  text-align: center;
+}
+
+.etat-vide {
+  min-height: 250px;
+}
+
+.etat-initial {
+  min-height: 300px;
+  border: 1px dashed #cad6e4;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.etat-vide > svg,
+.etat-initial > svg {
+  width: 43px;
+  height: 43px;
+  margin-bottom: 16px;
+  color: #8298b2;
+}
+
+.etat-vide h3,
+.etat-initial h2 {
+  margin: 0 0 8px;
+  color: var(--rapport-bleu-fonce);
+  font-size: 17px;
+  font-weight: 750;
+}
+
+.etat-vide p,
+.etat-initial p {
+  max-width: 440px;
+  margin: 0 0 20px;
+  color: var(--rapport-texte-secondaire);
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.etat-vide .btn-secondaire {
+  margin-top: 3px;
+}
+
+/* ========================================
+   ACCESSIBILITÉ
+======================================== */
+
+:host button:focus-visible,
+:host input:focus-visible,
+:host select:focus-visible {
+  outline: 3px solid rgb(59 130 246 / 35%);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :host *,
+  :host *::before,
+  :host *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ========================================
+   RESPONSIVE : ÉCRANS MOYENS
+======================================== */
+
+@media (max-width: 1100px) {
+  .rapports-page {
+    padding: 22px;
+  }
+
+  .filtres-card {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .btn-afficher {
+    width: 100%;
+  }
+
+  .export-card {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .export-actions {
+    width: 100%;
+  }
+
+  .champ-format {
+    flex: 1;
+    width: auto;
+  }
+
+  .pagination-container {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .pagination-actions {
+    width: 100%;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+}
+
+/* ========================================
+   RESPONSIVE : TABLETTES ET MOBILES
+======================================== */
+
+@media (max-width: 700px) {
+  .rapports-page {
+    padding: 16px;
+  }
+
+  .rapports-header {
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 22px;
+  }
+
+  .rapports-header h1 {
+    font-size: 23px;
+  }
+
+  .header-description {
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  .header-version {
+    padding: 7px 9px;
+    font-size: 9px;
+  }
+
+  .filtres-card {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 15px;
+    padding: 17px;
+  }
+
+  .champ select,
+  .champ input {
+    height: 43px;
+  }
+
+  .export-card {
+    gap: 18px;
+    padding: 18px;
+  }
+
+  .export-description h2 {
+    font-size: 17px;
+  }
+
+  .export-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .champ-format {
+    width: 100%;
+  }
+
+  .btn-exporter {
+    width: 100%;
+  }
+
+  .resume-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .resume-card {
+    padding: 16px;
+  }
+
+  .resume-card strong {
+    font-size: 20px;
+  }
+
+  .table-entete {
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 18px;
+  }
+
+  .table-entete > .btn-secondaire {
+    width: 100%;
+  }
+
+  .table-responsive th,
+  .table-responsive td {
+    padding: 13px 15px;
+  }
+
+  .pagination-container {
+    gap: 15px;
+    padding: 16px;
+  }
+
+  .pagination-actions {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .pagination-navigation {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    gap: 8px;
+  }
+
+  .pagination-btn {
+    padding: 8px 10px;
+  }
+
+  .pagination-indication {
+    text-align: center;
+  }
+
+  .information-ligne {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .information-ligne strong {
+    text-align: left;
+  }
+
+  .etat-initial {
+    min-height: 260px;
+    padding: 35px 20px;
+  }
+}
+
+/* ========================================
+   PETITS MOBILES
+======================================== */
+
+@media (max-width: 380px) {
+  .rapports-page {
+    padding: 12px;
+  }
+
+  .rapports-header h1 {
+    font-size: 20px;
+  }
+
+  .header-version {
+    display: none;
+  }
+
+  .resume-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .pagination-navigation {
+    flex-wrap: wrap;
+  }
+
+  .pagination-btn {
+    font-size: 11px;
+  }
+
+  .pagination-indication {
+    font-size: 11px;
+  }
+}
+
+/* ========================================
+   IMPRESSION
+======================================== */
+
+@media print {
+  .rapports-page {
+    padding: 0;
+    background: #fff;
+  }
+
+  .filtres-card,
+  .export-card,
+  .table-entete .btn-secondaire,
+  .pagination-container,
+  .etat-initial,
+  .message,
+  .chargement {
+    display: none !important;
+  }
+
+  .rapports-header {
+    margin-bottom: 20px;
+  }
+
+  .table-card,
+  .resume-card {
+    border: 1px solid #d1d5db;
+    box-shadow: none;
+    break-inside: avoid;
+  }
+
+  .table-responsive {
+    overflow: visible;
+  }
+
+  .table-responsive table {
+    width: 100%;
+    min-width: 0;
+    font-size: 10px;
+  }
+
+  .table-responsive th,
+  .table-responsive td {
+    padding: 7px;
+    white-space: normal;
+  }
+}

@@ -1,0 +1,596 @@
+/* ======== =================================================
+   HEADER BACK-OFFICE — STYLE PROFESSIONNEL
+   Header fixe, responsive et accessible
+========================================================= */
+
+:host {
+  display: block;
+  position: relative;
+  z-index: 1000;
+}
+
+/* =========================
+   HEADER PRINCIPAL
+========================= */
+
+.backoffice-header {
+  --header-bg: #ffffff;
+  --header-border: #e5e7eb;
+  --text-strong: #111827;
+  --text-default: #374151;
+  --text-muted: #6b7280;
+  --hover-bg: #f3f4f6;
+  --focus-ring: #2563eb;
+  --accent: #4f46e5;
+  --danger: #dc2626;
+  --danger-dark: #b91c1c;
+  --danger-bg: #fef2f2;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+
+  z-index: 1000;
+  width: 100%;
+  min-height: 70px;
+  padding: 12px 28px;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  box-sizing: border-box;
+
+  background: var(--header-bg);
+  border-bottom: 1px solid var(--header-border);
+
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04);
+
+  transition:
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.backoffice-header,
+.backoffice-header * {
+  box-sizing: border-box;
+}
+
+/* =========================
+   ACTIONS À DROITE
+========================= */
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 24px;
+  min-width: 0;
+}
+
+/* =========================
+   BOUTON SON
+========================= */
+
+.sound-button {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+
+  background: transparent;
+  color: var(--text-default);
+
+  font: inherit;
+  font-size: 18px;
+  line-height: 1;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.sound-button:hover {
+  background: var(--hover-bg);
+  color: var(--accent);
+}
+
+.sound-button:active {
+  transform: scale(0.95);
+}
+
+.sound-button:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 3px;
+}
+
+/* =========================
+   BOUTON NOTIFICATIONS
+========================= */
+
+.notification-button {
+  position: relative;
+  z-index: 101;
+
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+  overflow: visible;
+
+  border: none;
+  border-radius: 50%;
+
+  background: transparent;
+  color: var(--text-default);
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.notification-button:hover {
+  background: var(--hover-bg);
+  color: var(--text-strong);
+}
+
+.notification-button:active {
+  transform: scale(0.95);
+}
+
+.notification-button:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 3px;
+}
+
+/* Icône de cloche */
+
+.notification-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+}
+
+.notification-icon svg {
+  display: block;
+  width: 24px;
+  height: 24px;
+}
+
+/* =========================
+   BADGE ROUGE NOTIFICATIONS
+========================= */
+
+.notification-count {
+  position: absolute;
+  top: -4px;
+  right: -6px;
+  z-index: 2;
+
+  min-width: 23px;
+  height: 23px;
+  padding: 0 5px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 2px solid var(--header-bg);
+  border-radius: 999px;
+
+  background: var(--danger);
+  color: #ffffff;
+
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1;
+  white-space: nowrap;
+
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+
+  pointer-events: none;
+
+  animation: badge-pop 0.25s ease-out;
+}
+
+@keyframes badge-pop {
+  from {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* =========================
+   PROFIL UTILISATEUR
+========================= */
+
+.profile-container {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.profile-button {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+
+  min-height: 44px;
+  padding: 6px 10px;
+
+  border: 1px solid transparent;
+  border-radius: 12px;
+
+  background: transparent;
+  color: var(--text-strong);
+
+  font: inherit;
+  text-align: left;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.profile-button:hover {
+  background: #f9fafb;
+  border-color: #e5e7eb;
+}
+
+.profile-button:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 3px;
+}
+
+/* Avatar */
+
+.profile-avatar {
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #e0e7ff;
+  color: #3730a3;
+
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.profile-avatar.large {
+  width: 48px;
+  height: 48px;
+  font-size: 16px;
+}
+
+/* Nom et rôle */
+
+.profile-info {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.profile-name {
+  display: block;
+
+  max-width: 190px;
+  overflow: hidden;
+
+  color: var(--text-strong);
+
+  font-size: 14px;
+  font-weight: 600;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.profile-role {
+  display: block;
+
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+/* Flèche du profil */
+
+.profile-arrow {
+  margin-left: 4px;
+
+  color: var(--text-muted);
+  font-size: 10px;
+
+  transition: transform 0.2s ease;
+}
+
+.profile-arrow.open {
+  transform: rotate(180deg);
+}
+
+/* =========================
+   MENU DÉROULANT DU PROFIL
+========================= */
+
+.profile-dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+
+  z-index: 1100;
+
+  width: 280px;
+  max-width: calc(100vw - 24px);
+  padding: 10px;
+
+  background: #ffffff;
+
+  border: 1px solid var(--header-border);
+  border-radius: 14px;
+
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
+
+  animation: dropdown-appear 0.18s ease-out;
+}
+
+@keyframes dropdown-appear {
+  from {
+    transform: translateY(-5px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Informations du menu */
+
+.dropdown-profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 10px 8px;
+}
+
+.dropdown-user {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.dropdown-name {
+  display: block;
+  overflow: hidden;
+
+  color: var(--text-strong);
+
+  font-size: 14px;
+  font-weight: 600;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dropdown-email {
+  display: block;
+
+  overflow-wrap: anywhere;
+
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.dropdown-role {
+  display: block;
+
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* Séparateurs */
+
+.dropdown-divider {
+  height: 1px;
+  margin: 8px 0;
+
+  background: var(--header-border);
+}
+
+/* Options du menu */
+
+.dropdown-item {
+  width: 100%;
+  min-height: 44px;
+
+  display: flex;
+  align-items: center;
+
+  padding: 11px 12px;
+
+  border: none;
+  border-radius: 8px;
+
+  background: transparent;
+  color: var(--text-default);
+
+  font: inherit;
+  font-size: 13px;
+  text-align: left;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.dropdown-item:hover {
+  background: var(--hover-bg);
+  color: var(--text-strong);
+}
+
+.dropdown-item:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: -2px;
+}
+
+/* Déconnexion */
+
+.dropdown-item.logout {
+  color: var(--danger);
+}
+
+.dropdown-item.logout:hover {
+  background: var(--danger-bg);
+  color: var(--danger-dark);
+}
+
+/* =========================
+   RESPONSIVE — TABLETTES
+========================= */
+
+@media (max-width: 900px) {
+  .backoffice-header {
+    padding: 10px 18px;
+  }
+
+  .header-actions {
+    gap: 16px;
+  }
+}
+
+/* =========================
+   RESPONSIVE — MOBILES
+========================= */
+
+@media (max-width: 600px) {
+  .backoffice-header {
+    min-height: 62px;
+    padding: 8px 12px;
+  }
+
+  .header-actions {
+    gap: 10px;
+  }
+
+  .sound-button,
+  .notification-button {
+    width: 40px;
+    height: 40px;
+  }
+
+  .notification-icon svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .profile-button {
+    gap: 7px;
+    min-height: 40px;
+    padding: 4px;
+  }
+
+  .profile-avatar {
+    width: 38px;
+    height: 38px;
+  }
+
+  .profile-info,
+  .profile-arrow {
+    display: none;
+  }
+
+  .profile-dropdown {
+    width: min(280px, calc(100vw - 24px));
+    right: 0;
+  }
+}
+
+/* =========================
+   PETITS ÉCRANS
+========================= */
+
+@media (max-width: 360px) {
+  .backoffice-header {
+    padding: 8px;
+  }
+
+  .header-actions {
+    gap: 6px;
+  }
+}
+
+/* =========================
+   ACCESSIBILITÉ
+========================= */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Mode de contraste élevé */
+
+@media (forced-colors: active) {
+  .notification-count {
+    border: 2px solid CanvasText;
+    background: Canvas;
+    color: CanvasText;
+  }
+
+  .sound-button,
+  .notification-button {
+    border: 1px solid ButtonText;
+  }
+
+  .profile-dropdown {
+    border: 1px solid CanvasText;
+  }
+}

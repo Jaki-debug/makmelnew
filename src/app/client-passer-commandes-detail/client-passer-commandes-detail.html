@@ -1,0 +1,383 @@
+<app-client-header></app-client-header>
+
+<div class="page-detail">
+
+  <!-- EN-TÊTE -->
+  <header class="page-header">
+    <div>
+      <h1>Détail de la commande</h1>
+      <p>Consultez les informations de votre commande.</p>
+    </div>
+
+    <button
+      type="button"
+      class="btn-retour"
+      routerLink="/client/mes-commandes">
+      Retour aux commandes
+    </button>
+  </header>
+
+  <!-- CHARGEMENT DE LA COMMANDE -->
+  <div
+    *ngIf="chargement"
+    class="message chargement"
+    role="status">
+    Chargement des détails de la commande...
+  </div>
+
+  <!-- ERREUR DE CHARGEMENT -->
+  <div
+    *ngIf="erreur && !chargement"
+    class="message erreur"
+    role="alert">
+    {{ erreur }}
+  </div>
+
+  <ng-container *ngIf="commande && !chargement && !erreur">
+
+    <!-- RÉSUMÉ DE LA COMMANDE -->
+    <section class="carte resume-commande">
+
+      <div>
+        <span class="libelle">NUMÉRO DE COMMANDE</span>
+
+        <h2>
+          #{{ commande.orderNumber || commande.order_number || commande.numero || commande.id }}
+        </h2>
+
+        <p>
+          Passée le
+          {{
+            (commande.createdAt || commande.created_at)
+              ? ((commande.createdAt || commande.created_at)
+                  | date:'dd/MM/yyyy à HH:mm')
+              : 'Date non disponible'
+          }}
+        </p>
+      </div>
+
+      <!-- STATUT DE LA COMMANDE -->
+      <span class="statut">
+        {{
+          commande.status ||
+          commande.statut ||
+          'Statut non renseigné'
+        }}
+      </span>
+
+    </section>
+
+    <!-- INFORMATIONS PRINCIPALES -->
+    <div class="grille">
+
+      <!-- INFORMATIONS CLIENT -->
+      <section class="carte">
+        <h2>Informations client</h2>
+
+        <div class="ligne">
+          <span>Nom complet</span>
+
+          <strong>
+            {{
+              commande.customerFirstName ||
+              commande.customer_first_name ||
+              commande.firstName ||
+              ''
+            }}
+            {{
+              commande.customerLastName ||
+              commande.customer_last_name ||
+              commande.lastName ||
+              ''
+            }}
+          </strong>
+        </div>
+
+        <div class="ligne">
+          <span>Téléphone</span>
+
+          <strong>
+            {{
+              commande.customerPhone ||
+              commande.customer_phone ||
+              commande.phone ||
+              commande.telephone ||
+              'Non renseigné'
+            }}
+          </strong>
+        </div>
+
+        <div class="ligne">
+          <span>Email</span>
+
+          <strong>
+            {{
+              commande.customerEmail ||
+              commande.customer_email ||
+              commande.email ||
+              'Non renseigné'
+            }}
+          </strong>
+        </div>
+      </section>
+
+      <!-- RÉCEPTION ET PAIEMENT -->
+      <section class="carte">
+        <h2>Livraison et paiement</h2>
+
+        <!-- MODE DE RÉCEPTION -->
+        <div class="ligne">
+          <span>Mode de réception</span>
+
+          <strong>
+            {{
+              (
+                commande.fulfillmentType ||
+                commande.fulfillment_type ||
+                ''
+              ).toUpperCase() === 'PICKUP'
+                ? 'Retrait en boutique'
+                : (
+                    commande.fulfillmentType ||
+                    commande.fulfillment_type ||
+                    ''
+                  ).toUpperCase() === 'DELIVERY'
+                  ? 'Livraison à domicile'
+                  : (
+                      commande.fulfillmentType ||
+                      commande.fulfillment_type ||
+                      'Non renseigné'
+                    )
+            }}
+          </strong>
+        </div>
+
+        <!-- MOYEN DE PAIEMENT -->
+        <div class="ligne">
+          <span>Moyen de paiement</span>
+
+          <strong>
+            {{ moyenPaiement }}
+          </strong>
+        </div>
+
+        <!-- STATUT DU PAIEMENT : DISTINCT DE LA COMMANDE -->
+        <div class="ligne ligne-statut-paiement">
+          <span>Statut du paiement</span>
+
+          <strong
+            class="payment-status"
+            [ngClass]="classeStatutPaiement">
+            {{ statutPaiement }}
+          </strong>
+        </div>
+
+        <!-- VÉRIFICATION EN COURS -->
+        <p
+          *ngIf="chargementPaiement"
+          class="message chargement-paiement"
+          role="status">
+          Vérification du statut actuel du paiement...
+        </p>
+
+        <!-- ERREUR OU STATUT DE PAIEMENT INDISPONIBLE -->
+        <div
+          *ngIf="erreurPaiement && !chargementPaiement"
+          class="message erreur erreur-paiement"
+          role="status">
+          {{ erreurPaiement }}
+        </div>
+
+        <!-- ADRESSE -->
+        <ng-container
+          *ngIf="
+            commande.address ||
+            commande.deliveryAddress ||
+            commande.delivery_address ||
+            commande.addressLine1 ||
+            commande.address_line1
+          ">
+
+          <div class="ligne">
+            <span>Adresse</span>
+
+            <strong>
+              {{
+                commande.address?.addressLine1 ||
+                commande.address?.address_line1 ||
+                commande.address?.street ||
+                commande.deliveryAddress?.addressLine1 ||
+                commande.deliveryAddress?.address_line1 ||
+                commande.delivery_address?.addressLine1 ||
+                commande.delivery_address?.address_line1 ||
+                commande.addressLine1 ||
+                commande.address_line1 ||
+                'Non renseignée'
+              }}
+            </strong>
+          </div>
+
+          <div class="ligne">
+            <span>Ville</span>
+
+            <strong>
+              {{
+                commande.address?.city ||
+                commande.deliveryAddress?.city ||
+                commande.delivery_address?.city ||
+                commande.city ||
+                commande.ville ||
+                'Non renseignée'
+              }}
+            </strong>
+          </div>
+
+        </ng-container>
+
+      </section>
+
+    </div>
+
+    <!-- ARTICLES COMMANDÉS -->
+    <section class="carte">
+      <h2>Articles commandés</h2>
+
+      <div
+        *ngIf="
+          commande.items?.length ||
+          commande.orderItems?.length ||
+          commande.order_items?.length;
+          else aucunArticle
+        "
+        class="table-responsive">
+
+        <table>
+          <thead>
+            <tr>
+              <th>Article</th>
+              <th>Prix unitaire</th>
+              <th>Quantité</th>
+              <th>Sous-total</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr
+              *ngFor="
+                let article of (
+                  commande.items?.length
+                    ? commande.items
+                    : commande.orderItems?.length
+                      ? commande.orderItems
+                      : commande.order_items
+                )
+              ">
+
+              <!-- NOM DE L'ARTICLE -->
+              <td>
+                {{
+                  article.productName ||
+                  article.product_name ||
+                  article.name ||
+                  article.product?.name ||
+                  article.product?.title ||
+                  'Article'
+                }}
+              </td>
+
+              <!-- PRIX UNITAIRE -->
+              <td>
+                {{
+                  (
+                    article.unitPrice ??
+                    article.unit_price ??
+                    article.price ??
+                    article.product?.price ??
+                    0
+                  ) | number:'1.0-0'
+                }} FCFA
+              </td>
+
+              <!-- QUANTITÉ -->
+              <td>
+                {{
+                  article.quantity ??
+                  article.qty ??
+                  0
+                }}
+              </td>
+
+              <!-- SOUS-TOTAL -->
+              <td>
+                {{
+                  (
+                    article.total ??
+                    article.subtotal ??
+                    article.subTotal ??
+                    article.sub_total ??
+                    (
+                      (
+                        article.unitPrice ??
+                        article.unit_price ??
+                        article.price ??
+                        article.product?.price ??
+                        0
+                      ) *
+                      (
+                        article.quantity ??
+                        article.qty ??
+                        0
+                      )
+                    )
+                  ) | number:'1.0-0'
+                }} FCFA
+              </td>
+
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+
+      <!-- AUCUN ARTICLE -->
+      <ng-template #aucunArticle>
+        <p class="aucun-article">
+          Aucun article disponible dans les détails de cette commande.
+        </p>
+      </ng-template>
+
+      <!-- TOTAL DE LA COMMANDE -->
+      <div class="total">
+        <span>Total de la commande</span>
+
+        <strong>
+          {{
+            (
+              commande.totalAmount ??
+              commande.total_amount ??
+              commande.total ??
+              commande.totalPrice ??
+              commande.total_price ??
+              0
+            ) | number:'1.0-0'
+          }} FCFA
+        </strong>
+      </div>
+
+    </section>
+
+    <!-- NOTES DE LA COMMANDE -->
+    <section
+      class="carte"
+      *ngIf="commande.notes">
+
+      <h2>Notes de la commande</h2>
+
+      <p class="notes">
+        {{ commande.notes }}
+      </p>
+    </section>
+
+  </ng-container>
+
+</div>

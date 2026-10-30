@@ -1,0 +1,898 @@
+
+/* =========================================
+   HEADER CLIENT - MAK & MEL
+   Thème : Blanc et bleu profond
+========================================= */
+
+.client-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+  background: #ffffff;
+  color: #17365d;
+  border-bottom: 1px solid #e8edf3;
+  box-shadow: 0 3px 12px rgba(23, 54, 93, 0.08);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.header-container {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  width: 100%;
+  max-width: 1500px;
+  min-height: 82px;
+  margin: 0 auto;
+  padding: 12px 30px;
+  box-sizing: border-box;
+}
+
+/* =========================================
+   LOGO
+========================================= */
+
+.logo {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  gap: 5px;
+  cursor: pointer;
+  user-select: none;
+  outline-offset: 5px;
+}
+
+.logo-main {
+  color: #17365d;
+  font-size: 25px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  line-height: 1.1;
+}
+
+.logo-sub {
+  color: #718096;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  white-space: nowrap;
+}
+
+/* =========================================
+   NAVIGATION
+========================================= */
+
+.main-nav {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 20px;
+}
+
+.nav-link {
+  position: relative;
+  padding: 10px 0;
+  border: none;
+  background: transparent;
+  color: #17365d;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.nav-link::after {
+  position: absolute;
+  right: 0;
+  bottom: 3px;
+  left: 0;
+  height: 2px;
+  background: #17365d;
+  content: "";
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.2s ease;
+}
+
+.nav-link:hover {
+  color: #244f80;
+}
+
+.nav-link:hover::after {
+  transform: scaleX(1);
+}
+
+.nav-link:focus-visible {
+  outline: 2px solid #17365d;
+  outline-offset: 4px;
+}
+
+/* =========================================
+   ACTIONS DU HEADER
+========================================= */
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex: 1;
+  min-width: 0;
+  gap: 16px;
+}
+
+/* =========================================
+   BARRE DE RECHERCHE
+========================================= */
+
+.search-box {
+  display: flex;
+  align-items: stretch;
+  flex: 1;
+  min-width: 180px;
+  max-width: 650px;
+  height: 44px;
+  overflow: hidden;
+  border: 1px solid #d7dee8;
+  border-radius: 7px;
+  background: #ffffff;
+  box-sizing: border-box;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.search-box:focus-within {
+  border-color: #17365d;
+  box-shadow: 0 0 0 2px rgba(23, 54, 93, 0.1);
+}
+
+/* Menu Tout et catégories */
+
+.search-category {
+  flex: 0 0 105px;
+  width: 105px;
+  min-width: 0;
+  padding: 0 10px;
+  border: none;
+  border-right: 1px solid #dfe5ed;
+  outline: none;
+  background: #f4f6f9;
+  color: #17365d;
+  font-family: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.search-category:hover {
+  background: #e9eef5;
+}
+
+.search-category:focus {
+  background: #eef2f7;
+}
+
+/* Champ de recherche */
+
+.search-box input {
+  flex: 1;
+  width: 100%;
+  min-width: 0;
+  padding: 0 13px;
+  border: none;
+  outline: none;
+  background: #ffffff;
+  color: #263449;
+  font-family: inherit;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.search-box input::placeholder {
+  color: #929cac;
+  opacity: 1;
+}
+
+.search-box input::-webkit-search-cancel-button {
+  display: none;
+}
+
+.search-box .search-icon {
+  display: none;
+}
+
+/* Bouton effacer */
+
+.search-clear {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 34px;
+  width: 34px;
+  padding: 0;
+  border: none;
+  background: #ffffff;
+  color: #718096;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.search-clear:hover {
+  color: #17365d;
+}
+
+.search-clear svg {
+  width: 17px;
+  height: 17px;
+}
+
+/* Bouton rechercher */
+
+.search-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 48px;
+  width: 48px;
+  padding: 0;
+  border: none;
+  background: #17365d;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.search-button:hover {
+  background: #244f80;
+}
+
+.search-button:active {
+  background: #102844;
+}
+
+.search-button svg {
+  width: 21px;
+  height: 21px;
+}
+
+/* =========================================
+   PANIER MAK & MEL
+========================================= */
+
+.cart-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  gap: 9px;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 1px solid #e4e8f0;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #17365d;
+  font-family: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.cart-button:hover {
+  border-color: #bdcbe4;
+  background: #f4f7fc;
+  box-shadow: 0 4px 12px rgba(16, 35, 75, 0.08);
+  transform: translateY(-1px);
+}
+
+.cart-button:active {
+  transform: translateY(0);
+}
+
+.cart-button:focus-visible {
+  outline: 3px solid rgba(58, 102, 180, 0.3);
+  outline-offset: 3px;
+}
+
+/* Icône du panier */
+
+.cart-icon-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 27px;
+  height: 27px;
+}
+
+.cart-icon {
+  display: block;
+  width: 25px;
+  height: 25px;
+  color: #17365d;
+  transition: color 0.2s ease;
+}
+
+.cart-button:hover .cart-icon {
+  color: #244f80;
+}
+
+/* Libellé */
+
+.cart-label {
+  color: #17365d;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* Badge du nombre d'articles */
+
+.cart-count {
+  position: absolute;
+  top: -7px;
+  right: -10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 19px;
+  height: 19px;
+  padding: 0 5px;
+  border: 2px solid #ffffff;
+  border-radius: 999px;
+  background: #d84343;
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 1;
+  white-space: nowrap;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.12);
+}
+
+/* =========================================
+   BOUTON CONNEXION
+========================================= */
+
+.login-button {
+  flex-shrink: 0;
+  min-height: 40px;
+  padding: 0 16px;
+  border: 1px solid #17365d;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #17365d;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.login-button:hover {
+  border-color: #244f80;
+  background: #f0f4f9;
+  color: #244f80;
+}
+
+.login-button:focus-visible {
+  outline: 3px solid rgba(23, 54, 93, 0.2);
+  outline-offset: 2px;
+}
+
+/* =========================================
+   COMPTE CLIENT
+========================================= */
+
+.account-wrapper {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.account-button {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 44px;
+  padding: 5px 8px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: transparent;
+  color: #17365d;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.account-button:hover,
+.account-button[aria-expanded="true"] {
+  border-color: #dbe4ef;
+  background: #f5f7fa;
+}
+
+.account-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #17365d;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.account-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.account-label {
+  color: #718096;
+  font-size: 11px;
+  line-height: 1;
+}
+
+.account-name {
+  max-width: 110px;
+  overflow: hidden;
+  color: #17365d;
+  font-size: 13px;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.account-arrow {
+  display: inline-block;
+  margin-left: 2px;
+  color: #526780;
+  font-size: 16px;
+  transition: transform 0.2s ease;
+}
+
+.account-arrow.open {
+  transform: rotate(180deg);
+}
+
+.account-button:focus-visible {
+  outline: 2px solid #17365d;
+  outline-offset: 3px;
+}
+
+/* =========================================
+   MENU DÉROULANT DU COMPTE
+========================================= */
+
+.account-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  z-index: 1100;
+  width: 210px;
+  padding: 7px;
+  border: 1px solid #e2e8f0;
+  border-radius: 9px;
+  background: #ffffff;
+  box-shadow: 0 10px 30px rgba(23, 54, 93, 0.12);
+  animation: accountMenuAppear 0.18s ease-out;
+}
+
+.account-menu::before {
+  position: absolute;
+  top: -6px;
+  right: 24px;
+  width: 10px;
+  height: 10px;
+  border-top: 1px solid #e2e8f0;
+  border-left: 1px solid #e2e8f0;
+  background: #ffffff;
+  content: "";
+  transform: rotate(45deg);
+}
+
+.account-menu-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 12px;
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: #17365d;
+  font-family: inherit;
+  font-size: 13px;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.account-menu-item:hover {
+  background: #f0f4f9;
+  color: #244f80;
+}
+
+.account-menu-item:focus-visible {
+  outline: 2px solid #17365d;
+  outline-offset: -2px;
+}
+
+.menu-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  color: #526780;
+  font-size: 17px;
+}
+
+.logout-item {
+  color: #c0392b;
+}
+
+.logout-item .menu-icon {
+  color: #c0392b;
+}
+
+.logout-item:hover {
+  background: #fff1f0;
+  color: #a5281b;
+}
+
+.menu-divider {
+  height: 1px;
+  margin: 5px 8px;
+  background: #e8edf3;
+}
+
+/* =========================================
+   ANIMATION DU MENU
+========================================= */
+
+@keyframes accountMenuAppear {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =========================================
+   TABLETTES ET ÉCRANS MOYENS
+========================================= */
+
+@media (max-width: 1100px) {
+  .header-container {
+    gap: 18px;
+    padding-right: 20px;
+    padding-left: 20px;
+  }
+
+  .main-nav {
+    gap: 14px;
+  }
+
+  .header-actions {
+    gap: 10px;
+  }
+
+  .logo-main {
+    font-size: 22px;
+  }
+
+  .logo-sub {
+    font-size: 8px;
+  }
+
+  .search-category {
+    flex-basis: 90px;
+    width: 90px;
+    padding: 0 7px;
+  }
+
+  .cart-button {
+    gap: 6px;
+    padding-right: 9px;
+    padding-left: 9px;
+  }
+
+  .cart-label {
+    font-size: 12px;
+  }
+
+  .account-button {
+    gap: 6px;
+    padding-right: 4px;
+    padding-left: 4px;
+  }
+
+  .account-avatar {
+    width: 30px;
+    height: 30px;
+  }
+
+  .account-name {
+    max-width: 85px;
+  }
+}
+
+/* =========================================
+   PETITS ÉCRANS ET MOBILES
+========================================= */
+
+@media (max-width: 768px) {
+  .header-container {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    gap: 12px;
+    min-height: auto;
+    padding: 12px 14px;
+  }
+
+  .logo {
+    grid-column: 1;
+    grid-row: 1;
+    align-self: center;
+    min-width: 0;
+  }
+
+  .logo-main {
+    font-size: 21px;
+  }
+
+  .logo-sub {
+    font-size: 8px;
+  }
+
+  .main-nav {
+    display: none;
+  }
+
+  /*
+   * Les éléments du header deviennent des éléments
+   * directs de la grille mobile.
+   */
+  .header-actions {
+    display: contents;
+  }
+
+  .search-box {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+    height: 43px;
+  }
+
+  .search-category {
+    flex-basis: 86px;
+    width: 86px;
+    padding: 0 6px;
+    font-size: 12px;
+  }
+
+  .search-box input {
+    padding: 0 8px;
+    font-size: 13px;
+  }
+
+  .search-button {
+    flex-basis: 43px;
+    width: 43px;
+  }
+
+  /* Panier en haut, à côté du logo */
+  .cart-button {
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: end;
+    min-width: 42px;
+    min-height: 38px;
+    padding: 6px 8px;
+    gap: 0;
+  }
+
+  .cart-icon-wrapper {
+    width: 25px;
+    height: 25px;
+  }
+
+  .cart-icon {
+    width: 23px;
+    height: 23px;
+  }
+
+  .cart-label {
+    display: none;
+  }
+
+  /* Connexion à droite du panier */
+  .login-button {
+    grid-column: 3;
+    grid-row: 1;
+    justify-self: end;
+    min-height: 36px;
+    padding: 0 10px;
+    font-size: 12px;
+  }
+
+  /* Compte connecté à droite du panier */
+  .account-wrapper {
+    grid-column: 3;
+    grid-row: 1;
+    justify-self: end;
+  }
+
+  .account-button {
+    min-height: 36px;
+    padding: 2px;
+  }
+
+  .account-avatar {
+    width: 31px;
+    height: 31px;
+  }
+
+  .account-text {
+    max-width: 85px;
+  }
+
+  .account-name {
+    max-width: 80px;
+    font-size: 12px;
+  }
+
+  .account-label {
+    font-size: 10px;
+  }
+
+  .account-arrow {
+    font-size: 14px;
+  }
+
+  .account-menu {
+    top: calc(100% + 8px);
+    width: 200px;
+  }
+}
+
+/* =========================================
+   TRÈS PETITS ÉCRANS
+========================================= */
+
+@media (max-width: 380px) {
+  .header-container {
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    gap: 7px;
+    padding-right: 10px;
+    padding-left: 10px;
+  }
+
+  .logo-main {
+    font-size: 18px;
+    letter-spacing: 1px;
+  }
+
+  .logo-sub {
+    font-size: 7px;
+    letter-spacing: 0.5px;
+  }
+
+  .cart-button {
+    min-width: 36px;
+    padding: 5px;
+  }
+
+  .cart-icon-wrapper {
+    width: 23px;
+    height: 23px;
+  }
+
+  .cart-icon {
+    width: 21px;
+    height: 21px;
+  }
+
+  .cart-count {
+    top: -6px;
+    right: -8px;
+    min-width: 17px;
+    height: 17px;
+    font-size: 9px;
+  }
+
+  .login-button {
+    min-height: 34px;
+    padding: 0 7px;
+    font-size: 11px;
+  }
+
+  .account-text {
+    display: none;
+  }
+
+  .account-button {
+    gap: 3px;
+  }
+
+  .account-avatar {
+    width: 30px;
+    height: 30px;
+  }
+
+  .account-arrow {
+    margin-left: 0;
+  }
+
+  .search-category {
+    flex-basis: 75px;
+    width: 75px;
+    font-size: 11px;
+  }
+
+  .search-box input {
+    padding: 0 7px;
+    font-size: 12px;
+  }
+
+  .search-clear {
+    flex-basis: 28px;
+    width: 28px;
+  }
+
+  .search-button {
+    flex-basis: 39px;
+    width: 39px;
+  }
+}
+
+/* =========================================
+   ACCESSIBILITÉ : RÉDUCTION DES ANIMATIONS
+========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-link,
+  .nav-link::after,
+  .search-box,
+  .search-category,
+  .search-clear,
+  .search-button,
+  .cart-button,
+  .cart-icon,
+  .login-button,
+  .account-button,
+  .account-arrow,
+  .account-menu-item {
+    transition: none;
+  }
+
+  .account-menu {
+    animation: none;
+  }
+}

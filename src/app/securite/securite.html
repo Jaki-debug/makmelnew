@@ -1,0 +1,344 @@
+<div class="page"> <div class="security-container">
+<div class="security-header">
+  <h1>Sécurité</h1>
+  <p>
+    Gérez votre mot de passe et la sécurité de votre compte administrateur.
+  </p>
+</div>
+
+<div class="security-card">
+
+  <h2>Changer le mot de passe</h2>
+
+  <form (ngSubmit)="changerMotDePasse()">
+
+    <div class="form-group">
+
+      <label for="motDePasseActuel">
+        Mot de passe actuel
+      </label>
+
+      <div class="password-wrapper">
+
+        <input
+          id="motDePasseActuel"
+          [type]="afficherMotDePasseActuel ? 'text' : 'password'"
+          name="motDePasseActuel"
+          [(ngModel)]="motDePasseActuel"
+          autocomplete="current-password"
+          placeholder="Entrez votre mot de passe actuel"
+        >
+
+        <button
+          type="button"
+          class="toggle-password"
+          (click)="afficherMotDePasseActuel = !afficherMotDePasseActuel"
+        >
+          {{ afficherMotDePasseActuel ? 'Masquer' : 'Afficher' }}
+        </button>
+
+      </div>
+
+    </div>
+
+    <div class="form-group">
+
+      <label for="nouveauMotDePasse">
+        Nouveau mot de passe
+      </label>
+
+      <div class="password-wrapper">
+
+        <input
+          id="nouveauMotDePasse"
+          [type]="afficherNouveauMotDePasse ? 'text' : 'password'"
+          name="nouveauMotDePasse"
+          [(ngModel)]="nouveauMotDePasse"
+          autocomplete="new-password"
+          placeholder="Entrez votre nouveau mot de passe"
+        >
+
+        <button
+          type="button"
+          class="toggle-password"
+          (click)="afficherNouveauMotDePasse = !afficherNouveauMotDePasse"
+        >
+          {{ afficherNouveauMotDePasse ? 'Masquer' : 'Afficher' }}
+        </button>
+
+      </div>
+
+      <small>
+        Minimum 8 caractères.
+      </small>
+
+    </div>
+
+    <div class="form-group">
+
+      <label for="confirmationMotDePasse">
+        Confirmer le nouveau mot de passe
+      </label>
+
+      <div class="password-wrapper">
+
+        <input
+          id="confirmationMotDePasse"
+          [type]="afficherConfirmation ? 'text' : 'password'"
+          name="confirmationMotDePasse"
+          [(ngModel)]="confirmationMotDePasse"
+          autocomplete="new-password"
+          placeholder="Confirmez votre nouveau mot de passe"
+        >
+
+        <button
+          type="button"
+          class="toggle-password"
+          (click)="afficherConfirmation = !afficherConfirmation"
+        >
+          {{ afficherConfirmation ? 'Masquer' : 'Afficher' }}
+        </button>
+
+      </div>
+
+    </div>
+
+    <button
+      class="submit-button"
+      type="submit"
+      [disabled]="chargement"
+    >
+      {{ chargement ? 'Modification...' : 'Modifier le mot de passe' }}
+    </button>
+
+  </form>
+
+</div>
+
+<div class="security-card mfa-card">
+
+  <h2>Authentification à deux facteurs</h2>
+
+  <p class="mfa-description">
+    Ajoutez une couche de sécurité supplémentaire à votre compte avec une
+    application d'authentification comme Google Authenticator.
+  </p>
+
+  <div
+    *ngIf="chargementMfa"
+    class="mfa-loading"
+  >
+    Vérification de l’état de la MFA...
+  </div>
+
+  <div
+    *ngIf="!chargementMfa && mfaActive"
+    class="mfa-status active"
+  >
+
+    <span class="status-dot"></span>
+
+    <div class="mfa-status-content">
+      <strong>MFA activée</strong>
+
+      <p>
+        Votre compte est actuellement protégé par l’authentification à deux facteurs.
+      </p>
+    </div>
+
+  </div>
+
+  <div
+    *ngIf="!chargementMfa && mfaActive"
+    class="mfa-actions"
+  >
+
+    <button
+      *ngIf="!afficherDesactivationMfa"
+      type="button"
+      class="danger-button"
+      (click)="afficherDesactivation()"
+    >
+      Désactiver la MFA
+    </button>
+
+  </div>
+
+  <div
+    *ngIf="!chargementMfa && mfaActive && afficherDesactivationMfa"
+    class="mfa-disable"
+  >
+
+    <h3>Désactiver l'authentification à deux facteurs</h3>
+
+    <p>
+      Saisissez le code actuellement affiché dans votre application
+      d’authentification pour confirmer la désactivation.
+    </p>
+
+    <div class="form-group">
+
+      <label for="codeDesactivationMfa">
+        Code MFA
+      </label>
+
+      <input
+        id="codeDesactivationMfa"
+        type="text"
+        inputmode="numeric"
+        maxlength="6"
+        autocomplete="one-time-code"
+        name="codeDesactivationMfa"
+        [(ngModel)]="codeDesactivationMfa"
+        placeholder="Entrez le code à 6 chiffres"
+      >
+
+    </div>
+
+    <div class="mfa-actions">
+
+      <button
+        type="button"
+        class="danger-button"
+        [disabled]="desactivationMfaEnCours"
+        (click)="desactiverMfa()"
+      >
+        {{
+          desactivationMfaEnCours
+            ? 'Désactivation...'
+            : 'Confirmer la désactivation'
+        }}
+      </button>
+
+      <button
+        type="button"
+        class="cancel-button"
+        (click)="annulerDesactivationMfa()"
+      >
+        Annuler
+      </button>
+
+    </div>
+
+  </div>
+
+  <div
+    *ngIf="!chargementMfa && !mfaActive"
+  >
+
+    <div class="mfa-status inactive">
+
+      <span class="status-dot"></span>
+
+      <div>
+        <strong>MFA non activée</strong>
+
+        <p>
+          Activez l’authentification à deux facteurs pour renforcer la sécurité de votre compte.
+        </p>
+      </div>
+
+    </div>
+
+    <button
+      type="button"
+      class="submit-button"
+      (click)="configurerMfa()"
+    >
+      Configurer la MFA
+    </button>
+
+  </div>
+
+  <div
+    class="mfa-setup"
+    *ngIf="mfaEnConfiguration"
+  >
+
+    <h3>Configurer l'authentification à deux facteurs</h3>
+
+    <p>
+      Scannez le QR code avec Google Authenticator, puis saisissez le code
+      à 6 chiffres généré par l'application.
+    </p>
+
+    <div
+      class="qr-code-container"
+      *ngIf="otpauthUrl"
+    >
+
+      <label>
+        QR code de configuration
+      </label>
+
+      <div class="qr-code">
+        <qrcode
+          [qrdata]="otpauthUrl"
+          [width]="220"
+          [errorCorrectionLevel]="'M'"
+        ></qrcode>
+      </div>
+
+    </div>
+
+    <div
+      class="secret-box"
+      *ngIf="mfaSecret"
+    >
+
+      <label>Clé secrète de secours</label>
+
+      <div class="secret-value">
+        {{ mfaSecret }}
+      </div>
+
+    </div>
+
+    <div class="form-group">
+
+      <label for="codeMfa">
+        Code de vérification
+      </label>
+
+      <input
+        id="codeMfa"
+        type="text"
+        inputmode="numeric"
+        maxlength="6"
+        autocomplete="one-time-code"
+        name="codeMfa"
+        [(ngModel)]="codeMfa"
+        placeholder="Entrez le code à 6 chiffres"
+      >
+
+    </div>
+
+    <div class="mfa-actions">
+
+      <button
+        type="button"
+        class="submit-button"
+        [disabled]="confirmationMfaEnCours"
+        (click)="confirmerMfa()"
+      >
+        {{
+          confirmationMfaEnCours
+            ? 'Confirmation...'
+            : 'Confirmer la MFA'
+        }}
+      </button>
+
+      <button
+        type="button"
+        class="cancel-button"
+        (click)="annulerConfigurationMfa()"
+      >
+        Annuler
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+</div> </div>

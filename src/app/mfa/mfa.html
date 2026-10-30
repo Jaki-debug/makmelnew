@@ -1,0 +1,35 @@
+<div class="page"> <div class="mfa-card">
+<h1>Vérification MFA</h1>
+
+<p>
+  Saisissez le code à 6 chiffres généré par votre application d’authentification.
+</p>
+
+<form (ngSubmit)="verifierCode()">
+
+  <label for="code">Code MFA</label>
+
+  <input
+    id="code"
+    type="text"
+    name="code"
+    [(ngModel)]="code"
+    maxlength="6"
+    inputmode="numeric"
+    autocomplete="one-time-code"
+    placeholder="000000"
+  >
+
+  <p class="error" *ngIf="erreur">
+    {{ erreur }}
+  </p>
+
+  <button
+    type="submit"
+    [disabled]="chargement"
+  >
+    {{ chargement ? 'Vérification...' : 'Vérifier' }}
+  </button>
+
+</form>
+</div> </div>

@@ -1,0 +1,150 @@
+<header class="backoffice-header">
+  <div class="header-actions">
+
+    <!-- Son des notifications -->
+    <button
+      type="button"
+      class="sound-button"
+      [attr.aria-pressed]="sonActive"
+      [attr.aria-label]="sonActive
+        ? 'Désactiver le son des notifications'
+        : 'Activer le son des notifications'"
+      [title]="sonActive ? 'Son activé' : 'Son désactivé'"
+      (click)="basculerSon()">
+      <span aria-hidden="true">{{ sonActive ? '🔊' : '🔇' }}</span>
+    </button>
+
+    <!-- Notifications -->
+    <button
+      type="button"
+      class="notification-button"
+      [attr.aria-label]="nombreNotifications > 0
+        ? 'Voir les notifications, ' + nombreNotifications + ' nouvelle(s)'
+        : 'Voir les notifications'"
+      [title]="nombreNotifications > 0
+        ? nombreNotifications + ' nouvelle(s) notification(s)'
+        : 'Notifications'"
+      (click)="ouvrirNotifications()">
+
+      <!-- Icône cloche -->
+      <span class="notification-icon" aria-hidden="true">
+        <svg
+          viewBox="0 0 24 24"
+          width="24"
+          height="24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.8"
+          stroke-linecap="round"
+          stroke-linejoin="round">
+
+          <path
+            d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9">
+          </path>
+
+          <path d="M10 21h4"></path>
+        </svg>
+      </span>
+
+      <!-- Badge du compteur : affiché seulement s'il y a des nouveautés -->
+      <span
+        class="notification-count"
+        *ngIf="nombreNotifications > 0"
+        aria-hidden="true">
+        {{ nombreNotifications > 99 ? '99+' : nombreNotifications }}
+      </span>
+
+    </button>
+
+    <!-- Profil utilisateur -->
+    <div class="profile-container">
+
+      <button
+        type="button"
+        class="profile-button"
+        aria-haspopup="true"
+        aria-controls="profile-menu"
+        [attr.aria-expanded]="menuProfilOuvert"
+        (click)="toggleMenuProfil()">
+
+        <span class="profile-avatar">
+          {{ initiales }}
+        </span>
+
+        <span class="profile-info">
+          <span class="profile-name">
+            {{ nomComplet }}
+          </span>
+
+          <span class="profile-role">
+            {{ rolePrincipal }}
+          </span>
+        </span>
+
+        <span
+          class="profile-arrow"
+          aria-hidden="true"
+          [class.open]="menuProfilOuvert">
+          ▼
+        </span>
+
+      </button>
+
+      <!-- Menu déroulant -->
+      <div
+        class="profile-dropdown"
+        id="profile-menu"
+        *ngIf="menuProfilOuvert">
+
+        <div class="dropdown-profile">
+
+          <div class="profile-avatar large" aria-hidden="true">
+            {{ initiales }}
+          </div>
+
+          <div class="dropdown-user">
+            <span class="dropdown-name">
+              {{ nomComplet }}
+            </span>
+
+            <span class="dropdown-email" *ngIf="utilisateur?.email">
+              {{ utilisateur.email }}
+            </span>
+
+            <span class="dropdown-role">
+              {{ rolePrincipal }}
+            </span>
+          </div>
+
+        </div>
+
+        <div class="dropdown-divider"></div>
+
+        <button
+          type="button"
+          class="dropdown-item"
+          (click)="monProfil()">
+          <span>Mon profil</span>
+        </button>
+
+        <button
+          type="button"
+          class="dropdown-item"
+          (click)="parametres()">
+          <span>Paramètres</span>
+        </button>
+
+        <div class="dropdown-divider"></div>
+
+        <button
+          type="button"
+          class="dropdown-item logout"
+          (click)="deconnexion()">
+          <span>Déconnexion</span>
+        </button>
+
+      </div>
+    </div>
+
+  </div>
+</header>

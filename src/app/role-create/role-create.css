@@ -1,0 +1,172 @@
+.page {
+padding: 28px;
+background: #f5f7fb;
+min-height: 100vh;
+box-sizing: border-box;
+}
+
+.page-header {
+margin-bottom: 24px;
+}
+
+.page-header h1 {
+margin: 0;
+color: #102a56;
+font-size: 28px;
+font-weight: 700;
+}
+
+.page-header p {
+margin: 7px 0 0;
+color: #687386;
+font-size: 14px;
+}
+
+.form-card {
+max-width: 760px;
+background: white;
+border-radius: 12px;
+padding: 28px;
+box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.alert {
+padding: 13px 15px;
+border-radius: 8px;
+margin-bottom: 20px;
+font-size: 13px;
+line-height: 1.5;
+}
+
+.alert.error {
+background: #fff0f0;
+color: #b83333;
+border: 1px solid #f1cccc;
+}
+
+.alert.success {
+background: #e8f7ed;
+color: #23783f;
+border: 1px solid #c8e8d2;
+}
+
+.form-group {
+margin-bottom: 22px;
+}
+
+.form-group label {
+display: block;
+margin-bottom: 8px;
+color: #344054;
+font-size: 13px;
+font-weight: 600;
+}
+
+.form-group input,
+.form-group textarea {
+width: 100%;
+border: 1px solid #d8deea;
+border-radius: 8px;
+padding: 12px 13px;
+outline: none;
+background: white;
+color: #263143;
+font-size: 14px;
+box-sizing: border-box;
+transition: 0.2s ease;
+font-family: inherit;
+}
+
+.form-group input {
+height: 44px;
+}
+
+.form-group textarea {
+min-height: 130px;
+resize: vertical;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+border-color: #102a56;
+box-shadow: 0 0 0 3px rgba(16, 42, 86, 0.08);
+}
+
+.form-group input:disabled,
+.form-group textarea:disabled {
+background: #f4f6f9;
+cursor: not-allowed;
+}
+
+.form-group small {
+display: block;
+margin-top: 6px;
+color: #8a93a1;
+font-size: 11px;
+}
+
+.form-actions {
+display: flex;
+justify-content: flex-end;
+gap: 10px;
+margin-top: 28px;
+}
+
+.primary-button,
+.cancel-button {
+min-width: 130px;
+height: 44px;
+padding: 0 18px;
+border-radius: 8px;
+cursor: pointer;
+font-size: 13px;
+font-weight: 600;
+transition: 0.2s ease;
+}
+
+.primary-button {
+border: none;
+background: #102a56;
+color: white;
+}
+
+.primary-button:hover:not(:disabled) {
+background: #173a72;
+transform: translateY(-1px);
+}
+
+.cancel-button {
+border: 1px solid #d8deea;
+background: white;
+color: #5f6b7a;
+}
+
+.cancel-button:hover:not(:disabled) {
+background: #f8f9fc;
+}
+
+.primary-button:disabled,
+.cancel-button:disabled {
+opacity: 0.55;
+cursor: not-allowed;
+transform: none;
+}
+
+@media (max-width: 700px) {
+.page {
+padding: 18px;
+}
+
+.form-card {
+padding: 20px;
+}
+
+.form-actions {
+flex-direction: column-reverse;
+}
+
+.primary-button,
+.cancel-button {
+width: 100%;
+}
+}

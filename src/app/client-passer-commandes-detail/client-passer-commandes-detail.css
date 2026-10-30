@@ -1,0 +1,497 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  background: #f5f7fb;
+  color: #243047;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.page-detail {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 24px 48px;
+}
+
+/* ==========================================
+   EN-TÊTE
+========================================== */
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 28px;
+}
+
+.page-header h1 {
+  margin: 0 0 8px;
+  color: #172b4d;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.page-header p {
+  margin: 0;
+  color: #718096;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.btn-retour {
+  padding: 11px 16px;
+  border: 1px solid #d7deea;
+  border-radius: 7px;
+  background: #fff;
+  color: #243b64;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.btn-retour:hover {
+  background: #edf2f8;
+  border-color: #b8c6da;
+}
+
+.btn-retour:focus-visible {
+  outline: 3px solid rgba(46, 107, 190, 0.25);
+  outline-offset: 2px;
+}
+
+/* ==========================================
+   CARTES
+========================================== */
+
+.carte {
+  margin-bottom: 22px;
+  padding: 24px;
+  border: 1px solid #e5eaf1;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 3px 12px rgba(26, 42, 70, 0.04);
+}
+
+.carte h2 {
+  margin: 0 0 22px;
+  color: #243b64;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+/* ==========================================
+   RÉSUMÉ DE LA COMMANDE
+========================================== */
+
+.resume-commande {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.resume-commande h2 {
+  margin: 8px 0;
+  color: #172b4d;
+  font-size: 24px;
+  overflow-wrap: anywhere;
+}
+
+.resume-commande p {
+  margin: 0;
+  color: #718096;
+  font-size: 13px;
+}
+
+.libelle {
+  color: #718096;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+}
+
+/* Statut de la commande */
+
+.statut {
+  display: inline-block;
+  padding: 8px 13px;
+  border: 1px solid #f5dfaa;
+  border-radius: 20px;
+  background: #fff4d6;
+  color: #946200;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* ==========================================
+   INFORMATIONS PRINCIPALES
+========================================== */
+
+.grille {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.grille .carte {
+  min-width: 0;
+}
+
+/* ==========================================
+   LIGNES D'INFORMATION
+========================================== */
+
+.ligne {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 13px 0;
+  border-bottom: 1px solid #edf0f5;
+}
+
+.ligne:first-of-type {
+  padding-top: 0;
+}
+
+.ligne:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.ligne span {
+  color: #718096;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.ligne strong {
+  max-width: 60%;
+  color: #243047;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.6;
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
+/* ==========================================
+   STATUT DU PAIEMENT
+========================================== */
+
+.ligne-statut-paiement {
+  align-items: center;
+  gap: 12px;
+}
+
+.ligne-statut-paiement > span {
+  flex: 1;
+}
+
+.ligne-statut-paiement .payment-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 65%;
+  padding: 7px 12px;
+  border: 1px solid transparent;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.4;
+  text-align: center;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+/* Paiement confirmé */
+
+.payment-status.status-success {
+  border-color: #a8e2c1;
+  background: #e8f8ef;
+  color: #167344;
+}
+
+/* Paiement en attente ou en cours */
+
+.payment-status.status-pending {
+  border-color: #f5dfaa;
+  background: #fff4d6;
+  color: #946200;
+}
+
+/* Échec ou paiement annulé */
+
+.payment-status.status-failed {
+  border-color: #f2c5c5;
+  background: #fff0f0;
+  color: #b42318;
+}
+
+/* Paiement remboursé */
+
+.payment-status.status-refunded {
+  border-color: #d9c8f5;
+  background: #f4edff;
+  color: #6941a5;
+}
+
+/* Statut inconnu ou non disponible */
+
+.payment-status.status-unknown {
+  border-color: #d7deea;
+  background: #f1f4f8;
+  color: #526176;
+}
+
+/* ==========================================
+   CHARGEMENT ET ERREURS
+========================================== */
+
+.message {
+  margin-bottom: 22px;
+  padding: 18px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.chargement {
+  border: 1px solid #dbe5f3;
+  background: #edf4ff;
+  color: #28558c;
+}
+
+.erreur {
+  border: 1px solid #f2cccc;
+  background: #fff1f1;
+  color: #a12b2b;
+}
+
+/* Vérification du statut de paiement */
+
+.chargement-paiement {
+  margin: 12px 0 0;
+  padding: 10px 12px;
+  border: 1px solid #dbe5f3;
+  border-radius: 7px;
+  background: #edf4ff;
+  color: #28558c;
+  font-size: 12px;
+}
+
+/* Erreur ou indisponibilité du paiement */
+
+.erreur-paiement {
+  margin: 12px 0 0;
+  padding: 10px 12px;
+  border-radius: 7px;
+  font-size: 12px;
+}
+
+/* ==========================================
+   TABLEAU DES ARTICLES
+========================================== */
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+thead {
+  background: #f7f9fc;
+}
+
+th {
+  padding: 14px 16px;
+  color: #65748b;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+td {
+  padding: 16px;
+  border-bottom: 1px solid #edf0f5;
+  color: #344054;
+  font-size: 13px;
+  vertical-align: middle;
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+tbody tr:hover {
+  background: #fafbfd;
+}
+
+/* Aucun article */
+
+.aucun-article {
+  padding: 16px 0;
+  color: #718096;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* ==========================================
+   TOTAL DE LA COMMANDE
+========================================== */
+
+.total {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #e5eaf1;
+}
+
+.total span {
+  color: #344054;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.total strong {
+  color: #172b4d;
+  font-size: 22px;
+  font-weight: 700;
+  text-align: right;
+}
+
+/* ==========================================
+   NOTES DE LA COMMANDE
+========================================== */
+
+.notes {
+  margin: 0;
+  color: #526176;
+  font-size: 14px;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+/* ==========================================
+   TABLETTES ET MOBILES
+========================================== */
+
+@media (max-width: 768px) {
+  .page-detail {
+    padding: 24px 16px 36px;
+  }
+
+  .page-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .page-header h1 {
+    font-size: 24px;
+  }
+
+  .grille {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .resume-commande {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .carte {
+    padding: 18px;
+  }
+
+  th,
+  td {
+    padding: 12px;
+  }
+
+  .total strong {
+    font-size: 18px;
+  }
+}
+
+/* ==========================================
+   PETITS ÉCRANS
+========================================== */
+
+@media (max-width: 420px) {
+  .page-detail {
+    padding: 20px 12px 28px;
+  }
+
+  .page-header h1 {
+    font-size: 22px;
+  }
+
+  .page-header p {
+    font-size: 13px;
+  }
+
+  .btn-retour {
+    width: 100%;
+    white-space: normal;
+  }
+
+  .carte {
+    padding: 16px;
+  }
+
+  .carte h2 {
+    font-size: 16px;
+  }
+
+  .ligne {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .ligne strong {
+    max-width: 100%;
+    text-align: left;
+  }
+
+  .ligne-statut-paiement {
+    align-items: flex-start;
+  }
+
+  .ligne-statut-paiement .payment-status {
+    max-width: 100%;
+  }
+
+  .total {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .total strong {
+    font-size: 18px;
+    text-align: left;
+  }
+
+  .message {
+    padding: 14px;
+    font-size: 13px;
+  }
+}

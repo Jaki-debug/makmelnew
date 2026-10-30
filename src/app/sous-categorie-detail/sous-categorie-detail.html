@@ -1,0 +1,166 @@
+<div class="sous-categorie-detail-page"> <div class="page-header">
+<div>
+
+  <span class="page-kicker">
+    CATALOGUE
+  </span>
+
+  <h1>
+    Détail de la sous-catégorie
+  </h1>
+
+  <p>
+    Consultez les informations et le rattachement de cette sous-catégorie.
+  </p>
+
+</div>
+
+<button
+  type="button"
+  class="back-button"
+  (click)="retour()"
+>
+  ← Retour
+</button>
+</div> <div class="alert error" *ngIf="erreur" > {{ erreur }} </div> <div class="loading-card" *ngIf="chargement" > Chargement de la sous-catégorie... </div> <div class="detail-card" *ngIf="!chargement && categorie" >
+<div class="detail-header">
+
+  <div class="title-area">
+
+    <div class="category-icon">
+      ↳
+    </div>
+
+    <div>
+
+      <span class="category-type">
+        Sous-catégorie
+      </span>
+
+      <h2>
+        {{ categorie.name }}
+      </h2>
+
+    </div>
+
+  </div>
+
+  <span
+    class="status"
+    [class.active]="categorie.isActive"
+    [class.inactive]="!categorie.isActive"
+  >
+    {{ statut }}
+  </span>
+
+</div>
+
+<div class="parent-card">
+
+  <div class="parent-icon">
+    ▾
+  </div>
+
+  <div class="parent-information">
+
+    <span>
+      Catégorie principale
+    </span>
+
+    <strong
+      *ngIf="categorieParent"
+    >
+      {{ categorieParent.name }}
+    </strong>
+
+    <strong
+      *ngIf="!categorieParent"
+    >
+      Catégorie introuvable
+    </strong>
+
+  </div>
+
+  <button
+    type="button"
+    class="parent-button"
+    *ngIf="categorieParent"
+    (click)="retourCategoriePrincipale()"
+  >
+    Voir la catégorie
+  </button>
+
+</div>
+
+<div class="detail-grid">
+
+  <div class="detail-item">
+
+    <span class="label">
+      Nom
+    </span>
+
+    <span class="value">
+      {{ categorie.name }}
+    </span>
+
+  </div>
+
+  <div class="detail-item">
+
+    <span class="label">
+      Ordre d'affichage
+    </span>
+
+    <span class="value">
+      {{ categorie.sortOrder }}
+    </span>
+
+  </div>
+
+  <div class="detail-item">
+
+    <span class="label">
+      Statut
+    </span>
+
+    <span class="value">
+      {{ statut }}
+    </span>
+
+  </div>
+
+  <div class="detail-item">
+
+    <span class="label">
+      Identifiant
+    </span>
+
+    <span class="value identifier">
+      {{ categorie.id }}
+    </span>
+
+  </div>
+
+</div>
+
+<div class="detail-actions">
+
+  <button
+    type="button"
+    class="secondary-button"
+    (click)="retourCategoriePrincipale()"
+  >
+    Voir la catégorie principale
+  </button>
+
+  <button
+    type="button"
+    class="primary-button"
+    (click)="modifier()"
+  >
+    Modifier la sous-catégorie
+  </button>
+
+</div>
+</div> </div>

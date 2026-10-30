@@ -1,0 +1,390 @@
+<div class="mouvement-stock-create">
+
+<div class="page-header">
+
+<div>
+
+  <h1>Nouveau mouvement</h1>
+
+  <p>
+    Enregistrez une entrée, une sortie ou un ajustement de stock.
+  </p>
+
+</div>
+
+</div>
+
+<div class="form-card">
+
+<div class="form-header">
+
+  <div>
+
+    <h2>Créer un mouvement</h2>
+
+    <p>
+      Sélectionnez le produit et sa variante,
+      puis renseignez les informations du mouvement.
+    </p>
+
+  </div>
+
+</div>
+
+
+<form (ngSubmit)="submitMovement()">
+
+  <div class="form-grid">
+
+
+    <!-- TYPE DE MOUVEMENT -->
+
+    <div class="form-group">
+
+      <label for="movementType">
+        Type de mouvement
+      </label>
+
+      <select
+        id="movementType"
+        name="movementType"
+        [(ngModel)]="movementType"
+        [disabled]="submitting">
+
+        <option value="STOCK_IN">
+          Entrée de stock
+        </option>
+
+        <option value="STOCK_OUT">
+          Sortie de stock
+        </option>
+
+        <option value="STOCK_ADJUSTMENT">
+          Ajustement de stock
+        </option>
+
+      </select>
+
+    </div>
+
+
+    <!-- PRODUIT -->
+
+    <div class="form-group">
+
+      <label for="product">
+        Produit
+      </label>
+
+      <select
+        id="product"
+        name="product"
+        [(ngModel)]="selectedProductId"
+        (change)="onProductChange()"
+        [disabled]="loadingProducts || submitting">
+
+        <option value="">
+
+          {{
+            loadingProducts
+              ? 'Chargement des produits...'
+              : 'Sélectionner un produit'
+          }}
+
+        </option>
+
+        <option
+          *ngFor="let product of products"
+          [value]="product.id">
+
+          {{ product.name }}
+
+        </option>
+
+      </select>
+
+    </div>
+
+
+    <!-- VARIANTE -->
+
+    <div class="form-group">
+
+      <label for="variant">
+        Variante
+      </label>
+
+      <select
+        id="variant"
+        name="variant"
+        [(ngModel)]="selectedVariantId"
+        (change)="onVariantChange()"
+        [disabled]="
+          !selectedProductId ||
+          variants.length === 0 ||
+          submitting
+        ">
+
+        <option value="">
+
+          {{
+            !selectedProductId
+              ? 'Sélectionnez d’abord un produit'
+              : variants.length === 0
+                ? 'Aucune variante disponible'
+                : 'Sélectionner une variante'
+          }}
+
+        </option>
+
+        <option
+          *ngFor="let variant of variants"
+          [value]="variant.id">
+
+          {{ variant.name }}
+
+          <ng-container *ngIf="variant.sku">
+            — {{ variant.sku }}
+          </ng-container>
+
+        </option>
+
+      </select>
+
+    </div>
+
+
+    <!-- QUANTITÉ INITIALE / ACTUELLE -->
+
+    <div
+      class="form-group current-stock-group"
+      *ngIf="selectedVariantId">
+
+      <label for="currentQuantity">
+
+        {{
+          movementType === 'STOCK_ADJUSTMENT'
+            ? 'Quantité actuelle'
+            : 'Quantité initiale'
+        }}
+
+      </label>
+
+      <div class="quantity-display">
+
+        <span class="quantity-value">
+          {{ getCurrentQuantity() }}
+        </span>
+
+        <span class="quantity-unit">
+          unité(s)
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <!-- QUANTITÉ DU MOUVEMENT -->
+
+    <div class="form-group">
+
+      <label for="quantity">
+
+        {{
+          movementType === 'STOCK_ADJUSTMENT'
+            ? 'Nouvelle quantité'
+            : 'Quantité'
+        }}
+
+      </label>
+
+      <input
+        id="quantity"
+        name="quantity"
+        type="number"
+        [min]="
+          movementType === 'STOCK_ADJUSTMENT'
+            ? 0
+            : 1
+        "
+        step="1"
+        [(ngModel)]="quantity"
+        [placeholder]="
+          movementType === 'STOCK_ADJUSTMENT'
+            ? 'Ex. 15'
+            : 'Ex. 10'
+        "
+        [disabled]="submitting">
+
+    </div>
+
+
+    <!-- QUANTITÉ FINALE ENTRÉE / SORTIE -->
+
+    <div
+      class="form-group"
+      *ngIf="
+        selectedVariantId &&
+        quantity !== null &&
+        movementType !== 'STOCK_ADJUSTMENT'
+      ">
+
+      <label for="finalQuantity">
+        Quantité finale
+      </label>
+
+      <div class="quantity-display">
+
+        <span class="quantity-value">
+          {{ getFinalQuantity() }}
+        </span>
+
+        <span class="quantity-unit">
+          unité(s)
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <!-- ÉCART AJUSTEMENT -->
+
+    <div
+      class="form-group"
+      *ngIf="
+        movementType === 'STOCK_ADJUSTMENT' &&
+        selectedVariantId &&
+        quantity !== null
+      ">
+
+      <label for="difference">
+        Écart
+      </label>
+
+      <div
+        class="difference-display"
+        [class.positive]="
+          getAdjustmentDifference() > 0
+        "
+        [class.negative]="
+          getAdjustmentDifference() < 0
+        "
+        [class.neutral]="
+          getAdjustmentDifference() === 0
+        ">
+
+        <span class="difference-value">
+
+          {{
+            getAdjustmentDifference() > 0
+              ? '+' + getAdjustmentDifference()
+              : getAdjustmentDifference()
+          }}
+
+        </span>
+
+        <span class="difference-unit">
+          unité(s)
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <!-- MOTIF -->
+
+    <div class="form-group form-group-full">
+
+      <label for="reason">
+        Motif
+      </label>
+
+      <input
+        id="reason"
+        name="reason"
+        type="text"
+        [(ngModel)]="reason"
+        [placeholder]="
+          movementType === 'STOCK_ADJUSTMENT'
+            ? 'Ex. Correction après inventaire'
+            : 'Ex. Réception fournisseur'
+        "
+        [disabled]="submitting">
+
+    </div>
+
+  </div>
+
+
+  <!-- INFORMATION AJUSTEMENT -->
+
+  <div
+    *ngIf="movementType === 'STOCK_ADJUSTMENT'"
+    class="form-info">
+
+    Pour un ajustement, indiquez la quantité finale
+    réellement souhaitée pour cette variante.
+
+  </div>
+
+
+  <!-- ERREUR -->
+
+  <div
+    *ngIf="error"
+    class="form-error">
+
+    <strong>
+      Erreur de validation
+    </strong>
+
+    <span>
+      {{ error }}
+    </span>
+
+  </div>
+
+
+  <!-- ACTIONS -->
+
+  <div class="form-actions">
+
+    <button
+      type="button"
+      class="cancel-button"
+      (click)="cancel()"
+      [disabled]="submitting">
+
+      Annuler
+
+    </button>
+
+
+    <button
+      type="submit"
+      class="submit-button"
+      [disabled]="
+        submitting ||
+        loadingProducts
+      ">
+
+      <span *ngIf="!submitting">
+        Enregistrer
+      </span>
+
+      <span *ngIf="submitting">
+        Enregistrement...
+      </span>
+
+    </button>
+
+  </div>
+
+</form>
+
+</div>
+
+</div>

@@ -1,0 +1,24 @@
+
+<ng-container *ngIf="afficherSidebar; else clientLayout">
+
+  <div class="app-container">
+
+    <app-sidebar></app-sidebar>
+
+    <main class="main-content">
+
+      <app-backoffice-header></app-backoffice-header>
+
+      <div class="page-content">
+        <router-outlet></router-outlet>
+      </div>
+
+    </main>
+
+  </div>
+
+</ng-container>
+
+<ng-template #clientLayout>
+  <router-outlet></router-outlet>
+</ng-template>

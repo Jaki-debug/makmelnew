@@ -1,0 +1,177 @@
+<app-client-header></app-client-header>
+<div class="commandes-page">
+
+  <header class="page-header">
+    <div class="header-text">
+      <span class="surtitle">MON ESPACE CLIENT</span>
+      <h1>Mes commandes</h1>
+      <p>Consultez et suivez toutes vos commandes MAK & MEL.</p>
+    </div>
+
+    <button class="btn-retour" type="button"
+            routerLink="/client/compte">
+      <span class="arrow">←</span>
+      Mon compte
+    </button>
+  </header>
+
+  <section class="commandes-card">
+
+    <div class="card-header">
+      <div>
+        <h2>Historique des commandes</h2>
+        <p>Retrouvez les informations de vos achats.</p>
+      </div>
+
+      <span class="count-badge">
+        {{ commandesFiltrees.length }}
+        commande{{ commandesFiltrees.length > 1 ? 's' : '' }}
+      </span>
+    </div>
+
+    <div class="filters">
+      <div class="search-box">
+        <span class="search-icon">⌕</span>
+        <input
+          type="search"
+          [(ngModel)]="recherche"
+          placeholder="Rechercher une commande..."
+          aria-label="Rechercher une commande">
+      </div>
+
+      <div class="status-filter">
+        <label for="statut">Statut</label>
+        <select id="statut" [(ngModel)]="statutSelectionne">
+          <option value="">Tous les statuts</option>
+          <option value="PENDING">En attente</option>
+          <option value="CONFIRMED">Confirmée</option>
+          <option value="PROCESSING">En préparation</option>
+          <option value="SHIPPED">Expédiée</option>
+          <option value="DELIVERED">Livrée</option>
+          <option value="CANCELLED">Annulée</option>
+        </select>
+      </div>
+
+      <button class="btn-refresh" type="button"
+              (click)="chargerCommandes()"
+              [disabled]="chargement">
+        ↻ Actualiser
+      </button>
+    </div>
+
+    <div class="loading-state" *ngIf="chargement">
+      <span class="spinner"></span>
+      <p>Chargement de vos commandes...</p>
+    </div>
+
+    <div class="error-state" *ngIf="!chargement && erreur">
+      <p>{{ erreur }}</p>
+      <button type="button" (click)="chargerCommandes()">
+        Réessayer
+      </button>
+    </div>
+
+    <div class="empty-state"
+         *ngIf="!chargement && !erreur && commandes.length === 0">
+      <div class="empty-icon">🛍</div>
+      <h3>Aucune commande pour le moment</h3>
+      <p>Vos prochaines commandes apparaîtront ici.</p>
+      <a routerLink="/client/panier-mak" class="btn-shop">
+        Découvrir mon panier
+      </a>
+    </div>
+
+    <div class="empty-state"
+         *ngIf="!chargement && !erreur &&
+                commandes.length > 0 && commandesFiltrees.length === 0">
+      <div class="empty-icon">⌕</div>
+      <h3>Aucun résultat</h3>
+      <p>Essayez un autre mot-clé ou un autre statut.</p>
+      <button class="btn-reset" type="button"
+              (click)="recherche = ''; statutSelectionne = ''">
+        Effacer les filtres
+      </button>
+    </div>
+
+    <div class="table-wrapper"
+         *ngIf="!chargement && !erreur && commandesFiltrees.length > 0">
+
+      <table class="commandes-table">
+        <thead>
+          <tr>
+            <th>Commande</th>
+            <th>Date</th>
+            <th>Montant</th>
+            <th>Paiement</th>
+            <th>Statut</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let commande of commandesFiltrees">
+            <td>
+              <div class="order-number">
+                #{{ commande.numero || commande.orderNumber || commande.id }}
+              </div>
+              <span class="order-subtitle">MAK & MEL</span>
+            </td>
+
+            <td>
+              {{ (commande.createdAt || commande.created_at)
+                  ? ((commande.createdAt || commande.created_at) | date:'dd/MM/yyyy')
+                  : '—' }}
+            </td>
+
+            <td class="amount">
+              {{ commande.totalAmount ?? commande.total ?? commande.totalPrice ?? '—' }}
+              <span *ngIf="commande.totalAmount != null ||
+                           commande.total != null ||
+                           commande.totalPrice != null"> FCFA</span>
+            </td>
+
+            <td>
+              {{ commande.paymentStatus || commande.payment?.status || '—' }}
+            </td>
+
+            <td>
+              <span class="status-badge"
+                    [ngClass]="{
+                      'status-pending': (commande.statut || commande.status) === 'PENDING',
+                      'status-confirmed': (commande.statut || commande.status) === 'CONFIRMED',
+                      'status-processing': (commande.statut || commande.status) === 'PROCESSING',
+                      'status-shipped': (commande.statut || commande.status) === 'SHIPPED',
+                      'status-delivered': (commande.statut || commande.status) === 'DELIVERED',
+                      'status-cancelled': (commande.statut || commande.status) === 'CANCELLED'
+                    }">
+                {{ (commande.statut || commande.status) === 'PENDING' ? 'En attente' :
+                   (commande.statut || commande.status) === 'CONFIRMED' ? 'Confirmée' :
+                   (commande.statut || commande.status) === 'PROCESSING' ? 'En préparation' :
+                   (commande.statut || commande.status) === 'SHIPPED' ? 'Expédiée' :
+                   (commande.statut || commande.status) === 'DELIVERED' ? 'Livrée' :
+                   (commande.statut || commande.status) === 'CANCELLED' ? 'Annulée' :
+                   (commande.statut || commande.status || 'Non défini') }}
+              </span>
+            </td>
+
+            <td>
+              <button class="btn-details" type="button"
+                      (click)="voirDetails(commande)">
+                Détails <span>→</span>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <footer class="card-footer"
+            *ngIf="!chargement && !erreur && commandesFiltrees.length > 0">
+      <span>
+        {{ commandesFiltrees.length }} résultat(s) affiché(s)
+      </span>
+      <span class="footer-note">MAK & MEL · Votre satisfaction, notre priorité</span>
+    </footer>
+
+  </section>
+</div>

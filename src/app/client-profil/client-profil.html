@@ -1,0 +1,200 @@
+<app-client-header></app-client-header>
+
+<div class="profil-page">
+
+<div class="profil-header">
+
+<div>
+
+  <h1>
+    Mon profil
+  </h1>
+
+  <p>
+    Gérez vos informations personnelles.
+  </p>
+
+</div>
+
+<button
+  type="button"
+  class="btn-retour"
+  (click)="retourCompte()">
+
+   Retour
+
+</button>
+
+</div>
+
+<div class="profil-loading" *ngIf="chargement">
+
+<div class="loading-spinner"></div>
+
+<p>
+  Chargement de votre profil...
+</p>
+
+</div>
+
+<div class="message erreur" *ngIf="!chargement && erreur">
+
+{{ erreur }}
+
+</div>
+
+<div class="message succes" *ngIf="!chargement && succes">
+
+{{ succes }}
+
+</div>
+
+<div class="profil-card" *ngIf="!chargement && profil">
+
+<div class="profil-card-header">
+
+
+  <div class="profil-avatar">
+
+    {{
+      (profil.firstName || 'C')
+        .charAt(0)
+        .toUpperCase()
+    }}
+
+  </div>
+
+
+  <div class="profil-identite">
+
+    <h2>
+
+      {{ profil.firstName }}
+
+      {{ profil.lastName }}
+
+    </h2>
+
+
+    <span
+      class="statut"
+      [class.inactif]="profil.isActive === false">
+
+      {{
+        profil.isActive === false
+          ? 'Compte inactif'
+          : 'Compte actif'
+      }}
+
+    </span>
+
+  </div>
+
+
+  <button
+    type="button"
+    class="btn-modifier"
+    (click)="modifierProfil()">
+
+    Modifier
+
+  </button>
+
+
+</div>
+
+
+<div class="profil-separator"></div>
+
+
+<div class="profil-informations">
+
+
+  <div class="information">
+
+    <span class="information-label">
+      Prénom
+    </span>
+
+    <span class="information-value">
+      {{ profil.firstName || 'Non renseigné' }}
+    </span>
+
+  </div>
+
+
+  <div class="information">
+
+    <span class="information-label">
+      Nom
+    </span>
+
+    <span class="information-value">
+      {{ profil.lastName || 'Non renseigné' }}
+    </span>
+
+  </div>
+
+
+  <div class="information">
+
+    <span class="information-label">
+      Adresse e-mail
+    </span>
+
+    <span class="information-value">
+      {{ profil.email || 'Non renseignée' }}
+    </span>
+
+  </div>
+
+
+  <div class="information">
+
+    <span class="information-label">
+      Téléphone
+    </span>
+
+    <span class="information-value">
+      {{ profil.phone || 'Non renseigné' }}
+    </span>
+
+  </div>
+
+
+  <div
+    class="information"
+    *ngIf="profil.createdAt">
+
+    <span class="information-label">
+      Client depuis
+    </span>
+
+    <span class="information-value">
+
+      {{ profil.createdAt | date:'dd/MM/yyyy' }}
+
+    </span>
+
+  </div>
+
+
+</div>
+
+
+<div class="profil-actions">
+
+  <button
+    type="button"
+    class="btn-adresses"
+    (click)="allerAuxAdresses()">
+
+    Mes adresses
+
+  </button>
+
+</div>
+
+</div>
+
+</div>

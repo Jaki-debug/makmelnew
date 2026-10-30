@@ -1,0 +1,310 @@
+<div class="dashboard-page">
+
+  <header class="dashboard-header">
+    <div class="header-titres">
+      <span class="surtitre">MAK &amp; MEL / ANALYTICS</span>
+      <h1>Tableau de bord</h1>
+      <p class="header-description">
+        Pilotez vos ventes, commandes, clients et stocks depuis un seul espace.
+      </p>
+
+      <p class="date-mise-a-jour" *ngIf="dateMiseAJour">
+        <span class="date-dot"></span>
+        Mis à jour le {{ dateMiseAJour | date:'dd/MM/yyyy à HH:mm' }}
+      </p>
+    </div>
+
+    <button
+      type="button"
+      class="btn-actualiser"
+      (click)="chargerDashboard()"
+      [disabled]="chargement">
+      <svg viewBox="0 0 24 24" [class.en-rotation]="chargement">
+        <path d="M20 11a8 8 0 0 0-14.9-3L3 11m0-7v7h7M4 13a8 8 0 0 0 14.9 3L21 13m0 7v-7h-7"
+          fill="none" stroke="currentColor" stroke-width="1.7"
+          stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      {{ chargement ? 'Actualisation…' : 'Actualiser les données' }}
+    </button>
+  </header>
+
+  <section class="filtres-periode">
+    <div class="filtres-titre">
+      <div class="section-icone">
+        <svg viewBox="0 0 24 24">
+          <rect x="3" y="5" width="18" height="16" rx="2"/>
+          <path d="M16 3v4M8 3v4M3 10h18"/>
+        </svg>
+      </div>
+      <div>
+        <h2>Période d’analyse</h2>
+        <p>Choisissez la période à analyser</p>
+      </div>
+    </div>
+
+    <div class="filtres-champs">
+      <div class="champ-date">
+        <label for="dateFrom">Du</label>
+        <input
+          id="dateFrom"
+          type="date"
+          name="dateFrom"
+          [(ngModel)]="dateFrom"
+          [max]="dateTo"
+          [disabled]="chargement"/>
+      </div>
+
+      <div class="champ-date">
+        <label for="dateTo">Au</label>
+        <input
+          id="dateTo"
+          type="date"
+          name="dateTo"
+          [(ngModel)]="dateTo"
+          [min]="dateFrom"
+          [disabled]="chargement"/>
+      </div>
+
+      <button
+        type="button"
+        class="btn-appliquer"
+        (click)="chargerDashboard()"
+        [disabled]="chargement || !dateFrom || !dateTo">
+        Appliquer
+      </button>
+    </div>
+  </section>
+
+  <div class="chargement" *ngIf="chargement" aria-live="polite">
+    <span class="chargement-indicateur"></span>
+    <span>Récupération des données du tableau de bord…</span>
+  </div>
+
+  <section class="erreur-periode" *ngIf="erreurs['periode']">
+    {{ erreurs['periode'] }}
+  </section>
+
+  <section class="indicateurs" aria-label="Indicateurs clés">
+    <article class="indicateur" *ngFor="let carte of cartes; let i = index">
+      <div class="indicateur-haut">
+        <div class="indicateur-icone" [ngClass]="'icone-' + i">
+          <svg *ngIf="i === 0 || i === 2 || i === 5" viewBox="0 0 24 24">
+            <path d="M12 2v20m5-16H9a3 3 0 0 0 0 6h6a3 3 0 0 1 0 6H6"/>
+          </svg>
+          <svg *ngIf="i === 1 || i === 3" viewBox="0 0 24 24">
+            <rect x="3" y="4" width="18" height="16" rx="2"/>
+            <path d="M3 10h18M8 15h3"/>
+          </svg>
+          <svg *ngIf="i === 4" viewBox="0 0 24 24">
+            <circle cx="9" cy="8" r="4"/>
+            <path d="M2 21v-2a7 7 0 0 1 14 0v2m2-17a4 4 0 0 1 0 8m2 3a6 6 0 0 1 2 4v2"/>
+          </svg>
+        </div>
+        <span class="indicateur-reference">KPI {{ i + 1 }}</span>
+      </div>
+
+      <p class="indicateur-titre">{{ carte.titre }}</p>
+      <strong class="indicateur-valeur">{{ carte.valeur }}</strong>
+      <p class="indicateur-description">{{ carte.description }}</p>
+    </article>
+  </section>
+
+  <section class="graphiques-principaux">
+
+    <article class="bloc-dashboard bloc-ventes">
+      <div class="bloc-entete">
+        <div>
+          <span class="bloc-surtitre">PERFORMANCE COMMERCIALE</span>
+          <h2>Évolution des ventes</h2>
+          <p>Chiffre d’affaires sur la période sélectionnée</p>
+        </div>
+        <span class="badge-graphique">Ventes</span>
+      </div>
+
+      <div class="resume-graphique">
+        <span>Chiffre d’affaires enregistré</span>
+        <strong>{{ cartes[2]?.valeur || '—' }}</strong>
+      </div>
+
+      <div class="graphique-canvas ventes-canvas"
+           *ngIf="pointsVentes.length > 0">
+        <canvas id="graphiqueVentesMak"></canvas>
+      </div>
+
+      <div class="message-vide"
+           *ngIf="pointsVentes.length === 0 && !chargement">
+        <strong>Aucune donnée de vente datée</strong>
+        <span>Vérifiez la réponse de l’API des ventes et la période choisie.</span>
+      </div>
+
+      <div class="message-chargement"
+           *ngIf="chargement && pointsVentes.length === 0">
+        Chargement des ventes…
+      </div>
+
+      <div class="erreur-graphique" *ngIf="erreurs['ventes']">
+        {{ erreurs['ventes'] }}
+      </div>
+    </article>
+
+    <article class="bloc-dashboard bloc-commandes">
+      <div class="bloc-entete">
+        <div>
+          <span class="bloc-surtitre">SUIVI OPÉRATIONNEL</span>
+          <h2>Commandes par statut</h2>
+          <p>Répartition des commandes enregistrées</p>
+        </div>
+      </div>
+
+      <div class="resume-commandes">
+        <strong>{{ formaterNombre(totalCommandesStatuts) }}</strong>
+        <span>Commandes réparties par statut</span>
+      </div>
+
+      <div class="graphique-canvas commandes-canvas"
+           *ngIf="statutsCommandes.length > 0">
+        <canvas id="graphiqueCommandesMak"></canvas>
+      </div>
+
+      <div class="message-vide"
+           *ngIf="statutsCommandes.length === 0 && !chargement">
+        <strong>Aucune répartition disponible</strong>
+        <span>L’API doit fournir le nombre de commandes par statut.</span>
+      </div>
+
+      <div class="erreur-graphique" *ngIf="erreurs['commandes']">
+        {{ erreurs['commandes'] }}
+      </div>
+    </article>
+
+  </section>
+
+  <section class="bloc-dashboard bloc-inventaire">
+    <div class="bloc-entete">
+      <div>
+        <span class="bloc-surtitre">GESTION DU STOCK</span>
+        <h2>État de l’inventaire</h2>
+        <p>Disponibilité des produits et valorisation du stock</p>
+      </div>
+    </div>
+
+    <div class="inventaire-grille"
+         *ngIf="statistiquesInventaire.length > 0">
+      <article class="inventaire-indicateur"
+               *ngFor="let statistique of statistiquesInventaire; let i = index">
+        <div class="inventaire-indicateur-haut">
+          <span class="inventaire-index">
+            {{ (i + 1).toString().padStart(2, '0') }}
+          </span>
+          <span class="inventaire-accent" [ngClass]="'accent-' + i"></span>
+        </div>
+        <span class="inventaire-titre">{{ statistique.titre }}</span>
+        <strong>{{ statistique.valeur }}</strong>
+      </article>
+    </div>
+
+    <div class="inventaire-graphique"
+         *ngIf="donneesGraphiqueInventaire">
+      <div class="inventaire-graphique-entete">
+        <h3>Répartition des produits</h3>
+        <p>Stock disponible, stock faible et ruptures</p>
+      </div>
+      <div class="graphique-canvas inventaire-canvas">
+        <canvas id="graphiqueInventaireMak"></canvas>
+      </div>
+    </div>
+
+    <div class="message-vide"
+         *ngIf="statistiquesInventaire.length === 0 && !chargement">
+      <strong>Statistiques de stock indisponibles</strong>
+      <span>Vérifiez les champs renvoyés par l’API d’inventaire.</span>
+    </div>
+
+    <div class="erreur-graphique" *ngIf="erreurs['inventaire']">
+      {{ erreurs['inventaire'] }}
+    </div>
+  </section>
+
+  <section class="bloc-dashboard bloc-clients">
+    <div class="bloc-entete">
+      <div>
+        <span class="bloc-surtitre">FIDÉLISATION</span>
+        <h2>Meilleurs clients</h2>
+        <p>Classement selon les données disponibles pour la période</p>
+      </div>
+      <span class="compteur-clients">{{ topClients.length }} client(s)</span>
+    </div>
+
+    <div class="table-responsive" *ngIf="topClients.length > 0">
+      <table>
+        <thead>
+          <tr>
+            <th>RANG</th>
+            <th>CLIENT</th>
+            <th>COMMANDES</th>
+            <th>MONTANT DÉPENSÉ</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let client of topClients; let i = index">
+            <td>
+              <span class="rang-client" [ngClass]="'rang-' + i">
+                {{ (i + 1).toString().padStart(2, '0') }}
+              </span>
+            </td>
+            <td>
+              <div class="client-identite">
+                <span class="client-avatar">
+                  {{ client.nom.charAt(0).toUpperCase() }}
+                </span>
+                <strong class="client-nom">{{ client.nom }}</strong>
+              </div>
+            </td>
+            <td>
+              <span class="client-commandes">{{ client.commandes }}</span>
+            </td>
+            <td class="client-montant">{{ client.montant }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="message-vide"
+         *ngIf="topClients.length === 0 && !chargement">
+      <strong>Aucun classement client disponible</strong>
+      <span>L’API doit fournir les clients et leurs statistiques d’achat.</span>
+    </div>
+
+    <div class="erreur-graphique" *ngIf="erreurs['clients']">
+      {{ erreurs['clients'] }}
+    </div>
+  </section>
+
+  <section class="erreurs" *ngIf="nombreErreurs > 0">
+    <div class="erreurs-entete">
+      <div>
+        <span class="bloc-surtitre">SURVEILLANCE DU SYSTÈME</span>
+        <h2>Chargement incomplet</h2>
+        <p>Certaines données n’ont pas pu être récupérées.</p>
+      </div>
+      <span class="erreurs-compteur">{{ nombreErreurs }} erreur(s)</span>
+    </div>
+
+    <div class="erreur-item" *ngFor="let erreur of erreurs | keyvalue">
+      <span class="erreur-symbole">!</span>
+      <div>
+        <strong>{{ nomSection(erreur.key) }}</strong>
+        <span>{{ erreur.value }}</span>
+      </div>
+    </div>
+
+    <button
+      type="button"
+      class="btn-reessayer"
+      (click)="chargerDashboard()"
+      [disabled]="chargement">
+      Réessayer le chargement
+    </button>
+  </section>
+
+</div>

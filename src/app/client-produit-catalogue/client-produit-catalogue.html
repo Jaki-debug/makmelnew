@@ -1,0 +1,298 @@
+
+<app-client-header></app-client-header>
+
+<div class="catalogue-page">
+  <div class="catalogue-container">
+
+    <!-- EN-TÊTE DU CATALOGUE -->
+    <div class="catalogue-header">
+      <div class="catalogue-header-info">
+        <span class="catalogue-eyebrow">MAK & MEL</span>
+        <h1>Notre catalogue</h1>
+        <p>Découvrez nos produits et trouvez ce qui vous correspond.</p>
+      </div>
+    </div>
+
+    <!-- MESSAGE DE SUCCÈS -->
+    <div
+      *ngIf="messagePanier"
+      class="message-panier-succes"
+      role="status"
+      aria-live="polite">
+
+      <span class="message-panier-icone" aria-hidden="true">✓</span>
+      <span>{{ messagePanier }}</span>
+    </div>
+
+    <!-- MESSAGE D'ERREUR DU PANIER -->
+    <div
+      *ngIf="erreurAjoutPanier"
+      class="message-panier-erreur"
+      role="alert"
+      aria-live="assertive">
+
+      <span class="message-panier-icone" aria-hidden="true">!</span>
+      <span>{{ erreurAjoutPanier }}</span>
+    </div>
+
+    <!-- MISE EN PAGE PRINCIPALE -->
+    <div class="catalogue-layout">
+
+      <!-- =========================================
+           COLONNE DE GAUCHE : CATÉGORIES ET FILTRES
+      ========================================== -->
+      <aside class="catalogue-sidebar">
+
+        <!-- CATÉGORIES -->
+        <section class="catalogue-sidebar-section">
+          <h2 class="sidebar-title">Catégories</h2>
+
+          <app-client-categories
+            (categorieSelectionnee)="filtrerParCategorie($event)">
+          </app-client-categories>
+        </section>
+
+        <!-- FILTRES À LA MANIÈRE D'AMAZON -->
+        <section class="catalogue-sidebar-section catalogue-filtres">
+          <h2 class="sidebar-title">Filtrer les produits</h2>
+
+          <app-client-produit-filtres-couleur
+            (filtresChanges)="appliquerFiltres($event)">
+          </app-client-produit-filtres-couleur>
+        </section>
+
+      </aside>
+
+      <!-- =========================================
+           COLONNE DE DROITE : PRODUITS
+      ========================================== -->
+      <main class="catalogue-main">
+
+        <!-- TITRE -->
+        <div class="products-heading">
+          <div>
+            <h2>Nos produits</h2>
+
+            <p class="products-subtitle">
+              Trouvez les articles qui vous correspondent.
+            </p>
+          </div>
+        </div>
+
+        <!-- CHARGEMENT -->
+        <div
+          *ngIf="chargement"
+          class="catalogue-state loading-state">
+
+          <div class="loading-spinner"></div>
+          <p>Chargement des produits...</p>
+        </div>
+
+        <!-- ERREUR DE CHARGEMENT -->
+        <div
+          *ngIf="!chargement && erreur"
+          class="catalogue-state error-state">
+
+          <div class="state-icon">!</div>
+
+          <h3>Impossible de charger les produits</h3>
+
+          <p>{{ erreur }}</p>
+
+          <button
+            type="button"
+            class="btn-retry"
+            (click)="chargerProduits()">
+
+            Réessayer
+          </button>
+        </div>
+
+        <!-- RÉSULTATS -->
+        <ng-container *ngIf="!chargement && !erreur">
+
+          <!-- NOMBRE DE PRODUITS -->
+          <div class="catalogue-results-heading">
+            <p>
+              <strong>{{ produitsFiltres().length }}</strong>
+              produit(s) trouvé(s)
+            </p>
+          </div>
+
+          <!-- GRILLE DES PRODUITS -->
+          <div
+            *ngIf="produitsFiltres().length > 0"
+            class="products-grid">
+
+            <article
+              class="product-card"
+              *ngFor="let produit of produitsFiltres()"
+              (click)="voirProduit(produit)"
+              (keydown.enter)="voirProduit(produit)"
+              (keydown.space)="
+                $event.preventDefault();
+                voirProduit(produit)
+              "
+              tabindex="0"
+              role="link"
+              [attr.aria-label]="'Découvrir ' + produit.name">
+
+              <!-- IMAGE -->
+              <div class="product-image-container">
+
+                <img
+                  [src]="getImage(produit)"
+                  [alt]="produit.name || 'Produit Mak & Mel'"
+                  class="product-image"
+                  loading="lazy"
+                  (error)="imageErreur(produit)"
+                />
+
+                <!-- BADGE -->
+                <span
+                  *ngIf="getBadge(produit)"
+                  class="product-badge">
+
+                  {{ getBadge(produit) }}
+                </span>
+
+                <!-- INDICATION DE NAVIGATION -->
+                <span
+                  class="product-image-hint"
+                  aria-hidden="true">
+
+                  Découvrir →
+                </span>
+
+              </div>
+
+              <!-- INFORMATIONS -->
+              <div class="product-info">
+
+                <span class="product-category">
+                  {{ getCategorie(produit) }}
+                </span>
+
+                <h3 class="product-name">
+                  {{ produit.name }}
+                </h3>
+
+                <!-- PRIX -->
+                <div class="product-pricing">
+
+                  <span class="product-price">
+                    {{ formatPrice(getPrix(produit)) }}
+                  </span>
+
+                  <span
+                    *ngIf="getAncienPrix(produit) > getPrix(produit)"
+                    class="product-old-price">
+
+                    {{ formatPrice(getAncienPrix(produit)) }}
+                  </span>
+
+                </div>
+
+                <!-- AJOUT AU PANIER -->
+                <button
+                  type="button"
+                  class="btn-ajouter-panier"
+                  [disabled]="ajoutEnCoursId !== null"
+                  (click)="
+                    $event.stopPropagation();
+                    ajouterAuPanier(produit)
+                  "
+                  [attr.aria-label]="
+                    'Ajouter ' + produit.name + ' au panier'
+                  ">
+
+                  <ng-container
+                    *ngIf="
+                      ajoutEnCoursId === (produit.id + '');
+                      else boutonNormal
+                    ">
+
+                    <span
+                      class="bouton-panier-spinner"
+                      aria-hidden="true">
+                    </span>
+
+                    Ajout en cours...
+
+                  </ng-container>
+
+                  <ng-template #boutonNormal>
+
+                    <svg
+                      class="bouton-panier-icone"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.8"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true">
+
+                      <circle cx="9" cy="21" r="1"></circle>
+                      <circle cx="19" cy="21" r="1"></circle>
+
+                      <path
+                        d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6">
+                      </path>
+
+                    </svg>
+
+                    Ajouter au panier
+
+                  </ng-template>
+
+                </button>
+
+              </div>
+            </article>
+
+          </div>
+
+          <!-- AUCUN PRODUIT TROUVÉ -->
+          <div
+            *ngIf="produitsFiltres().length === 0"
+            class="catalogue-state empty-state">
+
+            <div class="state-icon">⌕</div>
+
+            <h3>Aucun produit trouvé</h3>
+
+            <p>
+              Aucun produit ne correspond à vos critères de recherche.
+              Essayez de modifier les filtres.
+            </p>
+
+            <!-- RÉINITIALISER LA RECHERCHE ET LES FILTRES -->
+            <button
+              *ngIf="
+                categorieSelectionneeId ||
+                recherche ||
+                filtresActifs.minPrice != null ||
+                filtresActifs.maxPrice != null ||
+                filtresActifs.size ||
+                filtresActifs.color ||
+                filtresActifs.brand ||
+                filtresActifs.inStock !== undefined
+              "
+              type="button"
+              class="btn-reset"
+              (click)="reinitialiserRecherche()">
+
+              Afficher tous les produits
+            </button>
+
+          </div>
+
+        </ng-container>
+
+      </main>
+    </div>
+
+  </div>
+</div>

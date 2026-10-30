@@ -1,0 +1,305 @@
+:host {
+display: block;
+min-height: 100vh;
+background: #f7f8fa;
+}
+
+.adresses-page {
+max-width: 1000px;
+margin: 0 auto;
+padding: 30px;
+}
+
+.page-header {
+display: flex;
+align-items: center;
+justify-content: space-between;
+gap: 20px;
+margin-bottom: 25px;
+}
+
+.page-header h1 {
+margin: 0 0 6px;
+color: #222;
+font-size: 28px;
+}
+
+.page-header p {
+margin: 0;
+color: #777;
+font-size: 14px;
+}
+
+.btn-retour,
+.btn-ajouter,
+.btn-modifier,
+.btn-supprimer {
+padding: 10px 16px;
+border-radius: 6px;
+font-size: 14px;
+font-weight: 600;
+cursor: pointer;
+}
+
+.btn-retour {
+border: 1px solid #ddd;
+background: white;
+color: #333;
+}
+
+.btn-retour:hover {
+background: #f3f3f3;
+}
+
+.btn-ajouter {
+border: none;
+background: #123b63;
+color: white;
+}
+
+.btn-ajouter:hover {
+background: #0d2e4d;
+}
+
+.btn-modifier {
+border: 1px solid #123b63;
+background: white;
+color: #123b63;
+}
+
+.btn-modifier:hover {
+background: #f3f7fb;
+}
+
+.btn-supprimer {
+border: 1px solid #d9534f;
+background: white;
+color: #c0392b;
+}
+
+.btn-supprimer:hover {
+background: #fff4f4;
+}
+
+.adresses-container {
+padding: 25px;
+border: 1px solid #e1e1e1;
+border-radius: 10px;
+background: white;
+}
+
+.adresses-header {
+display: flex;
+align-items: center;
+justify-content: space-between;
+gap: 20px;
+margin-bottom: 25px;
+}
+
+.adresses-header h2 {
+margin: 0 0 5px;
+color: #222;
+font-size: 20px;
+}
+
+.adresses-header p {
+margin: 0;
+color: #888;
+font-size: 13px;
+}
+
+.liste-adresses {
+display: flex;
+flex-direction: column;
+gap: 15px;
+}
+
+.adresse-card {
+display: flex;
+align-items: flex-start;
+justify-content: space-between;
+gap: 25px;
+padding: 20px;
+border: 1px solid #e1e1e1;
+border-radius: 8px;
+background: white;
+}
+
+.adresse-card:hover {
+border-color: #c8d3df;
+}
+
+.adresse-contenu {
+flex: 1;
+}
+
+.adresse-titre {
+display: flex;
+align-items: center;
+justify-content: space-between;
+gap: 10px;
+margin-bottom: 15px;
+}
+
+.adresse-titre h3 {
+margin: 0;
+color: #123b63;
+font-size: 17px;
+}
+
+.badge-principale {
+display: inline-block;
+margin-top: 7px;
+padding: 4px 8px;
+border-radius: 20px;
+background: #e9f7ef;
+color: #25834d;
+font-size: 11px;
+font-weight: 600;
+}
+
+.adresse-informations p {
+margin: 5px 0;
+color: #555;
+font-size: 14px;
+}
+
+.adresse-informations .destinataire {
+margin-bottom: 8px;
+color: #222;
+font-weight: 600;
+}
+
+.adresse-actions {
+display: flex;
+align-items: flex-start;
+gap: 8px;
+}
+
+.aucune-adresse {
+padding: 55px 20px;
+text-align: center;
+border: 1px dashed #d8d8d8;
+border-radius: 8px;
+}
+
+.aucune-icone {
+width: 48px;
+height: 48px;
+margin: 0 auto 15px;
+border-radius: 50%;
+background: #f0f4f8;
+color: #123b63;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 28px;
+}
+
+.aucune-adresse h3 {
+margin: 0 0 8px;
+color: #333;
+font-size: 18px;
+}
+
+.aucune-adresse p {
+max-width: 450px;
+margin: 0 auto 20px;
+color: #777;
+font-size: 14px;
+line-height: 1.6;
+}
+
+.chargement {
+padding: 70px 20px;
+text-align: center;
+color: #777;
+}
+
+.loading-spinner {
+width: 28px;
+height: 28px;
+margin: 0 auto 12px;
+border: 3px solid #ddd;
+border-top-color: #123b63;
+border-radius: 50%;
+animation: rotation 0.8s linear infinite;
+}
+
+@keyframes rotation {
+to {
+transform: rotate(360deg);
+}
+}
+
+.message {
+margin-bottom: 20px;
+padding: 12px 15px;
+border-radius: 6px;
+font-size: 14px;
+}
+
+.message.erreur {
+border: 1px solid #ebcccc;
+background: #fff7f7;
+color: #a33b3b;
+}
+
+.message.succes {
+border: 1px solid #cce7d6;
+background: #f4fbf6;
+color: #277748;
+}
+
+button:disabled {
+opacity: 0.6;
+cursor: not-allowed;
+}
+
+@media (max-width: 700px) {
+
+.adresses-page {
+padding: 20px;
+}
+
+.adresse-card {
+flex-direction: column;
+}
+
+.adresse-actions {
+width: 100%;
+}
+
+}
+
+@media (max-width: 500px) {
+
+.adresses-page {
+padding: 15px;
+}
+
+.page-header,
+.adresses-header {
+flex-direction: column;
+align-items: stretch;
+}
+
+.btn-retour,
+.btn-ajouter {
+width: 100%;
+}
+
+.adresses-container {
+padding: 18px;
+}
+
+.adresse-actions {
+flex-direction: column;
+}
+
+.btn-modifier,
+.btn-supprimer {
+width: 100%;
+}
+
+}

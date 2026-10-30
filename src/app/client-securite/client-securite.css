@@ -1,0 +1,233 @@
+:host {
+display: block;
+min-height: 100vh;
+background: #f7f8fa;
+}
+
+.securite-page {
+max-width: 900px;
+margin: 0 auto;
+padding: 30px;
+}
+
+.securite-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 25px;
+}
+
+.securite-header h1 {
+margin: 0 0 5px;
+font-size: 28px;
+color: #222;
+}
+
+.securite-header p {
+margin: 0;
+font-size: 14px;
+color: #777;
+}
+
+.btn-retour {
+padding: 10px 16px;
+border: 1px solid #ddd;
+border-radius: 6px;
+background: white;
+color: #333;
+cursor: pointer;
+font-size: 14px;
+}
+
+.btn-retour:hover {
+background: #f3f3f3;
+}
+
+.securite-card {
+background: white;
+border: 1px solid #e1e1e1;
+border-radius: 10px;
+overflow: hidden;
+}
+
+.card-header {
+display: flex;
+align-items: center;
+gap: 15px;
+padding: 25px;
+}
+
+.icone-securite {
+width: 48px;
+height: 48px;
+border-radius: 50%;
+background: #eaf1f7;
+color: #123b63;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 21px;
+flex-shrink: 0;
+}
+
+.card-header h2 {
+margin: 0 0 6px;
+font-size: 19px;
+color: #222;
+}
+
+.card-header p {
+margin: 0;
+font-size: 14px;
+color: #777;
+}
+
+.separateur {
+height: 1px;
+background: #eee;
+}
+
+.securite-form {
+padding: 25px;
+}
+
+.form-group {
+margin-bottom: 20px;
+}
+
+.form-group label {
+display: block;
+margin-bottom: 8px;
+font-size: 14px;
+font-weight: 600;
+color: #333;
+}
+
+.form-group input {
+width: 100%;
+box-sizing: border-box;
+padding: 12px 14px;
+border: 1px solid #d9d9d9;
+border-radius: 6px;
+background: white;
+color: #222;
+font-size: 14px;
+outline: none;
+transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-group input:focus {
+border-color: #123b63;
+box-shadow: 0 0 0 2px rgba(18, 59, 99, 0.08);
+}
+
+.form-group input::placeholder {
+color: #999;
+}
+
+.form-group small {
+display: block;
+margin-top: 6px;
+font-size: 12px;
+color: #888;
+}
+
+.form-actions {
+display: flex;
+justify-content: flex-end;
+gap: 10px;
+margin-top: 25px;
+}
+
+.btn-annuler {
+padding: 11px 18px;
+border: 1px solid #ddd;
+border-radius: 6px;
+background: white;
+color: #444;
+font-size: 14px;
+cursor: pointer;
+}
+
+.btn-annuler:hover {
+background: #f5f5f5;
+}
+
+.btn-annuler:disabled {
+opacity: 0.6;
+cursor: not-allowed;
+}
+
+.btn-enregistrer {
+padding: 11px 18px;
+border: none;
+border-radius: 6px;
+background: #123b63;
+color: white;
+font-size: 14px;
+font-weight: 600;
+cursor: pointer;
+}
+
+.btn-enregistrer:hover {
+background: #0d2e4d;
+}
+
+.btn-enregistrer:disabled {
+opacity: 0.6;
+cursor: not-allowed;
+}
+
+.message {
+margin-bottom: 20px;
+padding: 12px 15px;
+border-radius: 6px;
+font-size: 14px;
+}
+
+.message.erreur {
+background: #fff7f7;
+border: 1px solid #ebcccc;
+color: #a33b3b;
+}
+
+.message.succes {
+background: #f4fbf6;
+border: 1px solid #cce7d6;
+color: #277748;
+}
+
+@media (max-width: 600px) {
+
+.securite-page {
+padding: 20px;
+}
+
+.securite-header {
+flex-direction: column;
+align-items: stretch;
+gap: 15px;
+}
+
+.btn-retour {
+width: 100%;
+}
+
+.card-header {
+align-items: flex-start;
+}
+
+.securite-form {
+padding: 20px;
+}
+
+.form-actions {
+flex-direction: column;
+}
+
+.btn-annuler,
+.btn-enregistrer {
+width: 100%;
+}
+
+}

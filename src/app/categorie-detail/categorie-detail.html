@@ -1,0 +1,332 @@
+<div class="page-container">
+
+<div class="page-header">
+
+<div>
+  <span class="breadcrumb">CATALOGUE</span>
+
+  <h1>Détail de la catégorie</h1>
+
+  <p>
+    Consultez les informations de la catégorie principale
+    et gérez ses sous-catégories.
+  </p>
+</div>
+
+<button
+  type="button"
+  class="btn-secondary"
+  (click)="retour()">
+  Retour
+</button>
+
+</div>
+
+<div *ngIf="chargement" class="loading-state">
+
+<div class="spinner"></div>
+
+<p>
+  Chargement de la catégorie...
+</p>
+
+</div>
+
+<div *ngIf="!chargement && erreur" class="error-state">
+
+<div class="error-icon">
+  !
+</div>
+
+<h3>
+  Impossible de charger la catégorie
+</h3>
+
+<p>
+  {{ erreur }}
+</p>
+
+<button
+  type="button"
+  class="btn-primary"
+  (click)="chargerCategorie()">
+  Réessayer
+</button>
+
+</div>
+
+<ng-container
+*ngIf="!chargement && categorie">
+
+<div class="category-card">
+
+  <div class="category-card-header">
+
+    <div class="category-title">
+
+      <div>
+
+        <h2>
+          {{ categorie.name }}
+        </h2>
+
+        <span class="category-type">
+          Catégorie principale
+        </span>
+
+      </div>
+
+    </div>
+
+    <span
+      class="status-badge"
+      [class.active]="categorie.isActive"
+      [class.inactive]="!categorie.isActive">
+
+      {{ statut }}
+
+    </span>
+
+  </div>
+
+
+  <div class="category-card-body">
+
+    <div
+      class="category-image-section"
+      *ngIf="imageUrl">
+
+      <img
+        class="category-image"
+        [src]="imageUrl"
+        [alt]="categorie.name">
+
+    </div>
+
+
+    <div
+      class="category-image-empty"
+      *ngIf="!imageUrl">
+
+      <div class="category-image-placeholder">
+        🖼️
+      </div>
+
+      <span>
+        Aucune image associée à cette catégorie.
+      </span>
+
+    </div>
+
+
+    <div class="info-grid">
+
+      <div class="info-item">
+
+        <span class="info-label">
+          Nom
+        </span>
+
+        <span class="info-value">
+          {{ categorie.name }}
+        </span>
+
+      </div>
+
+
+      <div class="info-item">
+
+        <span class="info-label">
+          Ordre d'affichage
+        </span>
+
+        <span class="info-value">
+          {{ categorie.sortOrder }}
+        </span>
+
+      </div>
+
+
+      <div class="info-item">
+
+        <span class="info-label">
+          Type
+        </span>
+
+        <span class="info-value">
+          Catégorie principale
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <div class="description-section">
+
+      <span class="info-label">
+        Description
+      </span>
+
+      <p
+        *ngIf="categorie.description; else aucuneDescription">
+
+        {{ categorie.description }}
+
+      </p>
+
+      <ng-template #aucuneDescription>
+
+        <p class="description-empty">
+          Aucune description renseignée.
+        </p>
+
+      </ng-template>
+
+    </div>
+
+  </div>
+
+
+  <div class="category-card-footer">
+
+    <button
+      type="button"
+      class="btn-secondary"
+      (click)="retour()">
+      Retour
+    </button>
+
+    <button
+      type="button"
+      class="btn-primary"
+      (click)="modifier()">
+      Modifier la catégorie
+    </button>
+
+  </div>
+
+</div>
+
+
+<div class="subcategories-card">
+
+  <div class="section-header">
+
+    <div>
+
+      <h2>
+
+        Sous-catégories
+
+        <span class="count-badge">
+          {{ sousCategories.length }}
+        </span>
+
+      </h2>
+
+      <p>
+        Les sous-catégories rattachées à
+        <strong>{{ categorie.name }}</strong>.
+      </p>
+
+    </div>
+
+    <button
+      type="button"
+      class="btn-primary"
+      (click)="nouvelleSousCategorie()">
+      + Nouvelle sous-catégorie
+    </button>
+
+  </div>
+
+
+  <div
+    *ngIf="sousCategories.length === 0"
+    class="empty-state">
+
+    <div class="empty-icon"></div>
+
+    <h3>
+      Aucune sous-catégorie
+    </h3>
+
+    <p>
+      Cette catégorie principale ne possède
+      actuellement aucune sous-catégorie.
+    </p>
+
+    <button
+      type="button"
+      class="btn-primary"
+      (click)="nouvelleSousCategorie()">
+      + Créer une sous-catégorie
+    </button>
+
+  </div>
+
+
+  <div
+    *ngIf="sousCategories.length > 0"
+    class="subcategories-list">
+
+    <div
+      *ngFor="let sousCategorie of sousCategories"
+      class="subcategory-row">
+
+      <div class="subcategory-main">
+
+        <div class="subcategory-info">
+
+          <h3>
+            {{ sousCategorie.name }}
+          </h3>
+
+          <div class="subcategory-meta">
+
+            <span>
+              Ordre :
+              {{ sousCategorie.sortOrder }}
+            </span>
+
+            <span
+              class="status-badge small"
+              [class.active]="sousCategorie.isActive"
+              [class.inactive]="!sousCategorie.isActive">
+
+              {{
+                sousCategorie.isActive
+                  ? 'Active'
+                  : 'Inactive'
+              }}
+
+            </span>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="subcategory-actions">
+
+        <button
+          type="button"
+          class="btn-primary"
+          (click)="modifierSousCategorie(sousCategorie.id)">
+          Modifier
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+</ng-container>
+
+</div>

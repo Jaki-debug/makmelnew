@@ -1,0 +1,196 @@
+<div class="inventory-alerts">
+
+<div class="page-header">
+
+<div>
+  <h1>Alertes de stock</h1>
+
+  <p>
+    Variantes dont le stock est inférieur ou égal au seuil d'alerte.
+  </p>
+</div>
+
+</div>
+
+<div *ngIf="error" class="global-error">
+
+{{ error }}
+
+</div>
+
+<div class="content-card">
+
+<div class="card-header">
+
+  <div>
+
+    <h2>
+      Alertes de stock
+    </h2>
+
+    <span>
+      {{ total }} alerte(s)
+    </span>
+
+  </div>
+
+</div>
+
+
+<div
+  *ngIf="loading"
+  class="state-message">
+
+  <div class="loader"></div>
+
+  <p>
+    Chargement des alertes...
+  </p>
+
+</div>
+
+
+<div
+  *ngIf="
+    !loading &&
+    !error &&
+    alerts.length === 0
+  "
+  class="empty-state">
+
+  <div class="empty-icon">
+    ✓
+  </div>
+
+  <h3>
+    Aucune alerte de stock
+  </h3>
+
+  <p>
+    Aucun produit n'est actuellement sous son seuil d'alerte.
+  </p>
+
+</div>
+
+
+<div
+  *ngIf="
+    !loading &&
+    alerts.length > 0
+  "
+  class="table-container">
+
+  <table>
+
+    <thead>
+
+      <tr>
+
+        <th>
+          SKU
+        </th>
+
+        <th>
+          Produit
+        </th>
+
+        <th>
+          Variante
+        </th>
+
+        <th>
+          Disponible
+        </th>
+
+        <th>
+          Seuil
+        </th>
+
+        <th>
+          Statut
+        </th>
+
+      </tr>
+
+    </thead>
+
+
+    <tbody>
+
+      <tr
+        *ngFor="let alert of alerts">
+
+        <td>
+
+          <span class="sku">
+            {{ getSku(alert) }}
+          </span>
+
+        </td>
+
+
+        <td>
+
+          <span class="product-name">
+            {{ getProductName(alert) }}
+          </span>
+
+        </td>
+
+
+        <td>
+
+          <div class="variant-cell">
+
+            <span class="variant-name">
+              {{ getVariantName(alert) }}
+            </span>
+
+          </div>
+
+        </td>
+
+
+        <td>
+
+          <span
+            class="quantity"
+            [ngClass]="getAlertClass(alert)">
+
+            {{ getCurrentQuantity(alert) }}
+
+          </span>
+
+        </td>
+
+
+        <td>
+
+          {{ getThreshold(alert) }}
+
+        </td>
+
+
+        <td>
+
+          <span
+            class="alert-badge"
+            [ngClass]="getAlertClass(alert)">
+
+            {{ getAlertStatus(alert) }}
+
+          </span>
+
+        </td>
+
+      </tr>
+
+    </tbody>
+
+  </table>
+
+</div>
+
+</div>
+
+</div>

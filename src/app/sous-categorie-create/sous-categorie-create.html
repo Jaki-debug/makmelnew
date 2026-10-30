@@ -1,0 +1,220 @@
+<div class="categorie-create-page">
+
+<div class="page-header">
+
+<div>
+
+  <h1>
+    Nouvelle sous-catégorie
+  </h1>
+
+  <p>
+    Créez une sous-catégorie rattachée à une catégorie principale.
+  </p>
+
+</div>
+
+<button
+  type="button"
+  class="back-button"
+  (click)="annuler()"
+  [disabled]="chargement"
+>
+  ← Retour
+</button>
+
+</div>
+
+<div class="form-card">
+
+<div
+  class="alert error"
+  *ngIf="erreur"
+>
+  {{ erreur }}
+</div>
+
+<div
+  class="alert success"
+  *ngIf="succes"
+>
+  {{ succes }}
+</div>
+
+<form
+  (ngSubmit)="creerSousCategorie()"
+>
+
+  <div class="form-group">
+
+    <label for="parentId">
+      Catégorie principale
+      <span>*</span>
+    </label>
+
+    <ng-container
+      *ngIf="
+        categoriePrincipaleVerrouillee;
+        else selectionCategorie
+      "
+    >
+
+      <div class="readonly-field">
+
+        <span class="readonly-value">
+          {{ categoriePrincipaleNom }}
+        </span>
+
+      </div>
+
+     
+
+    </ng-container>
+
+    <ng-template #selectionCategorie>
+
+      <select
+        id="parentId"
+        name="parentId"
+        [(ngModel)]="categorie.parentId"
+        [disabled]="chargement || chargementParents"
+        required
+      >
+       
+        <option
+          value=""    
+          disabled
+        >
+          Sélectionnez une catégorie principale
+        </option>
+
+        <option
+          *ngFor="let parent of categoriesParent"
+          [value]="parent.id"
+        >
+          {{ parent.name }}
+        </option>
+
+      </select>
+
+      <small
+        *ngIf="chargementParents"
+        class="info-text"
+      >
+        Chargement des catégories principales...
+      </small>
+
+      <small
+        *ngIf="
+          !chargementParents &&
+          categoriesParent.length === 0
+        "
+        class="help-text"
+      >
+        Aucune catégorie principale disponible.
+        Créez d'abord une catégorie principale.
+      </small>
+
+    </ng-template>
+
+  </div>
+
+  <div class="form-group">
+
+    <label for="name">
+      Nom de la sous-catégorie
+      <span>*</span>
+    </label>
+
+    <input
+      id="name"
+      name="name"
+      type="text"
+      [(ngModel)]="categorie.name"
+      placeholder="Ex. Robes"
+      [disabled]="chargement"
+      required
+    />
+
+  </div>
+
+  <div class="form-group">
+
+    <label for="sortOrder">
+      Ordre d'affichage
+    </label>
+
+    <input
+      id="sortOrder"
+      name="sortOrder"
+      type="number"
+      [(ngModel)]="categorie.sortOrder"
+      min="0"
+      [disabled]="chargement"
+    />
+
+    <small>
+      Détermine la position de la sous-catégorie.
+    </small>
+
+  </div>
+
+  <div class="status-group">
+
+    <label class="switch-label">
+
+      <input
+        type="checkbox"
+        name="isActive"
+        [(ngModel)]="categorie.isActive"
+        [disabled]="chargement"
+      />
+
+      <span>
+        Sous-catégorie active
+      </span>
+
+    </label>
+
+  </div>
+
+  <div class="form-actions">
+
+    <button
+      type="button"
+      class="cancel-button"
+      (click)="annuler()"
+      [disabled]="chargement"
+    >
+      Annuler
+    </button>
+
+    <button
+      type="submit"
+      class="submit-button"
+      [disabled]="
+        chargement ||
+        chargementParents ||
+        categoriesParent.length === 0 ||
+        !categorie.parentId ||
+        !categorie.name?.trim()
+      "
+    >
+
+      <span *ngIf="!chargement">
+        Créer la sous-catégorie
+      </span>
+
+      <span *ngIf="chargement">
+        Création en cours...
+      </span>
+
+    </button>
+
+  </div>
+
+</form>
+
+</div>
+
+</div>

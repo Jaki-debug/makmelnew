@@ -1,0 +1,67 @@
+<div class="article-actions">
+
+  <div class="quantity-control" aria-label="Modifier la quantité">
+
+    <button
+      type="button"
+      class="quantity-button"
+      aria-label="Diminuer la quantité"
+      [disabled]="disabled || quantite <= 1"
+      (click)="diminuer()">
+
+      −
+
+    </button>
+
+    <span
+      class="quantity-value"
+      aria-live="polite">
+
+      {{ quantite }}
+
+    </span>
+
+    <button
+      type="button"
+      class="quantity-button"
+      aria-label="Augmenter la quantité"
+      [disabled]="disabled || maximumAtteint"
+      (click)="augmenter()">
+
+      +
+
+    </button>
+
+  </div>
+
+  <button
+    type="button"
+    class="remove-button"
+    [disabled]="disabled"
+    (click)="supprimerArticle()">
+
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.8"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true">
+
+      <polyline points="3 6 5 6 21 6"></polyline>
+      <path d="M19 6l-1 14H6L5 6"></path>
+      <path d="M10 11v6"></path>
+      <path d="M14 11v6"></path>
+      <path d="M9 6V4h6v2"></path>
+
+    </svg>
+
+    <span>Supprimer</span>
+
+  </button>
+
+</div>

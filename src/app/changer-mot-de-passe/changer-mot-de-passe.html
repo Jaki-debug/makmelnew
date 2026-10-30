@@ -1,0 +1,125 @@
+<form class="password-page" (ngSubmit)="changerMotDePasse()"> <div class="password-card">
+<div class="header">
+
+  <div class="icon">
+    🔐
+  </div>
+
+  <h1>
+    Changer le mot de passe
+  </h1>
+
+  <p>
+    Pour des raisons de sécurité, vous devez définir un nouveau mot de passe.
+  </p>
+
+</div>
+
+<div
+  class="alert error"
+  *ngIf="erreur">
+
+  {{ erreur }}
+
+</div>
+
+<div
+  class="alert success"
+  *ngIf="succes">
+
+  {{ succes }}
+
+</div>
+
+<div class="form-group">
+
+  <label for="ancienMotDePasse">
+    Ancien mot de passe
+  </label>
+
+  <input
+    id="ancienMotDePasse"
+    name="ancienMotDePasse"
+    type="password"
+    [(ngModel)]="ancienMotDePasse"
+    placeholder="Entrez votre mot de passe temporaire"
+    autocomplete="current-password"
+    [disabled]="chargement"
+  />
+
+  <small>
+    Utilisez le mot de passe temporaire reçu après la réinitialisation.
+  </small>
+
+</div>
+
+<div class="form-group">
+
+  <label for="nouveauMotDePasse">
+    Nouveau mot de passe
+  </label>
+
+  <input
+    id="nouveauMotDePasse"
+    name="nouveauMotDePasse"
+    type="password"
+    [(ngModel)]="nouveauMotDePasse"
+    placeholder="Entrez votre nouveau mot de passe"
+    autocomplete="new-password"
+    [disabled]="chargement"
+  />
+
+  <small>
+    Le mot de passe doit contenir au moins 8 caractères,
+    dont 1 majuscule, 1 minuscule et 1 chiffre.
+  </small>
+
+</div>
+
+<div class="form-group">
+
+  <label for="confirmationMotDePasse">
+    Confirmer le nouveau mot de passe
+  </label>
+
+  <input
+    id="confirmationMotDePasse"
+    name="confirmationMotDePasse"
+    type="password"
+    [(ngModel)]="confirmationMotDePasse"
+    placeholder="Confirmez votre nouveau mot de passe"
+    autocomplete="new-password"
+    [disabled]="chargement"
+  />
+
+  <small>
+    Saisissez exactement le même mot de passe.
+  </small>
+
+</div>
+
+<button
+  type="submit"
+  class="submit-button"
+  [disabled]="chargement">
+
+  <span *ngIf="!chargement">
+    Modifier le mot de passe
+  </span>
+
+  <span *ngIf="chargement">
+    Modification en cours...
+  </span>
+
+</button>
+
+<button
+  type="button"
+  class="logout-button"
+  (click)="seDeconnecter()"
+  [disabled]="chargement">
+
+  Se déconnecter
+
+</button>
+</div> </form>

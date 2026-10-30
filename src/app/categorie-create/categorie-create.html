@@ -1,0 +1,232 @@
+<div class="categorie-create-page"> <div class="page-header">
+<div>
+  <h1>Nouvelle catégorie principale</h1>
+
+  <p>
+    Créez une nouvelle catégorie principale du catalogue.
+  </p>
+</div>
+
+<button
+  type="button"
+  class="back-button"
+  (click)="annuler()"
+  [disabled]="chargement || uploadEnCours"
+>
+  ← Retour
+</button>
+</div> <div class="form-card">
+<div
+  class="alert error"
+  *ngIf="erreur"
+>
+  {{ erreur }}
+</div>
+
+<div
+  class="alert success"
+  *ngIf="succes"
+>
+  {{ succes }}
+</div>
+
+
+<form
+  (ngSubmit)="creerCategorie()"
+>
+
+  <!-- NOM -->
+
+  <div class="form-group">
+
+    <label for="name">
+      Nom de la catégorie
+      <span>*</span>
+    </label>
+
+    <input
+      id="name"
+      name="name"
+      type="text"
+      [(ngModel)]="categorie.name"
+      placeholder="Ex. Vêtements"
+      [disabled]="chargement || uploadEnCours"
+      required
+    >
+
+  </div>
+
+
+  <!-- DESCRIPTION -->
+
+  <div class="form-group">
+
+    <label for="description">
+      Description
+    </label>
+
+    <textarea
+      id="description"
+      name="description"
+      [(ngModel)]="categorie.description"
+      placeholder="Description de la catégorie"
+      rows="4"
+      [disabled]="chargement || uploadEnCours"
+    ></textarea>
+
+  </div>
+
+
+  <!-- ORDRE + IMAGE -->
+
+  <div class="form-row">
+
+    <div class="form-group">
+
+      <label for="sortOrder">
+        Ordre d'affichage
+      </label>
+
+      <input
+        id="sortOrder"
+        name="sortOrder"
+        type="number"
+        [(ngModel)]="categorie.sortOrder"
+        min="0"
+        [disabled]="chargement || uploadEnCours"
+      >
+
+    </div>
+
+
+    <div class="form-group">
+
+      <label for="image">
+        Image de la catégorie
+      </label>
+
+      <input
+        id="image"
+        name="image"
+        type="file"
+        accept="image/jpeg,image/png,image/webp,image/gif"
+        (change)="selectionnerImage($event)"
+        [disabled]="chargement || uploadEnCours"
+      >
+
+      <small>
+        Formats acceptés : JPG, PNG, WEBP ou GIF.
+        Taille maximale : 20 Mo.
+      </small>
+
+    </div>
+
+  </div>
+
+
+  <!-- APERÇU IMAGE -->
+
+  <div
+    class="image-preview-container"
+    *ngIf="imagePreview"
+  >
+
+    <div class="image-preview">
+
+      <img
+        [src]="imagePreview"
+        alt="Aperçu de la catégorie"
+      >
+
+    </div>
+
+    <div class="image-preview-info">
+
+      <strong>
+        Image sélectionnée
+      </strong>
+
+      <span *ngIf="imageSelectionnee">
+        {{ imageSelectionnee.name }}
+      </span>
+
+    </div>
+
+    <button
+      type="button"
+      class="remove-image-button"
+      (click)="supprimerImage()"
+      [disabled]="chargement || uploadEnCours"
+    >
+      Supprimer l'image
+    </button>
+
+  </div>
+
+
+  <!-- STATUT -->
+
+  <div class="status-group">
+
+    <label class="switch-label">
+
+      <input
+        type="checkbox"
+        name="isActive"
+        [(ngModel)]="categorie.isActive"
+        [disabled]="chargement || uploadEnCours"
+      >
+
+      <span>
+        Catégorie active
+      </span>
+
+    </label>
+
+  </div>
+
+
+  <!-- ACTIONS -->
+
+  <div class="form-actions">
+
+    <button
+      type="button"
+      class="cancel-button"
+      (click)="annuler()"
+      [disabled]="chargement || uploadEnCours"
+    >
+      Annuler
+    </button>
+
+
+    <button
+      type="submit"
+      class="submit-button"
+      [disabled]="chargement || uploadEnCours"
+    >
+
+      <span
+        *ngIf="!chargement && !uploadEnCours"
+      >
+        Créer la catégorie
+      </span>
+
+      <span
+        *ngIf="uploadEnCours"
+      >
+        Envoi de l'image...
+      </span>
+
+      <span
+        *ngIf="chargement && !uploadEnCours"
+      >
+        Création en cours...
+      </span>
+
+    </button> 
+
+  </div>
+
+</form>
+</div> </div>

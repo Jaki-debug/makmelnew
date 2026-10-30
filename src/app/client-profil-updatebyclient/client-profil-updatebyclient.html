@@ -1,0 +1,139 @@
+<app-client-header></app-client-header>
+
+<div class="profil-update-page">
+
+<div class="page-header">
+
+<div>
+  <h1>Modifier mon profil</h1>
+
+  <p>
+    Modifiez vos informations personnelles.
+  </p>
+</div>
+
+<button
+  type="button"
+  class="btn-retour"
+  (click)="annuler()">
+
+  ← Retour
+
+</button>
+
+</div>
+
+<div class="loading" *ngIf="chargement">
+
+Chargement de votre profil...
+
+</div>
+
+<div class="message erreur" *ngIf="!chargement && erreur">
+
+{{ erreur }}
+
+</div>
+
+<div class="message succes" *ngIf="!chargement && succes">
+
+{{ succes }}
+
+</div>
+
+<div class="form-card" *ngIf="!chargement">
+
+<form (ngSubmit)="enregistrer()">
+
+  <div class="form-row">
+
+    <div class="form-group">
+
+      <label for="firstName">
+        Prénom
+      </label>
+
+      <input
+        id="firstName"
+        type="text"
+        name="firstName"
+        [(ngModel)]="form.firstName"
+        required>
+
+    </div>
+
+    <div class="form-group">
+
+      <label for="lastName">
+        Nom
+      </label>
+
+      <input
+        id="lastName"
+        type="text"
+        name="lastName"
+        [(ngModel)]="form.lastName"
+        required>
+
+    </div>
+
+  </div>
+
+  <div class="form-group">
+
+    <label for="email">
+      Adresse e-mail
+    </label>
+
+    <input
+      id="email"
+      type="email"
+      name="email"
+      [(ngModel)]="form.email"
+      required>
+
+  </div>
+
+  <div class="form-group">
+
+    <label for="phone">
+      Téléphone
+    </label>
+
+    <input
+      id="phone"
+      type="tel"
+      name="phone"
+      [(ngModel)]="form.phone"
+      required>
+
+  </div>
+
+  <div class="form-actions">
+
+    <button
+      type="button"
+      class="btn-annuler"
+      [disabled]="sauvegarde"
+      (click)="annuler()">
+
+      Annuler
+
+    </button>
+
+    <button
+      type="submit"
+      class="btn-enregistrer"
+      [disabled]="sauvegarde">
+
+      {{ sauvegarde ? 'Enregistrement...' : 'Enregistrer' }}
+
+    </button>
+
+  </div>
+
+</form>
+
+</div>
+
+</div>

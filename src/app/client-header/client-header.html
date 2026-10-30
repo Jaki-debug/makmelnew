@@ -1,0 +1,253 @@
+
+<header class="client-header">
+
+  <div class="header-container">
+
+    <!-- Logo -->
+    <div
+      class="logo"
+      role="button"
+      tabindex="0"
+      aria-label="Retour à l'accueil"
+      (click)="allerAccueil()"
+      (keydown.enter)="allerAccueil()">
+
+      <span class="logo-main">MAK &amp; MEL</span>
+      <span class="logo-sub">MODE · BEAUTÉ · ACCESSOIRES</span>
+
+    </div>
+
+    <!-- Navigation -->
+    <nav class="main-nav" aria-label="Navigation principale">
+
+      <a
+        class="nav-link"
+        routerLink="/client">
+        Accueil
+      </a>
+
+      <a
+        class="nav-link"
+        routerLink="/client/produitcatalogue">
+        Boutique
+      </a>
+
+    </nav>
+
+    <!-- Actions -->
+    <div class="header-actions">
+
+      <!-- Recherche -->
+      <div class="search-box">
+
+        <select
+          class="search-category"
+          [(ngModel)]="categorieSelectionneeId"
+          (ngModelChange)="onCategorieChange($event)"
+          aria-label="Choisir une catégorie">
+
+          <option value="">Tout</option>
+
+          <option
+            *ngFor="let categorie of categories"
+            [value]="categorie.id">
+            {{ categorie.nom }}
+          </option>
+
+        </select>
+
+        <input
+          type="search"
+          [(ngModel)]="searchTerm"
+          (ngModelChange)="onRechercheChange($event)"
+          placeholder="Rechercher un produit..."
+          aria-label="Rechercher un produit"
+          autocomplete="off">
+
+        <button
+          *ngIf="searchTerm"
+          type="button"
+          class="search-clear"
+          (click)="onRechercheChange('')"
+          aria-label="Effacer la recherche">
+
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            aria-hidden="true">
+            <path d="m18 6-12 12M6 6l12 12"></path>
+          </svg>
+
+        </button>
+
+        <button
+          type="button"
+          class="search-button"
+          (click)="rechercher()"
+          aria-label="Lancer la recherche">
+
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true">
+            <circle cx="11" cy="11" r="7"></circle>
+            <path d="m20 20-4-4"></path>
+          </svg>
+
+        </button>
+
+      </div>
+
+      <!-- Panier -->
+      <button
+        type="button"
+        class="cart-button"
+        (click)="allerPanier()"
+        [attr.aria-label]="'Ouvrir le panier, ' + nombreArticlesPanier + ' article(s)'"
+        [attr.aria-expanded]="panierOuvert"
+        title="Mon panier">
+
+        <span class="cart-icon-wrapper">
+
+          <svg
+            class="cart-icon"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true">
+
+            <circle cx="9" cy="21" r="1"></circle>
+            <circle cx="19" cy="21" r="1"></circle>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+
+          </svg>
+
+          <span
+            class="cart-count"
+            *ngIf="nombreArticlesPanier > 0">
+            {{ nombreArticlesPanier > 99 ? '99+' : nombreArticlesPanier }}
+          </span>
+
+        </span>
+
+        <span class="cart-label">Panier</span>
+
+      </button>
+
+      <!-- Client non connecté -->
+      <ng-container *ngIf="!clientConnecte">
+
+        <button
+          type="button"
+          class="login-button"
+          (click)="allerConnexion()">
+          Se connecter
+        </button>
+
+      </ng-container>
+
+      <!-- Client connecté -->
+      <ng-container *ngIf="clientConnecte">
+
+        <div class="account-wrapper">
+
+          <button
+            type="button"
+            class="account-button"
+            (click)="ouvrirMenuCompte()"
+            [attr.aria-expanded]="menuCompteOuvert">
+
+            <span class="account-avatar">
+              {{ prenomClient.charAt(0).toUpperCase() }}
+            </span>
+
+            <span class="account-text">
+
+              <span class="account-label">
+                Bonjour,
+              </span>
+
+              <span class="account-name">
+                {{ prenomClient }}
+              </span>
+
+            </span>
+
+            <span
+              class="account-arrow"
+              [class.open]="menuCompteOuvert">
+              ▾
+            </span>
+
+          </button>
+
+          <!-- Menu du compte -->
+          <div
+            class="account-menu"
+            *ngIf="menuCompteOuvert">
+
+            <!-- Mon compte -->
+            <button
+              type="button"
+              class="account-menu-item"
+              (click)="allerCompte()">
+
+              <span class="menu-icon">◯</span>
+              <span>Mon compte</span>
+
+            </button>
+
+            <!-- Mes commandes -->
+            <button
+              type="button"
+              class="account-menu-item"
+              (click)="allerMesCommandes()">
+
+              <span class="menu-icon">▤</span>
+              <span>Mes commandes</span>
+
+            </button>
+
+            <div class="menu-divider"></div>
+
+            <!-- Déconnexion -->
+            <button
+              type="button"
+              class="account-menu-item logout-item"
+              (click)="seDeconnecter()">
+
+              <span class="menu-icon">↪</span>
+              <span>Déconnexion</span>
+
+            </button>
+
+          </div>
+
+        </div>
+
+      </ng-container>
+
+    </div>
+
+  </div>
+
+</header>
+
+<!-- Tiroir du panier -->
+<app-client-panier-tiroir
+  [ouvert]="panierOuvert"
+  (fermeture)="fermerPanier()">
+</app-client-panier-tiroir>

@@ -1,0 +1,212 @@
+<div class="page"> <div class="page-header">
+<div>
+
+  <button
+    type="button"
+    class="back-button"
+    (click)="retourListe()">
+    ← Retour aux rôles
+  </button>
+
+  <h1>
+    {{ role?.name || 'Détail du rôle' }}
+  </h1>
+
+  <p>
+    Consulter les informations et les permissions de ce rôle.
+  </p>
+
+</div>
+
+<div
+  class="header-actions"
+  *ngIf="role">
+
+  <button
+    type="button"
+    class="secondary-button"
+    *ngIf="hasPermission('roles.update')"
+    (click)="modifierRole()">
+    Modifier
+  </button>
+
+  <button
+    type="button"
+    class="primary-button"
+    *ngIf="hasPermission('roles.manage_permissions')"
+    (click)="gererPermissions()">
+    Gérer les permissions
+  </button>
+
+</div>
+</div> <div class="loading" *ngIf="chargement"> Chargement du rôle... </div> <div class="error-message" *ngIf="erreur"> {{ erreur }} </div> <div class="content" *ngIf="!chargement && role">
+<div class="info-card">
+
+  <div class="info-header">
+
+    <div>
+
+      <span class="label">
+        Nom du rôle
+      </span>
+
+      <h2>
+        {{ role?.name }}
+      </h2>
+
+    </div>
+
+    <span
+      class="system-badge"
+      [class.custom]="!role?.isSystem">
+
+      {{ role?.isSystem ? 'Prédéfini' : 'Personnalisé' }}
+
+    </span>
+
+  </div>
+
+  <div class="info-grid">
+
+    <div class="info-item">
+
+      <span class="label">
+        Description
+      </span>
+
+      <p>
+        {{ role?.description || 'Aucune description' }}
+      </p>
+
+    </div>
+
+    <div class="info-item">
+
+      <span class="label">
+        Créé le
+      </span>
+
+      <p>
+        {{ formaterDate(role?.createdAt) }}
+      </p>
+
+    </div>
+
+    <div class="info-item">
+
+      <span class="label">
+        Dernière modification
+      </span>
+
+      <p>
+        {{ formaterDate(role?.updatedAt) }}
+      </p>
+
+    </div>
+
+    <div class="info-item">
+
+      <span class="label">
+        Type
+      </span>
+
+      <p>
+        {{ role?.isSystem ? 'Rôle système' : 'Rôle personnalisé' }}
+      </p>
+
+    </div>
+
+  </div>
+
+</div>
+
+<div class="permissions-card">
+
+  <div class="permissions-header">
+
+    <div>
+
+      <h2>
+        Permissions
+      </h2>
+
+      <p>
+        {{ permissions.length }}
+        permission{{ permissions.length > 1 ? 's' : '' }}
+        attribuée{{ permissions.length > 1 ? 's' : '' }}
+      </p>
+
+    </div>
+
+  </div>
+
+  <div
+    class="permission-error"
+    *ngIf="erreurPermissions">
+
+    {{ erreurPermissions }}
+
+  </div>
+
+  <div
+    class="permission-loading"
+    *ngIf="chargementPermissions">
+
+    Chargement des permissions...
+
+  </div>
+
+  <div
+    class="empty-permissions"
+    *ngIf="
+      !chargementPermissions &&
+      !erreurPermissions &&
+      permissions.length === 0
+    ">
+
+    <h3>
+      Aucune permission
+    </h3>
+
+    <p>
+      Aucune permission n'est actuellement attribuée à ce rôle.
+    </p>
+
+  </div>
+
+  <div
+    class="permissions-grid"
+    *ngIf="
+      !chargementPermissions &&
+      permissions.length > 0
+    ">
+
+    <div
+      class="permission-item"
+      *ngFor="let permission of permissions">
+
+      <span class="permission-dot"></span>
+
+      <span>
+        {{ permission }}
+      </span>
+
+    </div>
+
+  </div>
+
+  <div
+    class="permissions-footer"
+    *ngIf="hasPermission('roles.manage_permissions')">
+
+    <button
+      type="button"
+      class="primary-button"
+      (click)="gererPermissions()">
+      Modifier les permissions
+    </button>
+
+  </div>
+
+</div>
+</div> </div>

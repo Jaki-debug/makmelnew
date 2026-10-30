@@ -1,0 +1,331 @@
+
+/* =========================================
+   FILTRES PRODUITS — MAK & MEL
+   Inspiration : Amazon
+   Thème : blanc et violet
+========================================= */
+
+:host {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  color: #222222;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.filters-form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+}
+
+/* =========================================
+   GROUPES DE FILTRES
+========================================= */
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  min-width: 0;
+  padding: 15px 0;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.filter-group:first-child {
+  padding-top: 0;
+}
+
+.filter-group:last-of-type {
+  border-bottom: 0;
+}
+
+.filter-title {
+  margin: 0;
+  color: #222222;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.filter-description {
+  margin: -3px 0 2px;
+  color: #666666;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.filter-label {
+  display: block;
+  margin: 0;
+  color: #444444;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+/* =========================================
+   CHAMPS DE SAISIE
+========================================= */
+
+.filter-group input,
+.filter-group select {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  min-height: 39px;
+  margin: 0;
+  padding: 9px 10px;
+  border: 1px solid #cfcfcf;
+  border-radius: 5px;
+  outline: none;
+  background: #ffffff;
+  color: #222222;
+  font-family: inherit;
+  font-size: 12px;
+  line-height: 1.4;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.filter-group input::placeholder {
+  color: #999999;
+  opacity: 1;
+}
+
+.filter-group input:focus,
+.filter-group select:focus {
+  border-color: #79509a;
+  box-shadow: 0 0 0 3px rgba(121, 80, 154, 0.12);
+}
+
+.filter-group select {
+  cursor: pointer;
+}
+
+/* Retirer les flèches de saisie numérique
+   uniquement sur les navigateurs Chromium. */
+.filter-group input[type="number"]::-webkit-inner-spin-button,
+.filter-group input[type="number"]::-webkit-outer-spin-button {
+  margin: 0;
+}
+
+/* =========================================
+   PRIX MINIMUM ET MAXIMUM
+========================================= */
+
+.price-fields {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 12px minmax(0, 1fr);
+  align-items: end;
+  gap: 5px;
+  width: 100%;
+}
+
+.filter-field {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  gap: 6px;
+}
+
+.filter-field label {
+  color: #555555;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.price-separator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 39px;
+  padding-bottom: 1px;
+  color: #777777;
+  font-size: 14px;
+}
+
+.price-fields input {
+  min-width: 0;
+  padding-right: 5px;
+  padding-left: 7px;
+}
+
+/* =========================================
+   MESSAGE D'ERREUR
+========================================= */
+
+.filter-error {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  margin-top: 12px;
+  padding: 10px;
+  border: 1px solid #efcccc;
+  border-radius: 5px;
+  background: #fff5f5;
+  color: #a5281b;
+}
+
+.filter-error > span {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 19px;
+  height: 19px;
+  border-radius: 50%;
+  background: #f8dddd;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.filter-error p {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+/* =========================================
+   BOUTONS
+========================================= */
+
+.filter-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  margin-top: 15px;
+}
+
+.btn-apply-filters,
+.btn-clear-filters {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 41px;
+  padding: 10px 12px;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.4;
+  text-align: center;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.btn-apply-filters {
+  border-color: #79509a;
+  background: #79509a;
+  color: #ffffff;
+}
+
+.btn-apply-filters:hover {
+  border-color: #603a7b;
+  background: #603a7b;
+  box-shadow: 0 3px 8px rgba(104, 64, 135, 0.16);
+}
+
+.btn-clear-filters {
+  border-color: #d6d6d6;
+  background: #ffffff;
+  color: #333333;
+}
+
+.btn-clear-filters:hover {
+  border-color: #bfa9cf;
+  background: #f8f4fb;
+  color: #684087;
+}
+
+.btn-apply-filters:active,
+.btn-clear-filters:active {
+  transform: scale(0.99);
+}
+
+/* =========================================
+   ACCESSIBILITÉ
+========================================= */
+
+.btn-apply-filters:focus-visible,
+.btn-clear-filters:focus-visible {
+  outline: 3px solid rgba(121, 80, 154, 0.35);
+  outline-offset: 3px;
+}
+
+/* =========================================
+   PETITS ÉCRANS
+========================================= */
+
+@media (max-width: 760px) {
+  .filters-form {
+    gap: 0;
+  }
+
+  .filter-group {
+    padding: 13px 0;
+  }
+
+  .filter-group:first-child {
+    padding-top: 0;
+  }
+
+  .filter-title {
+    font-size: 14px;
+  }
+
+  .filter-group input,
+  .filter-group select {
+    min-height: 42px;
+    font-size: 13px;
+  }
+
+  .filter-field label,
+  .filter-label {
+    font-size: 12px;
+  }
+
+  .price-fields {
+    gap: 8px;
+    grid-template-columns: minmax(0, 1fr) 14px minmax(0, 1fr);
+  }
+
+  .filter-actions {
+    gap: 8px;
+  }
+
+  .btn-apply-filters,
+  .btn-clear-filters {
+    min-height: 43px;
+    font-size: 13px;
+  }
+}
+
+/* =========================================
+   RÉDUCTION DES ANIMATIONS
+========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

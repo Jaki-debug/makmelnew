@@ -1,0 +1,188 @@
+<app-client-header></app-client-header>
+
+<div class="adresses-page">
+
+<div class="page-header">
+
+<div>
+  <h1>Mes adresses</h1>
+
+  <p>
+    Gérez vos adresses de livraison.
+  </p>
+</div>
+
+<button
+  type="button"
+  class="btn-retour"
+  (click)="retourProfil()">
+
+   Retour
+
+</button>
+
+</div>
+
+<div class="message erreur" *ngIf="erreur">
+
+{{ erreur }}
+
+</div>
+
+<div class="message succes" *ngIf="succes">
+
+{{ succes }}
+
+</div>
+
+<div class="chargement" *ngIf="chargement">
+
+<div class="loading-spinner"></div>
+
+<p>
+  Chargement de vos adresses...
+</p>
+
+</div>
+
+<div class="adresses-container" *ngIf="!chargement">
+
+<div class="adresses-header">
+
+  <div>
+    <h2>Mes adresses</h2>
+
+    <p>
+      {{ adresses.length }}
+      {{ adresses.length > 1 ? 'adresses enregistrées' : 'adresse enregistrée' }}
+    </p>
+  </div>
+
+  <button
+    type="button"
+    class="btn-ajouter"
+    (click)="ajouterAdresse()">
+
+    + Ajouter une adresse
+
+  </button>
+
+</div>
+
+<div
+  class="liste-adresses"
+  *ngIf="adresses.length > 0">
+
+  <div
+    class="adresse-card"
+    *ngFor="let adresse of adresses">
+
+    <div class="adresse-contenu">
+
+      <div class="adresse-titre">
+
+        <div>
+          <h3>
+            {{ adresse.label }}
+          </h3>
+
+          <span
+            class="badge-principale"
+            *ngIf="adresse.isDefault">
+
+            Adresse principale
+
+          </span>
+        </div>
+
+      </div>
+
+      <div class="adresse-informations">
+
+        <p class="destinataire">
+          {{ adresse.recipientName }}
+        </p>
+
+        <p>
+          {{ adresse.phone }}
+        </p>
+
+        <p>
+          {{ adresse.addressLine1 }}
+        </p>
+
+        <p *ngIf="adresse.addressLine2">
+          {{ adresse.addressLine2 }}
+        </p>
+
+        <p>
+          {{ adresse.city }}
+          <span *ngIf="adresse.region">
+            , {{ adresse.region }}
+          </span>
+        </p>
+
+        <p>
+          {{ adresse.countryCode }}
+        </p>
+
+      </div>
+
+    </div>
+
+    <div class="adresse-actions">
+
+      <button
+        type="button"
+        class="btn-modifier"
+        (click)="modifierAdresse(adresse)">
+
+        Modifier
+
+      </button>
+
+      <button
+        type="button"
+        class="btn-supprimer"
+        (click)="supprimerAdresse(adresse)">
+
+        Supprimer
+
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+<div
+  class="aucune-adresse"
+  *ngIf="adresses.length === 0">
+
+  <div class="aucune-icone">
+    +
+  </div>
+
+  <h3>
+    Aucune adresse enregistrée
+  </h3>
+
+  <p>
+    Ajoutez une adresse de livraison pour faciliter vos prochaines commandes.
+  </p>
+
+  <button
+    type="button"
+    class="btn-ajouter"
+    (click)="ajouterAdresse()">
+
+    Ajouter une adresse
+
+  </button>
+
+</div>
+
+</div>
+
+</div>

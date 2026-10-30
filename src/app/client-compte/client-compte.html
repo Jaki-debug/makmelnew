@@ -1,0 +1,243 @@
+<app-client-header></app-client-header>
+
+<div class="compte-page">
+
+<!-- EN-TÊTE -->
+
+<div class="compte-header">
+
+<div>
+
+  <h1>
+    Mon compte
+  </h1>
+
+  <p>
+    Gérez vos informations personnelles et les paramètres de votre compte.
+  </p>
+
+</div>
+
+<button
+  type="button"
+  class="btn-retour"
+  (click)="retourAccueil()">
+
+  Retour
+
+</button>
+
+</div>
+
+<!-- CHARGEMENT -->
+
+<div class="compte-loading" *ngIf="chargement">
+
+<div class="loading-spinner"></div>
+
+<p>
+  Chargement de votre compte...
+</p>
+
+</div>
+
+<!-- ERREUR -->
+
+<div class="message erreur" *ngIf="!chargement && erreur">
+
+{{ erreur }}
+
+</div>
+
+<!-- COMPTE -->
+
+<div class="compte-card" *ngIf="!chargement && client">
+
+<!-- IDENTITÉ -->
+
+<div class="compte-identite">
+
+  <div class="compte-avatar">
+
+    {{
+      (client.firstName || 'C')
+        .charAt(0)
+        .toUpperCase()
+    }}
+
+  </div>
+
+  <div class="identite-informations">
+
+    <h2>
+
+      {{ client.firstName }}
+
+      {{ client.lastName }}
+
+    </h2>
+
+    <p>
+      {{ client.email }}
+    </p>
+
+  </div>
+
+</div>
+
+
+<div class="separateur"></div>
+
+
+<!-- OPTIONS DU COMPTE -->
+
+<div class="options-compte">
+
+
+  <!-- MON PROFIL -->
+
+  <button
+    type="button"
+    class="option"
+    (click)="allerAuProfil()">
+
+    <div class="option-icone">
+
+      <mat-icon>
+        person
+      </mat-icon>
+
+    </div>
+
+    <div class="option-contenu">
+
+      <h3>
+        Mon profil
+      </h3>
+
+      <p>
+        Consultez et modifiez vos informations personnelles.
+      </p>
+
+    </div>
+
+  </button>
+
+
+  <!-- MES ADRESSES -->
+
+  <button
+    type="button"
+    class="option"
+    (click)="allerAuxAdresses()">
+
+    <div class="option-icone">
+
+      <mat-icon>
+        location_on
+      </mat-icon>
+
+    </div>
+
+    <div class="option-contenu">
+
+      <h3>
+        Mes adresses
+      </h3>
+
+      <p>
+        Gérez vos adresses de livraison.
+      </p>
+
+    </div>
+
+  </button>
+
+
+  <!-- SÉCURITÉ -->
+
+  <button
+    type="button"
+    class="option"
+    (click)="allerALaSecurite()">
+
+    <div class="option-icone">
+
+      <mat-icon>
+        lock
+      </mat-icon>
+
+    </div>
+
+    <div class="option-contenu">
+
+      <h3>
+        Sécurité
+      </h3>
+
+      <p>
+        Modifiez votre mot de passe et sécurisez votre compte.
+      </p>
+
+    </div>
+
+  </button>
+
+
+  <!-- CONSENTEMENTS -->
+
+  <button
+    type="button"
+    class="option"
+    (click)="allerAuxConsentements()">
+
+    <div class="option-icone">
+
+      <mat-icon>
+        verified_user
+      </mat-icon>
+
+    </div>
+
+    <div class="option-contenu">
+
+      <h3>
+        Mes consentements
+      </h3>
+
+      <p>
+        Gérez vos préférences de communication et de confidentialité.
+      </p>
+
+    </div>
+
+  </button>
+
+
+</div>
+
+
+<!-- DÉCONNEXION -->
+
+<div class="compte-deconnexion">
+
+  <button
+    type="button"
+    class="btn-deconnexion"
+    (click)="deconnecter()">
+
+    <mat-icon>
+      logout
+    </mat-icon>
+
+    <span>
+      Se déconnecter
+    </span>
+
+  </button>
+
+</div>
+
+</div>
+
+</div>

@@ -1,0 +1,119 @@
+<section class="categories-container">
+
+<div class="categories-header"> <h2>Catégories</h2> </div>
+
+<div class="loading" *ngIf="chargement"> Chargement des catégories... </div>
+
+<div class="error-message" *ngIf="!chargement && erreur"> {{ erreur }} </div>
+
+<div class="categories-list" *ngIf="!chargement && !erreur">
+
+<!-- Toutes les catégories -->
+<button
+  type="button"
+  class="category-item all-category"
+  [class.active]="categorieActive === ''"
+  (click)="selectionnerToutes()">
+
+  <span class="category-name">Toutes les catégories</span>
+
+</button>
+
+<div class="category-divider"></div>
+
+<!-- Catégories principales -->
+<div
+  class="category-group"
+  *ngFor="let categorie of categoriesPrincipales">
+
+  <button
+    type="button"
+    class="category-item main-category"
+    [class.active]="categorieActive === categorie.id"
+    [attr.aria-expanded]="categoriesOuvertes[categorie.id] === true"
+    (click)="selectionnerCategorie(categorie); basculerCategorie(categorie.id)">
+
+    <span class="category-name">
+      {{ afficherNomCategorie(categorie) }}
+    </span>
+
+    <span
+      class="category-arrow"
+      *ngIf="getSousCategories(categorie).length > 0">
+      {{ categoriesOuvertes[categorie.id] ? '⌄' : '›' }}
+    </span>
+
+  </button>
+
+  <!-- Sous-catégories affichées au clic -->
+  <div
+    class="subcategory-list"
+    *ngIf="categoriesOuvertes[categorie.id]">
+
+    <ng-container
+      *ngFor="let sousCategorie of getSousCategories(categorie)">
+
+      <ng-container
+        *ngTemplateOutlet="
+          sousCategorieTemplate;
+          context: { $implicit: sousCategorie, niveau: 1 }
+        ">
+      </ng-container>
+
+    </ng-container>
+
+  </div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- Modèle récursif pour les niveaux supplémentaires -->
+
+<ng-template #sousCategorieTemplate let-categorie let-niveau="niveau">
+
+<div class="subcategory-group">
+
+<button
+  type="button"
+  class="category-item subcategory-item"
+  [class.active]="categorieActive === categorie.id"
+  [style.padding-left.px]="16 + niveau * 18"
+  [attr.aria-expanded]="categoriesOuvertes[categorie.id] === true"
+  (click)="selectionnerCategorie(categorie); basculerCategorie(categorie.id)">
+
+  <span class="category-name">
+    {{ afficherNomCategorie(categorie) }}
+  </span>
+
+  <span
+    class="category-arrow"
+    *ngIf="getSousCategories(categorie).length > 0">
+    {{ categoriesOuvertes[categorie.id] ? '⌄' : '›' }}
+  </span>
+
+</button>
+
+<div
+  class="subcategory-list nested-list"
+  *ngIf="categoriesOuvertes[categorie.id]">
+
+  <ng-container
+    *ngFor="let enfant of getSousCategories(categorie)">
+
+    <ng-container
+      *ngTemplateOutlet="
+        sousCategorieTemplate;
+        context: { $implicit: enfant, niveau: niveau + 1 }
+      ">
+    </ng-container>
+
+  </ng-container>
+
+</div>
+
+</div>
+
+</ng-template>

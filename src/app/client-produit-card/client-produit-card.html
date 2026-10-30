@@ -1,0 +1,54 @@
+<article class="product-card" (click)="voirProduit()">
+
+<div class="product-image">
+
+<img
+  [src]="produit.image"
+  [alt]="produit.nom">
+
+<span
+  class="product-badge"
+  *ngIf="produit.badge">
+  {{ produit.badge }}
+</span>
+
+</div>
+
+<div class="product-info">
+
+<span class="product-category">
+  {{ produit.categorie }}
+</span>
+
+<h3>{{ produit.nom }}</h3>
+
+
+<div class="price-row">
+
+  <strong>
+    {{ formatPrice(produit.prix) }}
+  </strong>
+
+  <span
+    class="old-price"
+    *ngIf="produit.ancienPrix > 0">
+
+    {{ formatPrice(produit.ancienPrix) }}
+
+  </span>
+
+</div>
+
+
+<button
+  type="button"
+  class="add-cart-button"
+  (click)="ajouterAuPanier($event)">
+
+  Ajouter au panier
+
+</button>
+
+</div>
+
+</article>

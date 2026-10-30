@@ -1,0 +1,141 @@
+<app-client-header></app-client-header>
+
+<div class="consentements-page">
+
+<div class="consentements-header">
+
+<div>
+  <h1>Mes consentements</h1>
+
+  <p>
+    Gérez vos préférences de communication et de confidentialité.
+  </p>
+</div>
+
+<button
+  type="button"
+  class="btn-retour"
+  (click)="retourCompte()">
+  ← Retour
+</button>
+
+</div>
+
+<div class="message erreur" *ngIf="erreur">
+
+{{ erreur }}
+
+</div>
+
+<div class="message succes" *ngIf="succes">
+
+{{ succes }}
+
+</div>
+
+<div class="consentements-loading" *ngIf="chargement">
+
+<div class="loading-spinner"></div>
+
+<p>
+  Chargement de vos préférences...
+</p>
+
+</div>
+
+<div class="consentements-card" *ngIf="!chargement">
+
+<div class="card-header">
+
+  <div class="icone-consentements">
+    ✓
+  </div>
+
+  <div>
+
+    <h2>Vos préférences</h2>
+
+    <p>
+      Activez ou désactivez les préférences que vous souhaitez.
+    </p>
+
+  </div>
+
+</div>
+
+<div class="separateur"></div>
+
+<div
+  class="consentement"
+  *ngFor="let consentement of consentements">
+
+  <div class="consentement-informations">
+
+    <h3>
+      {{ obtenirNomConsentement(consentement) }}
+    </h3>
+
+    <p>
+      {{ obtenirDescription(consentement) }}
+    </p>
+
+  </div>
+
+  <label class="switch">
+
+    <input
+      type="checkbox"
+      [checked]="estActive(consentement)"
+      (change)="modifierConsentement(consentement, $event)">
+
+    <span class="slider"></span>
+
+  </label>
+
+</div>
+
+<div
+  class="empty-state"
+  *ngIf="consentements.length === 0">
+
+  <p>
+    Aucun consentement disponible.
+  </p>
+
+</div>
+
+<div
+  class="form-actions"
+  *ngIf="consentements.length > 0">
+
+  <button
+    type="button"
+    class="btn-annuler"
+    (click)="retourCompte()"
+    [disabled]="sauvegarde">
+
+    Annuler
+
+  </button>
+
+  <button
+    type="button"
+    class="btn-enregistrer"
+    (click)="enregistrer()"
+    [disabled]="sauvegarde">
+
+    <span *ngIf="!sauvegarde">
+      Enregistrer les préférences
+    </span>
+
+    <span *ngIf="sauvegarde">
+      Enregistrement...
+    </span>
+
+  </button>
+
+</div>
+
+</div>
+
+</div>

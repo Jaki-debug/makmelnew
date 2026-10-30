@@ -1,0 +1,219 @@
+
+<div class="inventory-movements">
+
+  <!-- En-tête de la page -->
+  <div class="page-header">
+    <div>
+      <h1>Mouvements</h1>
+      <p>Historique des mouvements de stock.</p>
+    </div>
+
+    <button
+      type="button"
+      class="new-movement-button"
+      routerLink="/inventory/movements/ajouter">
+      + Nouveau mouvement
+    </button>
+  </div>
+
+  <!-- Message d'erreur -->
+  <div *ngIf="error" class="global-error">
+    {{ error }}
+  </div>
+
+  <!-- Carte principale -->
+  <div class="content-card">
+
+    <!-- En-tête de la carte -->
+    <div class="card-header">
+      <div>
+        <h2>Historique des mouvements</h2>
+        <span>{{ total }} mouvement(s)</span>
+      </div>
+    </div>
+
+    <!-- Chargement -->
+    <div *ngIf="loading" class="state-message">
+      <div class="loader"></div>
+      <p>Chargement des mouvements...</p>
+    </div>
+
+    <!-- État vide -->
+    <div
+      *ngIf="!loading && !error && movements.length === 0"
+      class="empty-state">
+
+      <div class="empty-icon">↕</div>
+
+      <h3>Aucun mouvement de stock</h3>
+
+      <p>
+        Aucun mouvement n'a encore été enregistré dans l'inventaire.
+      </p>
+    </div>
+
+    <!-- Tableau des mouvements -->
+    <div
+      *ngIf="!loading && movements.length > 0"
+      class="table-container">
+
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Produit</th>
+            <th>Variante</th>
+            <th>Type</th>
+            <th>Quantité</th>
+            <th>Motif</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr
+            *ngFor="let movement of movements; trackBy: trackByMovementId">
+
+            <td class="date-cell">
+              {{ formatDate(movement.createdAt) }}
+            </td>
+
+            <td class="product-cell">
+              <span class="product-name">
+                {{ getProductName(movement.variantId) }}
+              </span>
+            </td>
+
+            <td>
+              <div class="variant-cell">
+                <span class="variant-name">
+                  {{ getVariantName(movement.variantId) }}
+                </span>
+
+                <span
+                  *ngIf="getVariantSku(movement.variantId)"
+                  class="variant-sku">
+                  SKU : {{ getVariantSku(movement.variantId) }}
+                </span>
+              </div>
+            </td>
+
+            <td>
+              <span
+                class="movement-badge"
+                [ngClass]="getMovementClass(movement.type)">
+                {{ getMovementLabel(movement.type) }}
+              </span>
+            </td>
+
+            <td>
+              <span
+                class="quantity"
+                [ngClass]="getMovementClass(movement.type)">
+                {{ getQuantityPrefix(movement.type) }}{{ movement.quantity }}
+              </span>
+            </td>
+
+            <td class="reason-cell">
+              {{ movement.reason || '—' }}
+            </td>
+
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    <div
+      *ngIf="total > 0"
+      class="pagination">
+
+      <!-- Informations et choix du nombre de lignes -->
+      <div class="pagination-info">
+        <span class="pagination-count">
+          Affichage de {{ firstItem }} à {{ lastItem }}
+          sur {{ total }} mouvement(s)
+        </span>
+
+        <label class="page-size-selector">
+          Lignes par page
+
+          <select
+            [value]="limit"
+            [disabled]="loading"
+            (change)="changePageSize($any($event.target).value)">
+
+            <option
+              *ngFor="let size of pageSizeOptions"
+              [value]="size">
+              {{ size }}
+            </option>
+
+          </select>
+        </label>
+      </div>
+
+      <!-- Boutons de navigation -->
+      <div class="pagination-buttons">
+
+        <button
+          type="button"
+          class="pagination-nav"
+          (click)="goToPage(1)"
+          [disabled]="loading || page <= 1"
+          aria-label="Première page"
+          title="Première page">
+          «
+        </button>
+
+        <button
+          type="button"
+          class="pagination-nav"
+          (click)="previousPage()"
+          [disabled]="loading || page <= 1"
+          aria-label="Page précédente"
+          title="Page précédente">
+          ‹
+        </button>
+
+        <button
+          *ngFor="let pageNumber of pageNumbers"
+          type="button"
+          class="pagination-number"
+          [class.active]="pageNumber === page"
+          [attr.aria-current]="pageNumber === page ? 'page' : null"
+          [disabled]="loading"
+          (click)="goToPage(pageNumber)">
+          {{ pageNumber }}
+        </button>
+
+        <button
+          type="button"
+          class="pagination-nav"
+          (click)="nextPage()"
+          [disabled]="loading || page >= totalPages"
+          aria-label="Page suivante"
+          title="Page suivante">
+          ›
+        </button>
+
+        <button
+          type="button"
+          class="pagination-nav"
+          (click)="goToPage(totalPages)"
+          [disabled]="loading || page >= totalPages"
+          aria-label="Dernière page"
+          title="Dernière page">
+          »
+        </button>
+
+      </div>
+
+      <!-- Indicateur de chargement discret -->
+      <span *ngIf="loading" class="pagination-loading">
+        Chargement...
+      </span>
+
+    </div>
+
+  </div>
+</div>

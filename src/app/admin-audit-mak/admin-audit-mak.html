@@ -1,0 +1,594 @@
+<div class="audit-page">
+  <header class="page-header">
+    <div>
+      <h1>Journal d'audit</h1>
+      <p>Historique et traçabilité des opérations du back-office.</p>
+    </div>
+
+    <button
+      type="button"
+      class="btn btn-primary"
+      (click)="chargerJournaux()"
+      [disabled]="chargement">
+      Actualiser
+    </button>
+  </header>
+
+  <!-- STATISTIQUES -->
+  <section class="summary-grid">
+    <article class="summary-card">
+      <span class="summary-label">Entrées affichées</span>
+      <strong>{{ journaux.length }}</strong>
+      <small>Page actuelle</small>
+    </article>
+
+    <article class="summary-card">
+      <span class="summary-label">Auteurs identifiés</span>
+      <strong>{{ nombreAuteursIdentifies }}</strong>
+      <small>Sur cette page</small>
+    </article>
+
+    <article class="summary-card">
+      <span class="summary-label">Page actuelle</span>
+      <strong>{{ page }}</strong>
+      <small>{{ limite }} entrées par page</small>
+    </article>
+
+    <article class="summary-card">
+      <span class="summary-label">Total des entrées</span>
+      <strong>{{ totalConnu ? total : '—' }}</strong>
+      <small>Total communiqué par l'API</small>
+    </article>
+  </section>
+
+  <!-- FILTRES -->
+  <section class="panel">
+    <div class="panel-header">
+      <div>
+        <h2>Filtres</h2>
+        <p>
+          Rechercher une opération par utilisateur, action,
+          module ou période.
+        </p>
+      </div>
+
+      <button
+        type="button"
+        class="btn btn-outline"
+        (click)="reinitialiserFiltres()"
+        [disabled]="chargement">
+        Réinitialiser
+      </button>
+    </div>
+
+    <form
+      class="filters-grid"
+      (ngSubmit)="appliquerFiltres()"
+      novalidate>
+
+      <!-- ACTION -->
+      <div class="form-group">
+        <label for="audit-action">Action</label>
+
+        <select
+          id="audit-action"
+          name="action"
+          [(ngModel)]="action">
+          <option value="">Toutes les actions</option>
+
+          <option
+            *ngFor="let element of actions"
+            [value]="element.valeur">
+            {{ element.libelle }}
+          </option>
+        </select>
+      </div>
+
+      <!-- MODULE -->
+      <div class="form-group">
+        <label for="audit-module">Module</label>
+
+        <select
+          id="audit-module"
+          name="module"
+          [(ngModel)]="module"
+          [disabled]="chargement">
+
+          <option value="">Tous les modules</option>
+
+          <option
+            *ngFor="let element of modulesDisponibles"
+            [value]="element.valeur">
+            {{ element.libelle }}
+          </option>
+        </select>
+      </div>
+
+      <!-- RECHERCHE UTILISATEUR -->
+      <div class="form-group suggestion-group">
+        <label for="audit-user">Nom de l’utilisateur</label>
+
+        <input
+          id="audit-user"
+          name="userId"
+          type="text"
+          [(ngModel)]="userId"
+          (ngModelChange)="suggestionsUtilisateursOuvertes = true"
+          (focus)="suggestionsUtilisateursOuvertes = true"
+          (blur)="fermerSuggestionsUtilisateur()"
+          placeholder="Commencer à saisir un nom…"
+          autocomplete="off"
+          aria-autocomplete="list"
+          aria-controls="audit-user-suggestions"
+        />
+
+        <div
+          *ngIf="suggestionsUtilisateursOuvertes && userId.trim()"
+          id="audit-user-suggestions"
+          class="suggestions-list"
+          role="listbox">
+
+          <button
+            *ngFor="let utilisateur of utilisateursSuggeres"
+            type="button"
+            class="suggestion-option"
+            role="option"
+            (mousedown)="$event.preventDefault()"
+            (click)="choisirUtilisateur(utilisateur)">
+
+            <span class="suggestion-name">
+              {{ nomOptionUtilisateur(utilisateur) }}
+            </span>
+
+            <small *ngIf="utilisateur.email">
+              {{ utilisateur.email }}
+            </small>
+          </button>
+
+          <div
+            *ngIf="utilisateursSuggeres.length === 0"
+            class="suggestions-empty">
+            Aucun utilisateur correspondant dans la liste chargée.
+          </div>
+        </div>
+      </div>
+
+      <!-- TYPE D'OBJET -->
+      <div class="form-group">
+        <label for="audit-entity-type">Type d'objet</label>
+
+        <select
+          id="audit-entity-type"
+          name="entityType"
+          [(ngModel)]="entityType">
+
+          <option value="">Tous les types</option>
+          <option value="User">Utilisateur</option>
+          <option value="Customer">Client</option>
+          <option value="Product">Produit</option>
+          <option value="Order">Commande</option>
+          <option value="Category">Catégorie</option>
+          <option value="Payment">Paiement</option>
+          <option value="Refund">Remboursement</option>
+          <option value="Role">Rôle</option>
+          <option value="Permission">Permission</option>
+          <option value="InventoryItem">Article d’inventaire</option>
+          <option value="StockMovement">Mouvement de stock</option>
+          <option value="Restaurant">Restaurant</option>
+          <option value="Residence">Résidence</option>
+          <option value="Delivery">Livraison</option>
+          <option value="Reservation">Réservation</option>
+        </select>
+      </div>
+
+      <!-- DATE DE DÉBUT -->
+      <div class="form-group">
+        <label for="audit-date-from">Date de début</label>
+
+        <input
+          id="audit-date-from"
+          name="dateFrom"
+          type="date"
+          [(ngModel)]="dateFrom"
+        />
+      </div>
+
+      <!-- DATE DE FIN -->
+      <div class="form-group">
+        <label for="audit-date-to">Date de fin</label>
+
+        <input
+          id="audit-date-to"
+          name="dateTo"
+          type="date"
+          [(ngModel)]="dateTo"
+        />
+      </div>
+
+      <!-- ACTIONS DES FILTRES -->
+      <div class="filter-actions">
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="chargement">
+          Rechercher
+        </button>
+      </div>
+    </form>
+  </section>
+
+  <!-- ERREUR GÉNÉRALE -->
+  <div
+    *ngIf="erreur"
+    class="alert alert-error"
+    role="alert">
+
+    <span>{{ erreur }}</span>
+
+    <button
+      type="button"
+      class="alert-dismiss"
+      (click)="erreur = ''"
+      aria-label="Fermer">
+      &times;
+    </button>
+  </div>
+
+  <!-- HISTORIQUE -->
+  <section class="panel">
+    <div class="panel-header history-header">
+      <div>
+        <h2>Historique des opérations</h2>
+
+        <p>
+          <ng-container *ngIf="totalConnu; else totalInconnu">
+            {{ total }} entrée(s) enregistrée(s)
+          </ng-container>
+
+          <ng-template #totalInconnu>
+            Résultats de la recherche
+          </ng-template>
+        </p>
+      </div>
+
+      <!-- NOMBRE DE LIGNES -->
+      <div class="page-size">
+        <label for="audit-limit">Lignes</label>
+
+        <select
+          id="audit-limit"
+          name="limite"
+          [ngModel]="limite"
+          (ngModelChange)="changerLimite($event)">
+
+          <option
+            *ngFor="let option of limites"
+            [ngValue]="option">
+            {{ option }}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <!-- CHARGEMENT -->
+    <div
+      *ngIf="chargement"
+      class="loading-state"
+      role="status">
+      <span class="spinner"></span>
+      Chargement du journal...
+    </div>
+
+    <!-- TABLEAU -->
+    <div
+      class="table-container"
+      *ngIf="!chargement && journaux.length > 0">
+
+      <table class="audit-table">
+        <thead>
+          <tr>
+            <th>Date et heure</th>
+            <th>Auteur</th>
+            <th>Action</th>
+            <th>Module</th>
+            <th>Objet concerné</th>
+            <th class="actions-column">Détails</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let journal of journaux">
+
+            <!-- DATE -->
+            <td class="date-cell">
+              {{ dateLisible(journal) }}
+            </td>
+
+            <!-- AUTEUR -->
+            <td>
+              <div class="author-name">
+                {{ nomAuteur(journal) }}
+              </div>
+
+              <span
+                class="role-label"
+                [class.role-unknown]="roleAuteur(journal) === 'Rôle non renseigné'">
+                {{ roleAuteur(journal) }}
+              </span>
+            </td>
+
+            <!-- ACTION -->
+            <td>
+              <span
+                class="action-badge"
+                [ngClass]="classeAction(journal.action)">
+                {{ libelleAction(journal.action) }}
+              </span>
+            </td>
+
+            <!-- MODULE -->
+            <td>
+              <span class="module-label">
+                {{ libelleModule(journal.module) }}
+              </span>
+            </td>
+
+            <!-- OBJET CONCERNÉ -->
+            <td class="entity-cell">
+              {{ valeurEntite(journal) }}
+            </td>
+
+            <!-- DÉTAILS -->
+            <td class="actions-column">
+              <button
+                type="button"
+                class="btn-detail"
+                (click)="ouvrirDetail(journal)"
+                title="Voir les détails"
+                aria-label="Voir les détails de cette opération">
+
+                <svg
+                  class="eye-icon"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                  focusable="false">
+
+                  <path
+                    d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z">
+                  </path>
+
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+
+                <span class="sr-only">Voir les détails</span>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- AUCUN RÉSULTAT -->
+    <div
+      *ngIf="!chargement && journaux.length === 0 && !erreur"
+      class="empty-state">
+
+      <h3>Aucune entrée trouvée</h3>
+
+      <p>
+        Aucune opération ne correspond aux critères sélectionnés.
+      </p>
+
+      <button
+        type="button"
+        class="btn btn-outline"
+        (click)="reinitialiserFiltres()">
+        Réinitialiser les filtres
+      </button>
+    </div>
+
+    <!-- PAGINATION -->
+    <footer
+      *ngIf="!chargement && journaux.length > 0"
+      class="pagination-footer">
+
+      <p>
+        Affichage de
+        <strong>{{ debutResultats }}</strong>
+        à
+        <strong>{{ finResultats }}</strong>
+
+        <ng-container *ngIf="totalConnu">
+          sur <strong>{{ total }}</strong> résultats
+        </ng-container>
+      </p>
+
+      <div class="pagination-controls">
+        <button
+          type="button"
+          class="btn btn-outline"
+          (click)="pagePrecedente()"
+          [disabled]="page <= 1 || chargement">
+          Précédent
+        </button>
+
+        <span>Page {{ page }}</span>
+
+        <button
+          type="button"
+          class="btn btn-outline"
+          (click)="pageSuivante()"
+          [disabled]="!pageSuivanteDisponible || chargement">
+          Suivant
+        </button>
+      </div>
+    </footer>
+  </section>
+
+  <!-- FENÊTRE DES DÉTAILS -->
+  <dialog
+    #auditDetailDialog
+    class="audit-detail-dialog"
+    aria-labelledby="audit-modal-title"
+    (click)="fermerDetailSurFond($event)"
+    (cancel)="fermerDetail()">
+
+    <section
+      class="audit-modal"
+      (click)="$event.stopPropagation()">
+
+      <ng-container *ngIf="journalSelectionne as journal">
+
+        <!-- EN-TÊTE -->
+        <header class="modal-header">
+          <div>
+            <h2 id="audit-modal-title">
+              Détails de l'opération
+            </h2>
+
+            <p>
+              Informations relatives à l'action enregistrée.
+            </p>
+          </div>
+
+          <button
+            type="button"
+            class="modal-close"
+            (click)="fermerDetail()"
+            aria-label="Fermer les détails">
+            &times;
+          </button>
+        </header>
+
+        <!-- CONTENU -->
+        <div class="modal-body">
+
+          <!-- RÉSUMÉ -->
+          <div class="operation-summary">
+            <div>
+              <span class="field-label">Action</span>
+
+              <span
+                class="action-badge"
+                [ngClass]="classeAction(journal.action)">
+                {{ libelleAction(journal.action) }}
+              </span>
+            </div>
+
+            <div>
+              <span class="field-label">Date et heure</span>
+              <strong>{{ dateLisible(journal) }}</strong>
+            </div>
+          </div>
+
+          <!-- DESCRIPTION -->
+          <div class="description-box">
+            <span class="field-label">Résumé</span>
+            <p>{{ descriptionOperation(journal) }}</p>
+          </div>
+
+          <!-- CHARGEMENT DES DÉTAILS -->
+          <div
+            *ngIf="chargementDetail || chargementDetailEnArrierePlan"
+            class="loading-state detail-loading"
+            role="status">
+
+            <span class="spinner"></span>
+            Chargement des détails...
+          </div>
+
+          <!-- ERREUR DES DÉTAILS -->
+          <div
+            *ngIf="erreurDetail"
+            class="alert alert-error"
+            role="alert">
+            {{ erreurDetail }}
+          </div>
+
+          <ng-container *ngIf="!chargementDetail">
+
+            <!-- INFORMATIONS GÉNÉRALES -->
+            <section class="detail-section">
+              <h3>Informations générales</h3>
+
+              <div class="detail-grid">
+
+                <div class="detail-field">
+                  <span class="field-label">Auteur</span>
+                  <strong>{{ nomAuteur(journal) }}</strong>
+                </div>
+
+                <div class="detail-field">
+                  <span class="field-label">Rôle</span>
+                  <strong>{{ roleAuteur(journal) }}</strong>
+                </div>
+
+                <div class="detail-field">
+                  <span class="field-label">Module</span>
+                  <strong>{{ libelleModule(journal.module) }}</strong>
+                </div>
+
+                <div class="detail-field">
+                  <span class="field-label">Type d’objet</span>
+                  <strong>
+                    {{ typeEntiteLisible(journal.entityType) }}
+                  </strong>
+                </div>
+
+                <div class="detail-field detail-field-full">
+                  <span class="field-label">Nom de l’objet</span>
+                  <strong>{{ valeurEntite(journal) }}</strong>
+                </div>
+
+              </div>
+            </section>
+
+            <!-- VALEURS AVANT -->
+            <section class="detail-section">
+              <h3>Valeurs avant l'opération</h3>
+
+              <pre class="json-view">{{ formaterObjet(valeursAvant(journal), journal) }}</pre>
+            </section>
+
+            <!-- VALEURS APRÈS -->
+            <section class="detail-section">
+              <h3>Valeurs après l'opération</h3>
+
+              <pre class="json-view">{{ formaterObjet(valeursApres(journal), journal) }}</pre>
+            </section>
+
+            <!-- INFORMATIONS COMPLÉMENTAIRES -->
+            <section
+              *ngIf="journal.details"
+              class="detail-section">
+
+              <h3>Informations complémentaires</h3>
+
+              <pre class="json-view">{{ formaterObjet(journal.details, journal) }}</pre>
+            </section>
+
+          </ng-container>
+        </div>
+
+        <!-- PIED DE LA MODALE -->
+        <footer class="modal-footer">
+          <span>Journal d'audit en lecture seule</span>
+
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="fermerDetail()">
+            Fermer
+          </button>
+        </footer>
+
+      </ng-container>
+    </section>
+  </dialog>
+</div>

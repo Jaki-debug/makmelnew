@@ -1,0 +1,388 @@
+
+<app-client-header></app-client-header>
+
+<div class="produit-detail-page">
+
+  <!-- CHARGEMENT -->
+  <div
+    class="loading-container"
+    *ngIf="chargement">
+
+    <div class="loader"></div>
+
+    <p>Chargement du produit...</p>
+
+  </div>
+
+  <!-- ERREUR DE CHARGEMENT -->
+  <div
+    class="error-container"
+    *ngIf="!chargement && erreur">
+
+    <div class="error-icon">!</div>
+
+    <h2>Produit introuvable</h2>
+
+    <p>{{ erreur }}</p>
+
+    <button
+      type="button"
+      class="btn-retour"
+      (click)="retournerCatalogue()">
+
+      ← Retour au catalogue
+
+    </button>
+
+  </div>
+
+  <!-- PRODUIT -->
+  <section
+    class="produit-detail-container"
+    *ngIf="!chargement && !erreur && produit">
+
+    <!-- RETOUR -->
+    <button
+      type="button"
+      class="btn-back"
+      (click)="retournerCatalogue()">
+
+      ← Retour au catalogue
+
+    </button>
+
+    <div class="produit-detail">
+
+      <!-- =====================================
+           GALERIE IMAGES
+      ====================================== -->
+
+      <div class="produit-image-section">
+
+        <!-- IMAGE PRINCIPALE -->
+        <div class="produit-image-wrapper">
+
+          <img
+            [src]="imageUrl"
+            [alt]="produit.name || 'Produit Mak & Mel'"
+            class="produit-image"
+            loading="eager"
+            (error)="imageErreur()">
+
+        </div>
+
+        <!-- MINIATURES -->
+        <div
+          class="produit-thumbnails"
+          *ngIf="imagesProduit.length > 1">
+
+          <button
+            type="button"
+            class="thumbnail"
+            *ngFor="let image of imagesProduit; let i = index"
+            [class.active]="image === imageUrl"
+            [attr.aria-label]="'Afficher l’image ' + (i + 1)"
+            [attr.aria-pressed]="image === imageUrl"
+            (click)="selectionnerImage(image)">
+
+            <img
+              [src]="image"
+              [alt]="produit.name + ' - image ' + (i + 1)"
+              loading="lazy">
+
+          </button>
+
+        </div>
+
+      </div>
+
+      <!-- =====================================
+           INFORMATIONS PRODUIT
+      ====================================== -->
+
+      <div class="produit-info-section">
+
+        <!-- CATÉGORIE -->
+        <div class="produit-category">
+          {{ getCategorie() }}
+        </div>
+
+        <!-- NOM -->
+        <h1 class="produit-title">
+          {{ produit.name || '' }}
+        </h1>
+
+        <!-- MARQUE -->
+        <div
+          class="produit-brand"
+          *ngIf="produit.brand">
+
+          Marque :
+          <strong>{{ produit.brand }}</strong>
+
+        </div>
+
+        <div class="separator"></div>
+
+        <!-- PRIX -->
+        <div class="prix-section">
+
+          <span class="prix">
+            {{ formatPrice(getPrix()) }}
+          </span>
+
+          <span
+            class="ancien-prix"
+            *ngIf="getAncienPrix() > getPrix()">
+
+            {{ formatPrice(getAncienPrix()) }}
+
+          </span>
+
+        </div>
+
+        <!-- DESCRIPTION -->
+        <div
+          class="description"
+          *ngIf="produit.description">
+
+          <h2>Description</h2>
+
+          <p>{{ produit.description }}</p>
+
+        </div>
+
+        <!-- =====================================
+             VARIANTES
+        ====================================== -->
+
+        <div
+          class="variantes-section"
+          *ngIf="getVariantesDisponibles().length > 0">
+
+          <h2>Choisir une variante</h2>
+
+          <p class="variante-instruction">
+            Sélectionnez la taille, la couleur ou le modèle souhaité.
+          </p>
+
+          <div class="variantes">
+
+            <button
+              type="button"
+              class="variante"
+              *ngFor="let variante of getVariantesDisponibles()"
+              [class.active]="varianteSelectionnee?.id === variante.id"
+              [class.disabled]="!varianteDisponible(variante)"
+              [disabled]="!varianteDisponible(variante)"
+              [attr.aria-pressed]="varianteSelectionnee?.id === variante.id"
+              (click)="selectionnerVariante(variante)">
+
+              <span class="variante-name">
+                {{ variante.name || variante.sku || 'Variante' }}
+              </span>
+
+              <span
+                class="variante-detail"
+                *ngIf="variante.size">
+
+                Taille : {{ variante.size }}
+
+              </span>
+
+              <span
+                class="variante-detail"
+                *ngIf="variante.color">
+
+                Couleur : {{ variante.color }}
+
+              </span>
+
+              <span
+                class="variante-detail"
+                *ngIf="variante.model">
+
+                Modèle : {{ variante.model }}
+
+              </span>
+
+              <span class="variante-price">
+                {{ formatPrice(variante.price) }}
+              </span>
+
+              <span class="variante-stock">
+                {{ getStockMessage(variante) }}
+              </span>
+
+              <span
+                class="variante-selected"
+                *ngIf="varianteSelectionnee?.id === variante.id"
+                aria-hidden="true">
+
+                ✓ Sélectionnée
+
+              </span>
+
+            </button>
+
+          </div>
+
+        </div>
+
+        <!-- Aucune variante disponible -->
+        <div
+          class="variantes-indisponibles"
+          *ngIf="getVariantesDisponibles().length === 0">
+
+          <p>
+            Aucune variante disponible pour ce produit actuellement.
+          </p>
+
+        </div>
+
+        <!-- =====================================
+             DISPONIBILITÉ
+        ====================================== -->
+
+        <div class="stock-section">
+
+          <span
+            class="stock-status stock-success"
+            *ngIf="varianteSelectionnee as variante">
+
+            {{ getStockMessage(variante) }}
+
+          </span>
+
+          <span
+            class="stock-status"
+            *ngIf="
+              !varianteSelectionnee &&
+              getVariantesDisponibles().length > 0
+            ">
+
+            Veuillez sélectionner une variante.
+
+          </span>
+
+        </div>
+
+        <!-- =====================================
+             MESSAGES DE L'AJOUT AU PANIER
+        ====================================== -->
+
+        <div
+          class="message-panier-succes"
+          *ngIf="messagePanier"
+          role="status"
+          aria-live="polite">
+
+          <span class="message-panier-icone" aria-hidden="true">
+            ✓
+          </span>
+
+          <span>{{ messagePanier }}</span>
+
+        </div>
+
+        <div
+          class="message-panier-erreur"
+          *ngIf="erreurAjoutPanier"
+          role="alert"
+          aria-live="assertive">
+
+          <span class="message-panier-icone" aria-hidden="true">
+            !
+          </span>
+
+          <span>{{ erreurAjoutPanier }}</span>
+
+        </div>
+
+        <!-- =====================================
+             ACHAT
+        ====================================== -->
+
+        <div class="achat-box">
+
+          <div class="achat-info">
+
+            <span>Livraison disponible</span>
+
+            <strong>
+              Commandez maintenant
+            </strong>
+
+          </div>
+
+          <button
+            type="button"
+            class="btn-panier"
+            [disabled]="
+              ajoutEnCours ||
+              getVariantesDisponibles().length === 0 ||
+              !varianteSelectionnee ||
+              !varianteDisponible(varianteSelectionnee)
+            "
+            (click)="ajouterAuPanier()">
+
+            <ng-container *ngIf="!ajoutEnCours; else ajoutEnCoursTemplate">
+
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                width="20"
+                height="20"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true">
+
+                <circle cx="9" cy="21" r="1"></circle>
+                <circle cx="19" cy="21" r="1"></circle>
+
+                <path
+                  d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6">
+                </path>
+
+              </svg>
+
+              Ajouter au panier
+
+            </ng-container>
+
+            <ng-template #ajoutEnCoursTemplate>
+
+              <span
+                class="bouton-panier-spinner"
+                aria-hidden="true">
+              </span>
+
+              Ajout en cours...
+
+            </ng-template>
+
+          </button>
+
+          <!-- Ouvrir le panier après un ajout réussi -->
+          <button
+            type="button"
+            class="btn-voir-panier"
+            *ngIf="messagePanier"
+            (click)="allerPanier()">
+
+            Voir mon panier →
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+</div>

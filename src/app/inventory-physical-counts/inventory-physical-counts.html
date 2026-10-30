@@ -1,0 +1,227 @@
+<div class="physical-counts-page"> <div class="page-header">
+<div class="page-title">
+
+  <h1>
+    Inventaires physiques
+  </h1>
+
+  <p>
+    Historique des comptages physiques et des écarts de stock.
+  </p>
+
+</div>
+
+<div class="page-actions">
+
+  <button
+    type="button"
+    class="btn-refresh"
+    (click)="actualiser()"
+    [disabled]="loading">
+
+    <span *ngIf="!loading">
+      Actualiser
+    </span>
+
+    <span *ngIf="loading">
+      Actualisation...
+    </span>
+
+  </button>
+
+  <button
+    type="button"
+    class="btn-create"
+    (click)="nouvelInventaire()">
+
+    + Nouvel inventaire physique
+
+  </button>
+
+</div>
+</div> <div *ngIf="successMessage" class="success-message">
+<div class="success-icon">
+  ✓
+</div>
+
+<div class="success-content">
+
+  <strong>
+    Opération réussie
+  </strong>
+
+  <p>
+    {{ successMessage }}
+  </p>
+
+</div>
+</div> <div *ngIf="error" class="error-message">
+<div class="error-icon">
+  !
+</div>
+
+<div class="error-content">
+
+  <strong>
+    Échec de l’opération
+  </strong>
+
+  <p>
+    {{ error }}
+  </p>
+
+</div>
+</div> <div *ngIf="loading" class="loading-state">
+<div class="loader"></div>
+
+<p>
+  Chargement des inventaires physiques...
+</p>
+</div> <div *ngIf="!loading && !error && inventories.length === 0" class="empty-state">
+<div class="empty-icon">
+  📋
+</div>
+
+<h3>
+  Aucun inventaire physique
+</h3>
+
+<p>
+  Aucun inventaire physique n'est encore disponible dans l'historique.
+</p>
+
+<p class="empty-info">
+  Vous pouvez effectuer un nouveau comptage physique.
+</p>
+
+<button
+  type="button"
+  class="empty-action"
+  (click)="nouvelInventaire()">
+
+  + Nouvel inventaire physique
+
+</button>
+</div> <div *ngIf="!loading && inventories.length > 0" class="content-card">
+<div class="card-header">
+
+  <div>
+
+    <h2>
+      Historique des inventaires physiques
+    </h2>
+
+    <p>
+      {{ inventories.length }}
+      inventaire{{ inventories.length > 1 ? 's' : '' }}
+    </p>
+
+  </div>
+
+</div>
+
+
+<div class="table-container">
+
+  <table>
+
+    <thead>
+
+      <tr>
+
+        <th>
+          Date
+        </th>
+
+        <th>
+          Motif
+        </th>
+
+        <th>
+          Articles comptés
+        </th>
+
+        <th>
+          Écarts
+        </th>
+
+        <th>
+          Utilisateur
+        </th>
+
+        <th>
+          Statut
+        </th>
+
+        <th>
+          Action
+        </th>
+
+      </tr>
+
+    </thead>
+
+
+    <tbody>
+
+      <tr
+        *ngFor="let inventory of inventories">
+
+        <td>
+          {{ formatDate(inventory.createdAt) }}
+        </td>
+
+        <td>
+          {{ inventory.reason || '—' }}
+        </td>
+
+        <td>
+          {{ inventory.totalItems ?? '—' }}
+        </td>
+
+        <td>
+
+          <span
+            [class.difference-positive]="inventory.totalDifferences !== undefined && inventory.totalDifferences > 0"
+            [class.difference-negative]="inventory.totalDifferences !== undefined && inventory.totalDifferences < 0"
+            [class.difference-neutral]="inventory.totalDifferences === 0 || inventory.totalDifferences === undefined">
+
+            {{ inventory.totalDifferences ?? 0 }}
+
+          </span>
+
+        </td>
+
+        <td>
+          {{ inventory.createdBy || '—' }}
+        </td>
+
+        <td>
+
+          <span class="status-success">
+            ✓ Enregistré
+          </span>
+
+        </td>
+
+        <td>
+
+          <button
+            type="button"
+            class="detail-button"
+            (click)="voirDetail(inventory.id)">
+
+            Voir le détail
+
+          </button>
+
+        </td>
+
+      </tr>
+
+    </tbody>
+
+  </table>
+
+</div>
+</div> </div>

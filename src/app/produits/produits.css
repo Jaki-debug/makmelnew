@@ -1,0 +1,576 @@
+
+.produits-page {
+  min-height: 100vh;
+  padding: 32px;
+  box-sizing: border-box;
+  background: #f5f7fb;
+}
+
+.page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 28px;
+}
+
+.breadcrumb {
+  display: block;
+  margin-bottom: 8px;
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+}
+
+.page-header h1 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.page-header p {
+  margin: 8px 0 0;
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* =========================
+   BOUTON PRINCIPAL
+========================= */
+
+.btn-primary {
+  min-height: 40px;
+  padding: 0 16px;
+  border: 1px solid #0b1f4d;
+  border-radius: 8px;
+  background: #0b1f4d;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.btn-primary:hover {
+  background: #102a63;
+  border-color: #102a63;
+}
+
+/* =========================
+   CARTES
+========================= */
+
+.filters-card,
+.products-card {
+  margin-bottom: 24px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+}
+
+.filters-card {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr auto;
+  gap: 16px;
+  padding: 20px;
+}
+
+/* =========================
+   FILTRES
+========================= */
+
+.search-group,
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  min-width: 0;
+}
+
+.search-group label,
+.filter-group label {
+  color: #374151;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.search-group input,
+.filter-group select {
+  width: 100%;
+  height: 42px;
+  box-sizing: border-box;
+  padding: 0 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #172033;
+  font-family: inherit;
+  font-size: 14px;
+  outline: none;
+}
+
+.search-group input:focus,
+.filter-group select:focus {
+  border-color: #0b1f4d;
+  box-shadow: 0 0 0 3px rgba(11, 31, 77, 0.08);
+}
+
+.filter-actions {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.btn-search,
+.btn-reset {
+  height: 42px;
+  padding: 0 14px;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.btn-search {
+  border: 1px solid #0b1f4d;
+  background: #0b1f4d;
+  color: #ffffff;
+}
+
+.btn-search:hover {
+  background: #102a63;
+}
+
+.btn-reset {
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  color: #0b1f4d;
+}
+
+.btn-reset:hover {
+  background: #f8fafc;
+}
+
+/* =========================
+   ERREURS
+========================= */
+
+.error-message {
+  margin-bottom: 20px;
+  padding: 14px 16px;
+  border: 1px solid #fecaca;
+  border-radius: 9px;
+  background: #fff5f5;
+  color: #b91c1c;
+  font-size: 14px;
+}
+
+/* =========================
+   CHARGEMENT
+========================= */
+
+.loading-state {
+  padding: 60px 24px;
+  text-align: center;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+}
+
+.loading-state p {
+  margin: 14px 0 0;
+  color: #64748b;
+  font-size: 14px;
+}
+
+.spinner {
+  width: 34px;
+  height: 34px;
+  margin: 0 auto;
+  border: 3px solid #d7deea;
+  border-top-color: #0b1f4d;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+/* =========================
+   EN-TÊTE DU TABLEAU
+========================= */
+
+.products-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 24px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.products-header h2 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 19px;
+  font-weight: 700;
+}
+
+.products-header p {
+  margin: 6px 0 0;
+  color: #64748b;
+  font-size: 13px;
+}
+
+/* =========================
+   TABLEAU
+========================= */
+
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead {
+  background: #f8fafc;
+}
+
+th {
+  padding: 14px 18px;
+  border-bottom: 1px solid #e2e8f0;
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-align: left;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+td {
+  padding: 16px 18px;
+  border-bottom: 1px solid #eef2f6;
+  color: #475569;
+  font-size: 14px;
+  vertical-align: middle;
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+tbody tr:hover {
+  background: #fafbfc;
+}
+
+.product-name {
+  color: #0f172a;
+  font-weight: 600;
+}
+
+/* =========================
+   STATUTS
+========================= */
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 27px;
+  padding: 0 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.status-badge.draft {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.status-badge.active {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.status-badge.inactive {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.status-badge.archived {
+  background: #e2e8f0;
+  color: #475569;
+}
+
+/* =========================
+   ACTIONS : ŒIL, CRAYON, POUBELLE
+========================= */
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+}
+
+/* Bouton icône commun */
+.btn-icon {
+  display: inline-flex;
+  flex: 0 0 36px;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  min-width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: #ffffff;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.btn-icon svg {
+  display: block;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+/* ŒIL : détails */
+.btn-view {
+  color: #2563eb;
+  border-color: #bfdbfe;
+  background: #eff6ff;
+}
+
+.btn-view:hover {
+  border-color: #93c5fd;
+  background: #dbeafe;
+}
+
+/* CRAYON : modification */
+.btn-edit {
+  color: #b45309;
+  border-color: #fde68a;
+  background: #fffbeb;
+}
+
+.btn-edit:hover {
+  border-color: #fcd34d;
+  background: #fef3c7;
+}
+
+/* POUBELLE : archivage */
+.btn-delete {
+  color: #dc2626;
+  border-color: #fecaca;
+  background: #fef2f2;
+}
+
+.btn-delete:hover {
+  border-color: #fca5a5;
+  background: #fee2e2;
+}
+
+/* Survol commun */
+.btn-icon:hover {
+  transform: translateY(-1px);
+}
+
+/* Clic */
+.btn-icon:active {
+  transform: translateY(0);
+}
+
+/* Accessibilité clavier */
+.btn-icon:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
+
+/* Empêcher les boutons de s'étirer dans la cellule */
+td:last-child {
+  white-space: nowrap;
+}
+
+/* =========================
+   ÉTAT VIDE
+========================= */
+
+.empty-state {
+  padding: 60px 24px;
+  text-align: center;
+}
+
+.empty-state h3 {
+  margin: 0 0 8px;
+  color: #0f172a;
+  font-size: 18px;
+}
+
+.empty-state p {
+  max-width: 480px;
+  margin: 0 auto 20px;
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* =========================
+   PAGINATION
+========================= */
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 24px;
+  border-top: 1px solid #e2e8f0;
+  color: #64748b;
+  font-size: 13px;
+}
+
+.pagination-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.pagination-button {
+  min-height: 36px;
+  padding: 0 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 7px;
+  background: #ffffff;
+  color: #0b1f4d;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.pagination-button:hover:not(:disabled) {
+  background: #f8fafc;
+  border-color: #94a3b8;
+}
+
+.pagination-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* =========================
+   ANIMATIONS
+========================= */
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =========================
+   TABLETTES
+========================= */
+
+@media (max-width: 1000px) {
+  .filters-card {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .filter-actions {
+    align-items: stretch;
+  }
+
+  .btn-search,
+  .btn-reset {
+    flex: 1;
+  }
+
+  .actions {
+    gap: 6px;
+  }
+}
+
+/* =========================
+   MOBILES
+========================= */
+
+@media (max-width: 700px) {
+  .produits-page {
+    padding: 20px;
+  }
+
+  .page-header {
+    flex-direction: column;
+  }
+
+  .page-header .btn-primary {
+    width: 100%;
+  }
+
+  .filters-card {
+    grid-template-columns: 1fr;
+  }
+
+  .filter-actions {
+    flex-direction: column;
+  }
+
+  .btn-search,
+  .btn-reset {
+    width: 100%;
+  }
+
+  .products-header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .actions {
+    gap: 6px;
+  }
+
+  .btn-icon {
+    flex-basis: 34px;
+    width: 34px;
+    min-width: 34px;
+    height: 34px;
+  }
+
+  .btn-icon svg {
+    width: 17px;
+    height: 17px;
+  }
+
+  .pagination {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .pagination-actions {
+    width: 100%;
+  }
+
+  .pagination-button {
+    flex: 1;
+  }
+}

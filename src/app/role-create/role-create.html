@@ -1,0 +1,77 @@
+<div class="page"> <div class="page-header"> <div> <h1>Ajouter un rôle</h1> <p>Créer un nouveau rôle personnalisé pour le back-office.</p> </div> </div> <div class="form-card">
+<div
+  class="alert error"
+  *ngIf="erreur"
+>
+  {{ erreur }}
+</div>
+
+<div
+  class="alert success"
+  *ngIf="succes"
+>
+  {{ succes }}
+</div>
+
+<form (ngSubmit)="creerRole()">
+
+  <div class="form-group">
+    <label for="nom">Nom du rôle</label>
+
+    <input
+      id="nom"
+      name="nom"
+      type="text"
+      [(ngModel)]="nom"
+      placeholder="Exemple : Gestionnaire boutique"
+      maxlength="100"
+      [disabled]="chargement"
+    />
+
+    <small>
+      Le nom du rôle doit être unique.
+    </small>
+  </div>
+
+  <div class="form-group">
+    <label for="description">Description</label>
+
+    <textarea
+      id="description"
+      name="description"
+      [(ngModel)]="description"
+      placeholder="Décrivez les responsabilités de ce rôle..."
+      rows="5"
+      [disabled]="chargement"
+    ></textarea>
+  </div>
+
+  <div class="form-actions">
+
+    <button
+      type="button"
+      class="cancel-button"
+      (click)="annuler()"
+      [disabled]="chargement"
+    >
+      Annuler
+    </button>
+
+    <button
+      type="submit"
+      class="primary-button"
+      [disabled]="chargement"
+    >
+      <span *ngIf="!chargement">
+        Créer le rôle
+      </span>
+
+      <span *ngIf="chargement">
+        Création en cours...
+      </span>
+    </button>
+
+  </div>
+
+</form>
+</div> </div>

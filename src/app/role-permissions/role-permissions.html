@@ -1,0 +1,173 @@
+<div class="page"> <div class="page-header">
+<div>
+
+  <button
+    type="button"
+    class="back-button"
+    (click)="retourDetail()"
+  >
+    ← Retour au rôle
+  </button>
+
+  <h1>Gérer les permissions</h1>
+
+  <p *ngIf="role">
+    Permissions du rôle :
+    <strong>{{ role.name }}</strong>
+  </p>
+
+</div>
+</div> <div class="loading" *ngIf="chargement || chargementPermissions" > Chargement des permissions... </div> <div class="error-message" *ngIf="erreur" > {{ erreur }} </div> <div class="error-message" *ngIf="erreurPermissions" > {{ erreurPermissions }} </div> <div class="content" *ngIf="!chargement && !chargementPermissions && role" >
+<div
+  class="system-warning"
+  *ngIf="estSuperAdministrateur()"
+>
+  <strong>Rôle Super administrateur</strong>
+  <span>
+    Les permissions de ce rôle ne peuvent pas être modifiées.
+  </span>
+</div>
+
+<div
+  class="system-warning"
+  *ngIf="
+    !estSuperAdministrateur() &&
+    !hasPermission('roles.manage_permissions')
+  "
+>
+  <strong>Accès en lecture seule</strong>
+  <span>
+    Vous n’avez pas la permission de modifier les permissions de ce rôle.
+  </span>
+</div>
+
+<div class="permissions-card">
+
+  <div class="permissions-header">
+
+    <div>
+
+      <h2>Permissions disponibles</h2>
+
+      <p>
+        {{ permissionsSelectionnees.length }}
+        permission{{ permissionsSelectionnees.length > 1 ? 's' : '' }}
+        sélectionnée{{ permissionsSelectionnees.length > 1 ? 's' : '' }}
+        sur {{ permissions.length }}
+      </p>
+
+    </div>
+
+    <div
+      class="selection-actions"
+      *ngIf="peutModifierPermissions()"
+    >
+
+      <button
+        type="button"
+        class="secondary-button"
+        (click)="toutSelectionner()"
+      >
+        Tout sélectionner
+      </button>
+
+      <button
+        type="button"
+        class="secondary-button"
+        (click)="toutDeselectionner()"
+      >
+        Tout désélectionner
+      </button>
+
+    </div>
+
+  </div>
+
+  <div
+    class="permissions-grid"
+    *ngIf="permissions.length > 0"
+  >
+
+    <label
+      class="permission-item"
+      *ngFor="let permission of permissions"
+    >
+
+      <input
+        type="checkbox"
+        [checked]="estSelectionnee(permission.code)"
+        [disabled]="!peutModifierPermissions() || enregistrement"
+        (change)="changerPermission(permission.code, $event)"
+      />
+
+      <div class="permission-content">
+
+        <strong>
+          {{ permission.code }}
+        </strong>
+
+        <span>
+          {{ permission.description || 'Aucune description' }}
+        </span>
+
+      </div>
+
+    </label>
+
+  </div>
+
+  <div
+    class="empty-state"
+    *ngIf="permissions.length === 0"
+  >
+
+    <h3>Aucune permission disponible</h3>
+
+    <p>
+      Le catalogue des permissions est vide.
+    </p>
+
+  </div>
+
+  <div
+    class="alert success"
+    *ngIf="succes"
+  >
+    {{ succes }}
+  </div>
+
+  <div
+    class="form-actions"
+    *ngIf="peutModifierPermissions()"
+  >
+
+    <button
+      type="button"
+      class="cancel-button"
+      (click)="retourDetail()"
+      [disabled]="enregistrement"
+    >
+      Annuler
+    </button>
+
+    <button
+      type="button"
+      class="primary-button"
+      (click)="enregistrer()"
+      [disabled]="enregistrement"
+    >
+
+      <span *ngIf="!enregistrement">
+        Enregistrer les permissions
+      </span>
+
+      <span *ngIf="enregistrement">
+        Enregistrement...
+      </span>
+
+    </button>
+
+  </div>
+
+</div>
+</div> </div>

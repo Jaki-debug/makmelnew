@@ -1,0 +1,275 @@
+
+<app-client-header></app-client-header>
+
+<main class="panier-page">
+  <div class="panier-container">
+
+    <!-- Fil d'Ariane -->
+    <nav class="panier-breadcrumb">
+      <a routerLink="/client/produitcatalogue">Accueil</a>
+      <span>/</span>
+      <span>Mon panier</span>
+    </nav>
+
+    <!-- En-tête -->
+    <header class="panier-header">
+      <div>
+        <span class="panier-eyebrow">MAK &amp; MEL</span>
+        <h1>Mon panier</h1>
+        <p>Retrouvez vos articles avant de passer commande.</p>
+      </div>
+
+      <div class="panier-count" *ngIf="articles.length > 0">
+        {{ totalQuantite() }} article(s)
+      </div>
+    </header>
+
+    <!-- Message de succès -->
+    <div
+      class="panier-alert panier-alert-success"
+      *ngIf="messageSucces">
+      <span class="alert-icon">✓</span>
+      <span>{{ messageSucces }}</span>
+    </div>
+
+    <!-- Message d'erreur -->
+    <div
+      class="panier-alert panier-alert-error"
+      *ngIf="erreur">
+      <span class="alert-icon">!</span>
+      <span>{{ erreur }}</span>
+    </div>
+
+    <!-- Chargement -->
+    <section class="panier-loading" *ngIf="chargement">
+      <div class="loading-spinner"></div>
+      <p>Chargement de votre panier...</p>
+    </section>
+
+    <!-- Panier vide -->
+    <section
+      class="panier-empty"
+      *ngIf="!chargement && articles.length === 0">
+
+      <div class="empty-icon">
+        <svg
+          viewBox="0 0 24 24"
+          width="54"
+          height="54"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round">
+          <circle cx="9" cy="21" r="1"></circle>
+          <circle cx="20" cy="21" r="1"></circle>
+          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+        </svg>
+      </div>
+
+      <h2>Votre panier est vide</h2>
+
+      <p>
+        Vous n'avez pas encore ajouté d'article à votre panier.
+        Découvrez nos produits et trouvez vos coups de cœur.
+      </p>
+
+      <a
+        routerLink="/client/produitcatalogue"
+        class="panier-button panier-button-primary">
+        Découvrir nos produits
+      </a>
+    </section>
+
+    <!-- Contenu du panier -->
+    <section
+      class="panier-layout"
+      *ngIf="!chargement && articles.length > 0">
+
+      <!-- Liste des articles -->
+      <div class="panier-articles-section">
+
+        <div class="panier-section-heading">
+          <h2>Articles sélectionnés</h2>
+
+          <button
+            type="button"
+            class="panier-clear-button"
+            (click)="viderPanier()"
+            [disabled]="actionEnCours">
+            Vider le panier
+          </button>
+        </div>
+
+        <!-- Articles du panier -->
+        <div class="panier-articles-list">
+
+          <article
+            class="panier-article"
+            *ngFor="let article of articles">
+
+            <!-- Image -->
+            <div class="article-image">
+              <img
+                [src]="getImage(article)"
+                [alt]="getNom(article)"
+                loading="lazy"
+                (error)="$any($event.target).style.display='none'">
+            </div>
+
+            <!-- Informations de l'article -->
+            <div class="article-details">
+              <h3>{{ getNom(article) }}</h3>
+
+              <p
+                class="article-variant"
+                *ngIf="getVariante(article)">
+                Variante : {{ getVariante(article) }}
+              </p>
+
+              <p class="article-unit-price">
+                {{ getPrix(article) | number:'1.0-0' }} FCFA
+                <span>/ unité</span>
+              </p>
+
+              <!-- Actions sur l'article -->
+              <div class="article-actions">
+
+                <!-- Quantité -->
+                <div class="quantity-control">
+                  <button
+                    type="button"
+                    aria-label="Diminuer la quantité"
+                    (click)="modifierQuantiteArticle(article, -1)"
+                    [disabled]="actionEnCours || getQuantite(article) <= 1">
+                    −
+                  </button>
+
+                  <span>{{ getQuantite(article) }}</span>
+
+                  <button
+                    type="button"
+                    aria-label="Augmenter la quantité"
+                    (click)="modifierQuantiteArticle(article, 1)"
+                    [disabled]="actionEnCours">
+                    +
+                  </button>
+                </div>
+
+                <!-- Supprimer -->
+                <button
+                  type="button"
+                  class="article-remove-button"
+                  (click)="supprimerArticle(article)"
+                  [disabled]="actionEnCours">
+                  Supprimer
+                </button>
+
+              </div>
+            </div>
+
+            <!-- Total de la ligne -->
+            <div class="article-total">
+              <span class="article-total-label">Sous-total</span>
+              <strong>
+                {{ getTotalLigne(article) | number:'1.0-0' }} FCFA
+              </strong>
+            </div>
+
+          </article>
+
+        </div>
+
+        <!-- CONTINUER MES ACHATS : RETOUR AU CATALOGUE -->
+        <a
+          href="/client/produitcatalogue"
+          class="continue-shopping"
+          (click)="$event.preventDefault(); continuerAchats()">
+
+          <span aria-hidden="true">←</span>
+          Continuer mes achats
+
+        </a>
+
+      </div>
+
+      <!-- Récapitulatif -->
+      <aside class="panier-summary">
+
+        <div class="summary-heading">
+          <h2>Récapitulatif</h2>
+        </div>
+
+        <div class="summary-content">
+
+          <!-- Nombre d'articles -->
+          <div class="summary-row">
+            <span>Articles</span>
+            <span>{{ totalQuantite() }}</span>
+          </div>
+
+          <!-- Sous-total -->
+          <div class="summary-row">
+            <span>Sous-total</span>
+            <strong>
+              {{ getTotalPanier() | number:'1.0-0' }} FCFA
+            </strong>
+          </div>
+
+          <!-- Livraison -->
+          <div class="summary-row">
+            <span>Livraison</span>
+            <span class="summary-pending">À confirmer</span>
+          </div>
+
+          <div class="summary-divider"></div>
+
+          <!-- Total estimé -->
+          <div class="summary-total">
+            <span>Total estimé</span>
+            <strong>
+              {{ getTotalPanier() | number:'1.0-0' }} FCFA
+            </strong>
+          </div>
+
+          <p class="summary-note">
+            Les frais de livraison et le montant définitif seront
+            confirmés lors de la validation de votre commande.
+          </p>
+
+          <!-- Passer la commande -->
+          <button
+            type="button"
+            class="panier-button panier-button-primary checkout-button"
+            (click)="passerCommande()"
+            [disabled]="actionEnCours || chargement || articles.length === 0">
+
+            <span *ngIf="!actionEnCours">
+              Passer la commande
+            </span>
+
+            <span *ngIf="actionEnCours">
+              Veuillez patienter...
+            </span>
+
+            <span
+              class="checkout-arrow"
+              *ngIf="!actionEnCours">
+              →
+            </span>
+
+          </button>
+
+          <!-- Sécurité -->
+          <div class="summary-security">
+            <span class="security-icon">✓</span>
+            <span>Vérifiez votre commande avant confirmation.</span>
+          </div>
+
+        </div>
+      </aside>
+
+    </section>
+
+  </div>
+</main>

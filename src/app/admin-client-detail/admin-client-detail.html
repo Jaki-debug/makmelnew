@@ -1,0 +1,191 @@
+<div class="detail-page"> <div class="page-header">
+<div>
+  <button
+    type="button"
+    class="btn-retour"
+    (click)="retournerListe()">
+
+    ← Retour aux clients
+
+  </button>
+
+  <h1>Détail du client</h1>
+
+  <p>
+    Consultez les informations du compte client.
+  </p>
+</div>
+
+<button
+  type="button"
+  class="btn-modifier"
+  *ngIf="!chargement && client"
+  (click)="modifierClient()">
+
+  Modifier
+
+</button>
+</div> <div class="chargement" *ngIf="chargement">
+<div class="spinner"></div>
+
+<p>Chargement des informations du client...</p>
+</div> <div class="message erreur" *ngIf="!chargement && erreur">
+{{ erreur }}
+</div> <div class="client-detail" *ngIf="!chargement && client">
+<div class="identite-card">
+
+  <div class="avatar">
+
+    {{ obtenirInitiale() }}
+
+  </div>
+
+  <div class="identite">
+
+    <h2>
+      {{ obtenirNom() }}
+    </h2>
+
+    <p>
+      {{ obtenirEmail() }}
+    </p>
+
+    <span
+      class="badge-statut"
+      [class.inactif]="!estActif()">
+
+      <span class="point"></span>
+
+      {{ obtenirStatut() }}
+
+    </span>
+
+  </div>
+
+</div>
+
+<div class="informations-card">
+
+  <div class="card-header">
+
+    <div>
+      <h2>Informations personnelles</h2>
+      <p>Informations enregistrées sur le compte.</p>
+    </div>
+
+  </div>
+
+  <div class="separateur"></div>
+
+  <div class="informations-grid">
+
+    <div class="information">
+
+      <span class="information-label">
+        Prénom
+      </span>
+
+      <span class="information-value">
+        {{ client.firstName || 'Non renseigné' }}
+      </span>
+
+    </div>
+
+    <div class="information">
+
+      <span class="information-label">
+        Nom
+      </span>
+
+      <span class="information-value">
+        {{ client.lastName || 'Non renseigné' }}
+      </span>
+
+    </div>
+
+    <div class="information">
+
+      <span class="information-label">
+        Adresse e-mail
+      </span>
+
+      <span class="information-value">
+        {{ obtenirEmail() }}
+      </span>
+
+    </div>
+
+    <div class="information">
+
+      <span class="information-label">
+        Téléphone
+      </span>
+
+      <span class="information-value">
+        {{ obtenirTelephone() }}
+      </span>
+
+    </div>
+
+    <div class="information">
+
+      <span class="information-label">
+        Statut du compte
+      </span>
+
+      <span
+        class="information-value statut-value"
+        [class.inactif-text]="!estActif()">
+
+        {{ obtenirStatut() }}
+
+      </span>
+
+    </div>
+
+    <div
+      class="information"
+      *ngIf="client.id">
+
+      <span class="information-label">
+        Identifiant
+      </span>
+
+      <span class="information-value identifiant">
+        {{ client.id }}
+      </span>
+
+    </div>
+
+    <div
+      class="information"
+      *ngIf="client.createdAt">
+
+      <span class="information-label">
+        Date de création
+      </span>
+
+      <span class="information-value">
+        {{ formaterDate(client.createdAt) }}
+      </span>
+
+    </div>
+
+    <div
+      class="information"
+      *ngIf="client.updatedAt">
+
+      <span class="information-label">
+        Dernière modification
+      </span>
+
+      <span class="information-value">
+        {{ formaterDate(client.updatedAt) }}
+      </span>
+
+    </div>
+
+  </div>
+
+</div>
+</div> </div>

@@ -1,0 +1,151 @@
+<div class="sous-categorie-update-page">
+
+<div class="page-header">
+
+<div>
+
+  <span class="page-kicker">
+    CATALOGUE
+  </span>
+
+  <h1>
+    Modifier la sous-catégorie
+  </h1>
+
+  <p>
+    Modifiez les informations de cette sous-catégorie.
+  </p>
+
+</div>
+
+<button
+  type="button"
+  class="back-button"
+  (click)="annuler()"
+  [disabled]="chargement"
+>
+  ← Retour
+</button>
+
+</div>
+
+<div class="alert error" *ngIf="erreur" > {{ erreur }} </div>
+
+<div class="alert success" *ngIf="succes" > {{ succes }} </div>
+
+<div class="loading-card" *ngIf="chargementCategorie" > Chargement de la sous-catégorie... </div>
+
+<form class="form-card" *ngIf="!chargementCategorie && categorieOriginale" (ngSubmit)="modifierSousCategorie()" >
+
+<div class="form-group">
+
+  <label>
+    Catégorie principale
+    <span>*</span>
+  </label>
+
+  <div class="readonly-field">
+
+    <span class="readonly-value">
+      {{ categorieParentNom }}
+    </span>
+
+  </div>
+
+</div>
+
+<div class="form-group">
+
+  <label for="name">
+    Nom de la sous-catégorie
+    <span>*</span>
+  </label>
+
+  <input
+    id="name"
+    name="name"
+    type="text"
+    [(ngModel)]="categorie.name"
+    placeholder="Ex. Robes"
+    [disabled]="chargement"
+    required
+  />
+
+</div>
+
+<div class="form-group">
+
+  <label for="sortOrder">
+    Ordre d'affichage
+  </label>
+
+  <input
+    id="sortOrder"
+    name="sortOrder"
+    type="number"
+    min="0"
+    [(ngModel)]="categorie.sortOrder"
+    [disabled]="chargement"
+  />
+
+  <small>
+    Détermine la position de la sous-catégorie.
+  </small>
+
+</div>
+
+<div class="status-group">
+
+  <label class="switch-label">
+
+    <input
+      type="checkbox"
+      name="isActive"
+      [(ngModel)]="categorie.isActive"
+      [disabled]="chargement"
+    />
+
+    <span>
+      Sous-catégorie active
+    </span>
+
+  </label>
+
+</div>
+
+<div class="form-actions">
+
+  <button
+    type="button"
+    class="cancel-button"
+    (click)="annuler()"
+    [disabled]="chargement"
+  >
+    Annuler
+  </button>
+
+  <button
+    type="submit"
+    class="submit-button"
+    [disabled]="
+      chargement ||
+      !categorie.parentId ||
+      !categorie.name?.trim()
+    "
+  >
+
+    <span *ngIf="!chargement">
+      Enregistrer les modifications
+    </span>
+
+    <span *ngIf="chargement">
+      Modification en cours...
+    </span>
+
+  </button>
+
+</div>
+
+</form>
+
+</div>

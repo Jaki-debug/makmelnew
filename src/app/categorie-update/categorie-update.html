@@ -1,0 +1,463 @@
+<div class="page-container">
+
+  <div class="page-header">
+
+    <div>
+
+      <span class="breadcrumb">
+        CATALOGUE
+      </span>
+
+      <h1>
+        Modifier la catégorie
+      </h1>
+
+      <p>
+        Modifiez les informations de la catégorie principale.
+      </p>
+
+    </div>
+
+    <button
+      type="button"
+      class="btn-secondary"
+      (click)="annuler()">
+
+      Retour
+
+    </button>
+
+  </div>
+
+
+  <div
+    *ngIf="chargementCategorie"
+    class="loading-card">
+
+    <div class="spinner"></div>
+
+    <p>
+      Chargement de la catégorie...
+    </p>
+
+  </div>
+
+
+  <div
+    *ngIf="!chargementCategorie && erreur"
+    class="error-card">
+
+    <div class="error-icon">
+      !
+    </div>
+
+    <h3>
+      Impossible de charger la catégorie
+    </h3>
+
+    <p>
+      {{ erreur }}
+    </p>
+
+    <button
+      type="button"
+      class="btn-primary"
+      (click)="chargerCategorie()">
+
+      Réessayer
+
+    </button>
+
+  </div>
+
+
+  <form
+    *ngIf="!chargementCategorie && categorieOriginale"
+    class="form-card"
+    (ngSubmit)="modifierCategorie()">
+
+
+    <div class="form-card-header">
+
+      <div>
+
+        <span class="section-label">
+          INFORMATIONS GÉNÉRALES
+        </span>
+
+        <h2>
+          Catégorie principale
+        </h2>
+
+        <p>
+          Les informations marquées d'un astérisque sont obligatoires.
+        </p>
+
+      </div>
+
+
+      <span
+        class="status-badge"
+        [class.active]="categorie.isActive"
+        [class.inactive]="!categorie.isActive">
+
+        {{
+          categorie.isActive
+            ? 'Active'
+            : 'Inactive'
+        }}
+
+      </span>
+
+    </div>
+
+
+    <div class="form-body">
+
+
+      <div
+        *ngIf="succes"
+        class="success-message">
+
+        <span class="message-icon">
+          ✓
+        </span>
+
+        <span>
+          {{ succes }}
+        </span>
+
+      </div>
+
+
+      <div
+        *ngIf="erreur"
+        class="error-message">
+
+        <span class="message-icon">
+          !
+        </span>
+
+        <span>
+          {{ erreur }}
+        </span>
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label for="nom">
+
+          Nom de la catégorie
+
+          <span class="required">
+            *
+          </span>
+
+        </label>
+
+        <input
+          id="nom"
+          type="text"
+          name="name"
+          [(ngModel)]="categorie.name"
+          placeholder="Ex. Chaussures"
+          maxlength="150"
+          required>
+
+        <span class="field-help">
+          Le nom affiché dans le catalogue.
+        </span>
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label for="description">
+          Description
+        </label>
+
+        <textarea
+          id="description"
+          name="description"
+          [(ngModel)]="categorie.description"
+          rows="5"
+          maxlength="1000"
+          placeholder="Décrivez cette catégorie...">
+        </textarea>
+
+      </div>
+
+
+      <div class="form-row">
+
+        <div class="form-group">
+
+          <label for="ordre">
+            Ordre d'affichage
+          </label>
+
+          <input
+            id="ordre"
+            type="number"
+            name="sortOrder"
+            [(ngModel)]="categorie.sortOrder"
+            min="0"
+            step="1">
+
+          <span class="field-help">
+            Définit l'ordre d'apparition dans le catalogue.
+          </span>
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label>
+            Statut
+          </label>
+
+          <label class="switch-container">
+
+            <input
+              type="checkbox"
+              name="isActive"
+              [(ngModel)]="categorie.isActive">
+
+            <span class="switch"></span>
+
+            <span class="switch-text">
+
+              {{
+                categorie.isActive
+                  ? 'Catégorie active'
+                  : 'Catégorie inactive'
+              }}
+
+            </span>
+
+          </label>
+
+        </div>
+
+      </div>
+
+
+      <div class="form-group image-form-group">
+
+        <label>
+          Image de la catégorie
+        </label>
+
+
+        <div
+          *ngIf="
+            !imagePreview &&
+            categorie.imageId
+          "
+          class="existing-image">
+
+          <div class="existing-image-preview">
+
+            <img
+              [src]="'/api/v1/files/' + categorie.imageId"
+              [alt]="categorie.name">
+
+          </div>
+
+
+          <div class="existing-image-content">
+
+            <span class="existing-image-title">
+              Image actuelle
+            </span>
+
+            <span class="existing-image-text">
+              Cette image est actuellement associée à la catégorie.
+            </span>
+
+
+            <div class="image-actions">
+
+              <label
+                for="remplacer-image"
+                class="btn-outline">
+
+                Remplacer
+
+              </label>
+
+
+              <button
+                type="button"
+                class="btn-danger-outline"
+                (click)="supprimerImage()">
+
+                Supprimer
+
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div
+          *ngIf="imagePreview"
+          class="image-preview-container">
+
+          <img
+            [src]="imagePreview"
+            [alt]="categorie.name"
+            class="image-preview">
+
+
+          <div class="image-preview-actions">
+
+            <div>
+
+              <span class="preview-label">
+                Nouvelle image
+              </span>
+
+              <span class="preview-text">
+                Cette image remplacera l'image actuelle après enregistrement.
+              </span>
+
+            </div>
+
+
+            <button
+              type="button"
+              class="remove-image"
+              (click)="annulerRemplacement()">
+
+              Annuler le remplacement
+
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <div
+          *ngIf="
+            !categorie.imageId &&
+            !imagePreview
+          "
+          class="upload-empty">
+
+          <div class="upload-empty-content">
+
+            <div class="upload-icon">
+              ↑
+            </div>
+
+            <div>
+
+              <span class="upload-title">
+                Aucune image associée
+              </span>
+
+              <span class="upload-description">
+                Ajoutez une image pour cette catégorie.
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <label
+            for="remplacer-image"
+            class="btn-primary">
+
+            Ajouter une image
+
+          </label>
+
+        </div>
+
+
+        <input
+          id="remplacer-image"
+          type="file"
+          accept="image/jpeg,image/png,image/webp,image/gif"
+          (change)="selectionnerImage($event)"
+          hidden>
+
+
+        <span class="field-help">
+          Formats acceptés : PNG, JPG, WEBP ou GIF — 20 Mo maximum.
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <div class="form-footer">
+
+      <button
+        type="button"
+        class="btn-secondary"
+        (click)="annuler()">
+
+        Annuler
+
+      </button>
+
+
+      <button
+        type="submit"
+        class="btn-primary"
+        [disabled]="chargement || uploadEnCours">
+
+        <span
+          *ngIf="
+            chargement ||
+            uploadEnCours
+          "
+          class="button-spinner">
+        </span>
+
+
+        <span *ngIf="uploadEnCours">
+          Envoi de l’image...
+        </span>
+
+
+        <span
+          *ngIf="
+            !uploadEnCours &&
+            chargement
+          ">
+
+          Modification...
+
+        </span>
+
+
+        <span
+          *ngIf="
+            !uploadEnCours &&
+            !chargement
+          ">
+
+          Enregistrer les modifications
+
+        </span>
+
+      </button>
+
+    </div>
+
+  </form>
+
+</div>

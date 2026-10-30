@@ -1,0 +1,197 @@
+.connexion-page {
+min-height: 100vh;
+display: flex;
+align-items: center;
+justify-content: center;
+padding: 50px 20px;
+box-sizing: border-box;
+background: #f6f8fb;
+}
+
+.connexion-container {
+width: 100%;
+max-width: 460px;
+}
+
+.connexion-card {
+width: 100%;
+box-sizing: border-box;
+padding: 40px;
+background: #ffffff;
+border: 1px solid #e5eaf0;
+border-radius: 14px;
+box-shadow: 0 10px 30px rgba(18, 59, 112, 0.08);
+}
+
+.connexion-header {
+margin-bottom: 30px;
+text-align: center;
+}
+
+.page-label {
+display: inline-block;
+margin-bottom: 10px;
+color: #123b70;
+font-size: 11px;
+font-weight: 700;
+letter-spacing: 1.5px;
+}
+
+.connexion-header h1 {
+margin: 0;
+color: #18283d;
+font-size: 30px;
+font-weight: 750;
+}
+
+.connexion-header p {
+margin: 10px 0 0;
+color: #7c8796;
+font-size: 14px;
+line-height: 1.6;
+}
+
+.message {
+margin-bottom: 20px;
+padding: 12px 14px;
+border-radius: 8px;
+font-size: 13px;
+line-height: 1.5;
+}
+
+.message.error {
+color: #a32626;
+background: #fff1f1;
+border: 1px solid #ffd4d4;
+}
+
+.form-group {
+margin-bottom: 20px;
+}
+
+.form-group label {
+display: block;
+margin-bottom: 8px;
+color: #27364a;
+font-size: 13px;
+font-weight: 650;
+}
+
+.form-group input {
+width: 100%;
+height: 46px;
+box-sizing: border-box;
+padding: 0 14px;
+border: 1px solid #dce3eb;
+border-radius: 8px;
+outline: none;
+background: #ffffff;
+color: #27364a;
+font-size: 14px;
+transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-group input::placeholder {
+color: #a1aab7;
+}
+
+.form-group input:focus {
+border-color: #123b70;
+box-shadow: 0 0 0 3px rgba(18, 59, 112, 0.08);
+}
+
+.form-group input:disabled {
+background: #f5f7f9;
+cursor: not-allowed;
+}
+
+.connexion-button {
+width: 100%;
+height: 46px;
+margin-top: 5px;
+border: none;
+border-radius: 8px;
+background: #123b70;
+color: #ffffff;
+font-size: 14px;
+font-weight: 650;
+cursor: pointer;
+transition: background 0.2s ease, opacity 0.2s ease;
+}
+
+.connexion-button:hover:not(:disabled) {
+background: #0d2e59;
+}
+
+.connexion-button:disabled {
+opacity: 0.55;
+cursor: not-allowed;
+}
+
+.inscription-section {
+display: flex;
+align-items: center;
+justify-content: center;
+flex-wrap: wrap;
+gap: 5px;
+margin-top: 25px;
+padding-top: 22px;
+border-top: 1px solid #edf0f4;
+color: #7c8796;
+font-size: 13px;
+}
+
+.inscription-link {
+padding: 0;
+border: none;
+background: transparent;
+color: #123b70;
+font-size: 13px;
+font-weight: 650;
+cursor: pointer;
+}
+
+.inscription-link:hover {
+text-decoration: underline;
+}
+
+.inscription-link:disabled {
+opacity: 0.5;
+cursor: not-allowed;
+}
+
+.retour-button {
+display: block;
+margin: 20px auto 0;
+padding: 0;
+border: none;
+background: transparent;
+color: #7c8796;
+font-size: 12px;
+cursor: pointer;
+}
+
+.retour-button:hover {
+color: #123b70;
+}
+
+.retour-button:disabled {
+opacity: 0.5;
+cursor: not-allowed;
+}
+
+@media (max-width: 600px) {
+
+.connexion-page {
+padding: 30px 16px;
+}
+
+.connexion-card {
+padding: 30px 22px;
+}
+
+.connexion-header h1 {
+font-size: 26px;
+}
+
+}

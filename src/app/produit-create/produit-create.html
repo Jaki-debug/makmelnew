@@ -1,0 +1,1560 @@
+<div class="page-container">
+
+<div class="page-header">
+
+<div>
+
+  <span class="eyebrow">
+    CATALOGUE PRODUITS
+  </span>
+
+  <h1>
+    Créer un produit
+  </h1>
+
+  <p>
+    Ajoutez un nouveau produit au catalogue MAK & MEL.
+  </p>
+
+</div>
+
+<button
+  type="button"
+  class="back-button"
+  (click)="retourProduits()">
+
+  Retour aux produits
+
+</button>
+
+</div>
+
+<div class="stepper">
+
+<div
+  class="step"
+  [class.active]="etape === 1"
+  [class.completed]="etape > 1">
+
+  <div class="step-number">
+    1
+  </div>
+
+  <div class="step-content">
+
+    <strong>
+      Informations
+    </strong>
+
+    <span>
+      Informations générales
+    </span>
+
+  </div>
+
+</div>
+
+
+<div class="step-line"></div>
+
+
+<div
+  class="step"
+  [class.active]="etape === 2"
+  [class.completed]="etape > 2">
+
+  <div class="step-number">
+    2
+  </div>
+
+  <div class="step-content">
+
+    <strong>
+      Référencement
+    </strong>
+
+    <span>
+      Informations SEO
+    </span>
+
+  </div>
+
+</div>
+
+
+<div class="step-line"></div>
+
+
+<div
+  class="step"
+  [class.active]="etape === 3"
+  [class.completed]="etape > 3">
+
+  <div class="step-number">
+    3
+  </div>
+
+  <div class="step-content">
+
+    <strong>
+      Variantes
+    </strong>
+
+    <span>
+      Tailles, couleurs et stock
+    </span>
+
+  </div>
+
+</div>
+
+
+<div class="step-line"></div>
+
+
+<div
+  class="step"
+  [class.active]="etape === 4"
+  [class.completed]="etape > 4">
+
+  <div class="step-number">
+    4
+  </div>
+
+  <div class="step-content">
+
+    <strong>
+      Images
+    </strong>
+
+    <span>
+      Photos du produit
+    </span>
+
+  </div>
+
+</div>
+
+
+<div class="step-line"></div>
+
+
+<div
+  class="step"
+  [class.active]="etape === 5">
+
+  <div class="step-number">
+    5
+  </div>
+
+  <div class="step-content">
+
+    <strong>
+      Récapitulatif
+    </strong>
+
+    <span>
+      Vérification finale
+    </span>
+
+  </div>
+
+</div>
+
+</div>
+
+<div *ngIf="erreur" class="message message-error">
+
+{{ erreur }}
+
+</div>
+
+<div *ngIf="succes" class="message message-success">
+
+{{ succes }}
+
+</div>
+
+<!-- ÉTAPE 1 -->
+
+<div *ngIf="etape === 1" class="form-card">
+
+<div class="section-header">
+
+  <h2>
+    Informations générales
+  </h2>
+
+  <p>
+    Renseignez les informations principales du produit.
+  </p>
+
+</div>
+
+
+<div class="form-grid">
+
+  <div class="form-group">
+
+    <label for="category">
+      Catégorie <span>*</span>
+    </label>
+
+    <select
+      id="category"
+      [(ngModel)]="produit.categoryId"
+      [disabled]="chargementCategories">
+
+      <option value="">
+        Sélectionner une catégorie
+      </option>
+
+    
+  <option
+    *ngFor="let categorie of categoriesAffichage"
+    [value]="categorie.id">
+
+    {{ getLibelleOptionCategorie(categorie) }}
+
+  </option>
+
+
+
+    </select>
+
+    <small *ngIf="chargementCategories">
+      Chargement des catégories...
+    </small>
+
+  </div>
+
+
+  <div class="form-group">
+
+    <label for="status">
+      Statut <span>*</span>
+    </label>
+
+    <select
+      id="status"
+      [(ngModel)]="produit.status">
+
+      <option
+        *ngFor="let statut of statuts"
+        [value]="statut">
+
+        {{ getLibelleStatut(statut) }}
+
+      </option>
+
+    </select>
+
+  </div>
+
+
+  <div class="form-group full-width">
+
+    <label for="name">
+      Nom du produit <span>*</span>
+    </label>
+
+    <input
+      id="name"
+      type="text"
+      [(ngModel)]="produit.name"
+      placeholder="Ex. Pendentif Clash de Cartier">
+
+  </div>
+
+
+  <div class="form-group">
+
+    <label for="brand">
+      Marque
+    </label>
+
+    <input
+      id="brand"
+      type="text"
+      [(ngModel)]="produit.brand"
+      placeholder="Ex. Cartier">
+
+  </div>
+
+
+  <div class="form-group full-width">
+
+    <label for="description">
+      Description
+    </label>
+
+    <textarea
+      id="description"
+      [(ngModel)]="produit.description"
+      placeholder="Décrivez le produit...">
+    </textarea>
+
+  </div>
+
+</div>
+
+
+<div class="form-actions">
+
+  <button
+    type="button"
+    class="cancel-button"
+    (click)="retourProduits()">
+
+    Annuler
+
+  </button>
+
+  <button
+    type="button"
+    class="submit-button"
+    (click)="suivantEtape1()">
+
+    Continuer
+
+  </button>
+
+</div>
+
+</div>
+
+<!-- ÉTAPE 2 -->
+
+<div *ngIf="etape === 2" class="form-card">
+
+<div class="section-header">
+
+  <h2>
+    Référencement du produit
+  </h2>
+
+  <p>
+    Ces informations permettent d'améliorer le référencement du produit.
+  </p>
+
+</div>
+
+
+<div class="form-grid">
+
+  <div class="form-group full-width">
+
+    <label for="seoTitle">
+      Titre SEO <span>*</span>
+    </label>
+
+    <input
+      id="seoTitle"
+      type="text"
+      [(ngModel)]="produit.seoTitle"
+      placeholder="Ex. Pendentif Clash de Cartier | Mak & Mel">
+
+  </div>
+
+
+  <div class="form-group full-width">
+
+    <label for="seoDescription">
+      Description SEO
+    </label>
+
+    <textarea
+      id="seoDescription"
+      [(ngModel)]="produit.seoDescription"
+      placeholder="Description utilisée pour le référencement du produit...">
+    </textarea>
+
+  </div>
+
+</div>
+
+
+<div class="seo-section">
+
+  <div class="section-header">
+
+    <h2>
+      Aperçu
+    </h2>
+
+    <p>
+      Vérifiez les informations SEO avant de créer le produit.
+    </p>
+
+  </div>
+
+
+  <div class="seo-preview">
+
+    <div class="seo-preview-title">
+      {{ produit.seoTitle || 'Titre du produit' }}
+    </div>
+
+    <div class="seo-preview-url">
+      MAK & MEL
+    </div>
+
+    <div class="seo-preview-description">
+      {{ produit.seoDescription || 'La description SEO apparaîtra ici.' }}
+    </div>
+
+  </div>
+
+</div>
+
+
+<div class="form-actions">
+
+  <button
+    type="button"
+    class="cancel-button"
+    (click)="retourEtape1()">
+
+    Retour
+
+  </button>
+
+  <button
+    type="button"
+    class="submit-button"
+    [disabled]="chargement"
+    (click)="creerProduitEtContinuer()">
+
+    <span *ngIf="!chargement">
+      Créer et continuer
+    </span>
+
+    <span *ngIf="chargement">
+      Création en cours...
+    </span>
+
+  </button>
+
+</div>
+
+</div>
+
+<!-- ÉTAPE 3 -->
+
+<div *ngIf="etape === 3" class="form-card">
+
+<div class="section-header">
+
+  <h2>
+    Variantes du produit
+  </h2>
+
+  <p>
+    Ajoutez les différentes déclinaisons du produit :
+    taille, couleur, modèle, prix et stock.
+  </p>
+
+</div>
+
+
+<div class="variant-form">
+
+  <div class="form-grid">
+
+    <div class="form-group">
+
+      <label for="sku">
+        SKU <span>*</span>
+      </label>
+
+      <input
+        id="sku"
+        type="text"
+        [(ngModel)]="variante.sku"
+        placeholder="Ex. CARTIER-CLASH-001">
+
+    </div>
+
+
+    <div class="form-group">
+
+      <label for="variantName">
+        Nom de la variante <span>*</span>
+      </label>
+
+      <input
+        id="variantName"
+        type="text"
+        [(ngModel)]="variante.name"
+        placeholder="Ex. Pendentif moyen modèle">
+
+    </div>
+
+
+    <div class="form-group">
+
+      <label for="size">
+        Taille
+      </label>
+
+      <input
+        id="size"
+        type="text"
+        [(ngModel)]="variante.size"
+        placeholder="Ex. Moyen">
+
+    </div>
+
+
+    <div class="form-group">
+
+      <label for="color">
+        Couleur
+      </label>
+
+      <input
+        id="color"
+        type="text"
+        [(ngModel)]="variante.color"
+        placeholder="Ex. Or jaune">
+
+    </div>
+
+
+    <div class="form-group">
+
+      <label for="model">
+        Modèle
+      </label>
+
+      <input
+        id="model"
+        type="text"
+        [(ngModel)]="variante.model"
+        placeholder="Ex. Clash de Cartier">
+
+    </div>
+
+
+    <div class="form-group">
+
+      <label for="price">
+        Prix de vente <span>*</span>
+      </label>
+
+      <input
+        id="price"
+        type="number"
+        min="0"
+        [(ngModel)]="variante.price"
+        placeholder="0">
+
+    </div>
+
+
+    <div class="form-group">
+
+      <label for="compareAtPrice">
+        Prix comparé
+      </label>
+
+      <input
+        id="compareAtPrice"
+        type="number"
+        min="0"
+        [(ngModel)]="variante.compareAtPrice"
+        placeholder="0">
+
+    </div>
+
+
+    <div class="form-group">
+
+      <label for="initialQuantity">
+        Stock initial
+      </label>
+
+      <input
+        id="initialQuantity"
+        type="number"
+        min="0"
+        [(ngModel)]="variante.initialQuantity">
+
+    </div>
+
+
+    <div class="form-group">
+
+      <label for="lowStockThreshold">
+        Seuil d'alerte
+      </label>
+
+      <input
+        id="lowStockThreshold"
+        type="number"
+        min="0"
+        [(ngModel)]="variante.lowStockThreshold">
+
+    </div>
+
+
+    <div class="form-group checkbox-group">
+
+      <label for="isActive">
+
+        <input
+          id="isActive"
+          type="checkbox"
+          [(ngModel)]="variante.isActive">
+
+        <span>
+          Variante active
+        </span>
+
+      </label>
+
+    </div>
+
+  </div>
+
+
+  <div class="variant-actions">
+
+    <button
+      type="button"
+      class="secondary-button"
+      [disabled]="chargementVariante"
+      (click)="ajouterVariante()">
+
+      <span *ngIf="!chargementVariante">
+        Ajouter la variante
+      </span>
+
+      <span *ngIf="chargementVariante">
+        Ajout en cours...
+      </span>
+
+    </button>
+
+  </div>
+
+</div>
+
+
+<div
+  *ngIf="variantes.length > 0"
+  class="variants-list">
+
+  <div class="variants-header">
+
+    <h3>
+      Variantes ajoutées
+    </h3>
+
+    <span>
+      {{ getNombreVariantes() }}
+    </span>
+
+  </div>
+
+
+  <div class="table-wrapper">
+
+    <table>
+
+      <thead>
+
+        <tr>
+
+          <th>
+            SKU
+          </th>
+
+          <th>
+            Nom
+          </th>
+
+          <th>
+            Taille
+          </th>
+
+          <th>
+            Couleur
+          </th>
+
+          <th>
+            Modèle
+          </th>
+
+          <th>
+            Prix
+          </th>
+
+          <th>
+            Stock
+          </th>
+
+          <th>
+            Statut
+          </th>
+
+          <th>
+            Action
+          </th>
+
+        </tr>
+
+      </thead>
+
+
+      <tbody>
+
+        <tr
+          *ngFor="let item of variantes; let i = index">
+
+          <td>
+            {{ item.sku }}
+          </td>
+
+          <td>
+            {{ item.name || '-' }}
+          </td>
+
+          <td>
+            {{ item.size || '-' }}
+          </td>
+
+          <td>
+            {{ item.color || '-' }}
+          </td>
+
+          <td>
+            {{ item.model || '-' }}
+          </td>
+
+          <td>
+            {{ item.price | number:'1.0-0' }} FCFA
+          </td>
+
+          <td>
+            {{ item.quantityAvailable ?? 0 }}
+          </td>
+
+          <td>
+
+            <span
+              class="status-badge"
+              [class.status-active]="item.isActive"
+              [class.status-inactive]="!item.isActive">
+
+              {{ item.isActive ? 'Active' : 'Inactive' }}
+
+            </span>
+
+          </td>
+
+          <td>
+
+            <button
+              type="button"
+              class="delete-button"
+              (click)="supprimerVariante(i)">
+
+              Supprimer
+
+            </button>
+
+          </td>
+
+        </tr>
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+</div>
+
+
+<div
+  *ngIf="variantes.length === 0"
+  class="empty-variants">
+
+  Aucune variante ajoutée pour le moment.
+
+</div>
+
+
+<div class="form-actions">
+
+  <button
+    type="button"
+    class="cancel-button"
+    (click)="retourEtape2()">
+
+    Retour
+
+  </button>
+
+  <button
+    type="button"
+    class="submit-button"
+    (click)="terminerVariantes()">
+
+    Continuer vers les images
+
+  </button>
+
+</div>
+
+</div>
+
+<!-- ÉTAPE 4 -->
+
+<div *ngIf="etape === 4" class="form-card">
+
+<div class="section-header">
+
+  <h2>
+    Images du produit
+  </h2>
+
+  <p>
+    Ajoutez les photos du produit. La première image sera définie comme image principale.
+  </p>
+
+</div>
+
+
+<div class="image-upload-zone">
+
+  <div class="image-icon">
+    +
+  </div>
+
+  <h3>
+    Ajouter des images
+  </h3>
+
+  <p>
+    Sélectionnez une ou plusieurs images depuis votre ordinateur.
+  </p>
+
+  <span>
+    Formats image uniquement.
+  </span>
+
+
+  <label class="upload-button">
+
+    Sélectionner les images
+
+    <input
+      type="file"
+      accept="image/*"
+      multiple
+      (change)="selectionnerImages($event)">
+
+  </label>
+
+</div>
+
+
+<div
+  *ngIf="fichiersSelectionnes.length > 0"
+  class="selected-files">
+
+  <div class="selected-files-header">
+
+    <h3>
+      Images sélectionnées
+    </h3>
+
+    <span>
+      {{ fichiersSelectionnes.length }}
+    </span>
+
+  </div>
+
+
+  <div class="selected-files-grid">
+
+    <div
+      *ngFor="let fichier of fichiersSelectionnes"
+      class="selected-file">
+
+      <img
+        [src]="getApercuFichier(fichier)"
+        [alt]="getNomFichier(fichier)">
+
+      <div class="selected-file-info">
+
+        <strong>
+          {{ getNomFichier(fichier) }}
+        </strong>
+
+        <span>
+          Image sélectionnée
+        </span>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="upload-actions">
+
+    <button
+      type="button"
+      class="submit-button"
+      [disabled]="chargementImage"
+      (click)="uploaderImages()">
+
+      <span *ngIf="!chargementImage">
+        Ajouter les images
+      </span>
+
+      <span *ngIf="chargementImage">
+        Upload en cours...
+      </span>
+
+    </button>
+
+  </div>
+
+</div>
+
+
+<div
+  *ngIf="images.length > 0"
+  class="uploaded-images">
+
+  <div class="variants-header">
+
+    <h3>
+      Images ajoutées
+    </h3>
+
+    <span>
+      {{ getNombreImages() }}
+    </span>
+
+  </div>
+
+
+  <div class="images-grid">
+
+    <div
+      *ngFor="let image of images; let i = index"
+      class="image-card"
+      [class.primary-image]="image.isPrimary">
+
+      <div class="image-preview">
+
+        <img
+          [src]="image.url"
+          [alt]="image.nom">
+
+        <span
+          *ngIf="image.isPrimary"
+          class="primary-badge">
+
+          Image principale
+
+        </span>
+
+      </div>
+
+
+      <div class="image-card-content">
+
+        <strong>
+          {{ image.nom }}
+        </strong>
+
+        <span>
+          Position {{ image.sortOrder + 1 }}
+        </span>
+
+      </div>
+
+
+      <div class="image-card-actions">
+
+        <button
+          type="button"
+          class="secondary-button"
+          *ngIf="!image.isPrimary"
+          (click)="definirImagePrincipale(i)">
+
+          Définir principale
+
+        </button>
+
+        <button
+          type="button"
+          class="delete-button"
+          (click)="supprimerImage(i)">
+
+          Supprimer
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<div
+  *ngIf="images.length === 0 && fichiersSelectionnes.length === 0"
+  class="empty-variants">
+
+  Aucune image ajoutée pour le moment.
+
+</div>
+
+
+<div class="form-actions">
+
+  <button
+    type="button"
+    class="cancel-button"
+    (click)="retourEtape3()">
+
+    Retour
+
+  </button>
+
+  <button
+    type="button"
+    class="submit-button"
+    (click)="terminerImages()">
+
+    Continuer vers le récapitulatif
+
+  </button>
+
+</div>
+
+</div>
+
+<!-- ÉTAPE 5 -->
+
+<div *ngIf="etape === 5" class="form-card">
+
+<div class="section-header">
+
+  <h2>
+    Récapitulatif du produit
+  </h2>
+
+  <p>
+    Vérifiez toutes les informations avant de terminer la création.
+  </p>
+
+</div>
+
+
+<div
+  *ngIf="creationTerminee"
+  class="message message-success">
+
+  Produit créé avec succès.
+
+</div>
+
+
+<!-- INFORMATIONS -->
+
+<div class="recap-section">
+
+  <div class="recap-section-header">
+
+    <div>
+
+      <h3>
+        Informations générales
+      </h3>
+
+      <p>
+        Informations principales du produit.
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <div class="recap-grid">
+
+    <div class="recap-item">
+
+      <span>
+        Nom du produit
+      </span>
+
+      <strong>
+        {{ produit.name || '-' }}
+      </strong>
+
+    </div>
+
+
+    <div class="recap-item">
+
+      <span>
+        Marque
+      </span>
+
+      <strong>
+        {{ produit.brand || '-' }}
+      </strong>
+
+    </div>
+
+
+    <div class="recap-item">
+
+      <span>
+        Catégorie
+      </span>
+
+      <strong>
+        {{ getCategorieSelectionnee() }}
+      </strong>
+
+    </div>
+
+
+    <div class="recap-item">
+
+      <span>
+        Statut
+      </span>
+
+      <strong>
+
+        <span
+          class="status-badge"
+          [class.status-active]="getStatutProduit() === 'ACTIVE'"
+          [class.status-inactive]="getStatutProduit() !== 'ACTIVE'">
+
+          {{ getLibelleStatutProduit() }}
+
+        </span>
+
+      </strong>
+
+    </div>
+
+
+    <div class="recap-item full-width">
+
+      <span>
+        Description
+      </span>
+
+      <strong class="recap-description">
+
+        {{ produit.description || 'Aucune description renseignée.' }}
+
+      </strong>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- SEO -->
+
+<div class="recap-section">
+
+  <div class="recap-section-header">
+
+    <div>
+
+      <h3>
+        Référencement SEO
+      </h3>
+
+      <p>
+        Informations utilisées pour le référencement.
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <div class="recap-grid">
+
+    <div class="recap-item full-width">
+
+      <span>
+        Titre SEO
+      </span>
+
+      <strong>
+        {{ produit.seoTitle || '-' }}
+      </strong>
+
+    </div>
+
+
+    <div class="recap-item full-width">
+
+      <span>
+        Description SEO
+      </span>
+
+      <strong class="recap-description">
+
+        {{ produit.seoDescription || '-' }}
+
+      </strong>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- VARIANTES -->
+
+<div class="recap-section">
+
+  <div class="recap-section-header">
+
+    <div>
+
+      <h3>
+        Variantes
+      </h3>
+
+      <p>
+        {{ getNombreVariantes() }}
+        variante(s) configurée(s).
+      </p>
+
+    </div>
+
+    <span class="recap-count">
+      {{ getNombreVariantes() }}
+    </span>
+
+  </div>
+
+
+  <div
+    *ngIf="variantes.length > 0"
+    class="recap-variants">
+
+    <div
+      *ngFor="let item of variantes"
+      class="recap-variant">
+
+      <div class="recap-variant-header">
+
+        <div>
+
+          <strong>
+            {{ item.name || item.sku }}
+          </strong>
+
+          <span>
+            SKU : {{ item.sku }}
+          </span>
+
+        </div>
+
+
+        <span
+          class="status-badge"
+          [class.status-active]="item.isActive"
+          [class.status-inactive]="!item.isActive">
+
+          {{ item.isActive ? 'Active' : 'Inactive' }}
+
+        </span>
+
+      </div>
+
+
+      <div class="recap-variant-grid">
+
+        <div>
+
+          <span>
+            Taille
+          </span>
+
+          <strong>
+            {{ item.size || '-' }}
+          </strong>
+
+        </div>
+
+
+        <div>
+
+          <span>
+            Couleur
+          </span>
+
+          <strong>
+            {{ item.color || '-' }}
+          </strong>
+
+        </div>
+
+
+        <div>
+
+          <span>
+            Modèle
+          </span>
+
+          <strong>
+            {{ item.model || '-' }}
+          </strong>
+
+        </div>
+
+
+        <div>
+
+          <span>
+            Prix
+          </span>
+
+          <strong>
+            {{ item.price | number:'1.0-0' }} FCFA
+          </strong>
+
+        </div>
+
+
+        <div>
+
+          <span>
+            Prix comparé
+          </span>
+
+          <strong>
+
+            {{
+              item.compareAtPrice !== null &&
+              item.compareAtPrice !== undefined
+                ? (item.compareAtPrice | number:'1.0-0') + ' FCFA'
+                : '-'
+            }}
+
+          </strong>
+
+        </div>
+
+
+        <div>
+
+          <span>
+            Stock disponible
+          </span>
+
+          <strong>
+            {{ item.quantityAvailable ?? 0 }}
+          </strong>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div
+    *ngIf="variantes.length === 0"
+    class="empty-variants">
+
+    Aucune variante configurée.
+
+  </div>
+
+</div>
+
+
+<!-- IMAGES -->
+
+<div class="recap-section">
+
+  <div class="recap-section-header">
+
+    <div>
+
+      <h3>
+        Images
+      </h3>
+
+      <p>
+        {{ getNombreImages() }}
+        image(s) ajoutée(s).
+      </p>
+
+    </div>
+
+    <span class="recap-count">
+      {{ getNombreImages() }}
+    </span>
+
+  </div>
+
+
+  <div
+    *ngIf="images.length > 0"
+    class="recap-images">
+
+    <div
+      *ngFor="let image of images"
+      class="recap-image">
+
+      <div class="recap-image-preview">
+
+        <img
+          [src]="image.url"
+          [alt]="image.nom">
+
+        <span
+          *ngIf="image.isPrimary"
+          class="primary-badge">
+
+          Principale
+
+        </span>
+
+      </div>
+
+
+      <div class="recap-image-info">
+
+        <strong>
+          {{ image.nom }}
+        </strong>
+
+        <span>
+          Position {{ image.sortOrder + 1 }}
+        </span>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div
+    *ngIf="images.length === 0"
+    class="empty-variants">
+
+    Aucune image ajoutée.
+
+  </div>
+
+</div>
+
+
+<!-- RÉSUMÉ -->
+
+<div class="recap-summary">
+
+  <div class="summary-card">
+
+    <span>
+      Produit
+    </span>
+
+    <strong>
+      1
+    </strong>
+
+  </div>
+
+
+  <div class="summary-card">
+
+    <span>
+      Variantes
+    </span>
+
+    <strong>
+      {{ getNombreVariantes() }}
+    </strong>
+
+  </div>
+
+
+  <div class="summary-card">
+
+    <span>
+      Images
+    </span>
+
+    <strong>
+      {{ getNombreImages() }}
+    </strong>
+
+  </div>
+
+</div>
+
+
+<!-- ACTIONS -->
+
+<div class="form-actions">
+
+  <button
+    type="button"
+    class="cancel-button"
+    (click)="retourEtape4()">
+
+    Retour
+
+  </button>
+
+
+  <button
+    type="button"
+    class="submit-button"
+    *ngIf="!creationTerminee"
+    (click)="terminerCreation()">
+
+    Terminer la création
+
+  </button>
+
+
+  <button
+    type="button"
+    class="submit-button"
+    *ngIf="creationTerminee"
+    (click)="voirProduit()">
+
+    Voir le produit
+
+  </button>
+
+</div>
+
+</div>
+
+</div>

@@ -1,0 +1,373 @@
+<div class="physical-count-page"> <div class="page-header">
+<div class="page-title">
+
+  <span class="breadcrumb">
+    INVENTAIRE
+  </span>
+
+  <h1>
+    Nouvel inventaire physique
+  </h1>
+
+  <p>
+    Comparez les quantités théoriques avec les quantités réellement comptées.
+  </p>
+
+</div>
+
+<div class="header-actions">
+
+  <button
+    type="button"
+    class="btn-secondary"
+    (click)="retour()"
+    [disabled]="enregistrement">
+
+    Retour
+
+  </button>
+
+  <button
+    type="button"
+    class="btn-refresh"
+    (click)="actualiser()"
+    [disabled]="chargement || enregistrement">
+
+    <span *ngIf="!chargement">
+      Actualiser
+    </span>
+
+    <span *ngIf="chargement">
+      Actualisation...
+    </span>
+
+  </button>
+
+</div>
+</div> <div *ngIf="chargement" class="loading-state">
+<div class="loader"></div>
+
+<p>
+  Chargement de l’inventaire...
+</p>
+</div> <div *ngIf="!chargement" class="content-wrapper">
+<div class="form-card">
+
+  <div class="card-header">
+
+    <div>
+
+      <h2>
+        Informations
+      </h2>
+
+      <p>
+        Renseignez la raison de la réalisation de cet inventaire.
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <div class="form-content">
+
+    <div class="form-group">
+
+      <label for="motif">
+
+        Motif de l’inventaire
+
+        <span class="required">
+          *
+        </span>
+
+      </label>
+
+      <textarea
+        id="motif"
+        class="form-control"
+        rows="3"
+        [(ngModel)]="motif"
+        placeholder="Ex. Inventaire mensuel, contrôle du stock, inventaire de fin de mois...">
+      </textarea>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<div class="summary-grid">
+
+  <div class="summary-card">
+
+    <span class="summary-label">
+      Variantes contrôlées
+    </span>
+
+    <span class="summary-value">
+      {{ items.length }}
+    </span>
+
+  </div>
+
+
+  <div class="summary-card">
+
+    <span class="summary-label">
+      Quantité théorique
+    </span>
+
+    <span class="summary-value">
+      {{ getTotalQuantiteTheorique() }}
+    </span>
+
+  </div>
+
+
+  <div class="summary-card">
+
+    <span class="summary-label">
+      Quantité physique
+    </span>
+
+    <span class="summary-value">
+      {{ getTotalQuantitePhysique() }}
+    </span>
+
+  </div>
+
+
+  <div class="summary-card">
+
+    <span class="summary-label">
+      Écarts détectés
+    </span>
+
+    <span class="summary-value">
+      {{ getNombreEcarts() }}
+    </span>
+
+  </div>
+
+</div>
+
+
+<div class="inventory-card">
+
+  <div class="card-header">
+
+    <div>
+
+      <h2>
+        Comptage physique
+      </h2>
+
+      <p>
+        Saisissez la quantité réellement présente pour chaque variante.
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <div
+    *ngIf="items.length === 0"
+    class="empty-state">
+
+    <div class="empty-icon">
+      📦
+    </div>
+
+    <h3>
+      Aucun article disponible
+    </h3>
+
+    <p>
+      Aucune variante n’est disponible pour effectuer cet inventaire.
+    </p>
+
+    <button
+      type="button"
+      class="btn-secondary"
+      (click)="actualiser()">
+
+      Actualiser
+
+    </button>
+
+  </div>
+
+
+  <div
+    *ngIf="items.length > 0"
+    class="table-container">
+
+    <table>
+
+      <thead>
+
+        <tr>
+
+          <th>
+            SKU
+          </th>
+
+          <th>
+            Produit
+          </th>
+
+          <th>
+            Variante
+          </th>
+
+          <th>
+            Quantité théorique
+          </th>
+
+          <th>
+            Quantité physique
+          </th>
+
+          <th>
+            Écart
+          </th>
+
+        </tr>
+
+      </thead>
+
+
+      <tbody>
+
+        <tr
+          *ngFor="let item of items">
+
+          <td>
+
+            <span
+              class="sku"
+              [title]="item.sku">
+
+              {{ item.sku }}
+
+            </span>
+
+          </td>
+
+
+          <td>
+
+            <div
+              class="product-name"
+              [title]="item.productName">
+
+              {{ item.productName }}
+
+            </div>
+
+          </td>
+
+
+          <td>
+
+            <span
+              class="variant-name"
+              [title]="item.variantLabel">
+
+              {{ item.variantLabel }}
+
+            </span>
+
+          </td>
+
+
+          <td class="number-cell">
+
+            <span class="system-quantity">
+              {{ item.systemQuantity }}
+            </span>
+
+          </td>
+
+
+          <td class="quantity-input-cell">
+
+            <input
+              type="number"
+              min="0"
+              step="1"
+              class="quantity-input"
+              [value]="item.actualQuantity"
+              (input)="modifierQuantite(item, +$any($event.target).value)"
+            />
+
+          </td>
+
+
+          <td class="number-cell">
+
+            <span
+              class="ecart"
+              [ngClass]="getEcartClass(item)">
+
+              <span
+                *ngIf="getEcart(item) > 0">
+                +
+              </span>
+
+              {{ getEcart(item) }}
+
+            </span>
+
+          </td>
+
+        </tr>
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+
+  <div class="card-actions">
+
+    <button
+      type="button"
+      class="btn-secondary"
+      (click)="retour()"
+      [disabled]="enregistrement">
+
+      Annuler
+
+    </button>
+
+
+    <button
+      type="button"
+      class="btn-primary"
+      (click)="enregistrer()"
+      [disabled]="
+        enregistrement ||
+        chargement ||
+        items.length === 0
+      ">
+
+      <span *ngIf="!enregistrement">
+        Enregistrer l’inventaire
+      </span>
+
+      <span *ngIf="enregistrement">
+        Enregistrement...
+      </span>
+
+    </button>
+
+  </div>
+
+</div>
+</div> </div>

@@ -1,0 +1,228 @@
+<div class="page"> <div class="page-header">
+<div>
+
+  <button
+    type="button"
+    class="back-button"
+    (click)="revenir()">
+
+    ← Retour aux utilisateurs
+
+  </button>
+
+  <h1>
+    Détail de l'utilisateur
+  </h1>
+
+  <p>
+    Consultez les informations du compte back-office.
+  </p>
+
+</div>
+
+<button
+  *ngIf="utilisateur && hasPermission('users.update')"
+  type="button"
+  class="primary-button"
+  (click)="modifier()">
+
+  Modifier
+
+</button>
+</div> <div class="loading" *ngIf="chargement">
+Chargement des informations...
+</div> <div class="error-message" *ngIf="!chargement && erreur">
+{{ erreur }}
+</div> <div class="detail-container" *ngIf="!chargement && utilisateur">
+<div class="profile-card">
+
+  <div class="profile-avatar">
+
+    {{ utilisateur?.firstName?.charAt(0) || '' }}{{ utilisateur?.lastName?.charAt(0) || '' }}
+
+  </div>
+
+  <div class="profile-main">
+
+    <h2>
+
+      {{ utilisateur?.firstName || '' }}
+      {{ utilisateur?.lastName || '' }}
+
+    </h2>
+
+    <p>
+
+      {{ utilisateur?.email || '' }}
+
+    </p>
+
+    <span
+      class="status-badge"
+      [ngClass]="{
+        'active': utilisateur?.status === 'ACTIVE',
+        'inactive': utilisateur?.status === 'INACTIVE',
+        'suspended': utilisateur?.status === 'SUSPENDED'
+      }">
+
+      {{ utilisateur?.status ? statutLibelle(utilisateur.status) : '' }}
+
+    </span>
+
+  </div>
+
+</div>
+
+<div class="card">
+
+  <div class="card-header">
+
+    <h3>
+      Informations personnelles
+    </h3>
+
+  </div>
+
+  <div class="info-grid">
+
+    <div class="info-item">
+
+      <span class="label">
+        Prénom
+      </span>
+
+      <strong>
+        {{ utilisateur?.firstName || '' }}
+      </strong>
+
+    </div>
+
+    <div class="info-item">
+
+      <span class="label">
+        Nom
+      </span>
+
+      <strong>
+        {{ utilisateur?.lastName || '' }}
+      </strong>
+
+    </div>
+
+    <div class="info-item">
+
+      <span class="label">
+        Email
+      </span>
+
+      <strong>
+        {{ utilisateur?.email || '' }}
+      </strong>
+
+    </div>
+
+    <div class="info-item">
+
+      <span class="label">
+        Téléphone
+      </span>
+
+      <strong>
+        {{ utilisateur?.phone || 'Non renseigné' }}
+      </strong>
+
+    </div>
+
+  </div>
+
+</div>
+
+<div class="card">
+
+  <div class="card-header">
+
+    <h3>
+      Accès et sécurité
+    </h3>
+
+  </div>
+
+  <div class="info-grid">
+
+    <div class="info-item">
+
+      <span class="label">
+        Rôle
+      </span>
+
+      <strong>
+        {{ getRoles() }}
+      </strong>
+
+    </div>
+
+    <div class="info-item">
+
+      <span class="label">
+        Authentification MFA
+      </span>
+
+      <span
+        class="mfa-badge"
+        [ngClass]="{
+          'mfa-active': utilisateur?.mfaEnabled,
+          'mfa-inactive': !utilisateur?.mfaEnabled
+        }">
+
+        {{ utilisateur?.mfaEnabled ? 'Activée' : 'Non activée' }}
+
+      </span>
+
+    </div>
+
+    <div class="info-item">
+
+      <span class="label">
+        Dernière connexion
+      </span>
+
+      <strong>
+        {{ formaterDate(utilisateur?.lastLoginAt) }}
+      </strong>
+
+    </div>
+
+    <div class="info-item">
+
+      <span class="label">
+        Créé le
+      </span>
+
+      <strong>
+        {{ formaterDate(utilisateur?.createdAt) }}
+      </strong>
+
+    </div>
+
+  </div>
+
+</div>
+
+<div class="card">
+
+  <div class="card-header">
+
+    <h3>
+      Identifiant du compte
+    </h3>
+
+  </div>
+
+  <div class="id-box">
+
+    {{ utilisateur?.id || '' }}
+
+  </div>
+
+</div>
+</div> </div>

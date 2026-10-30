@@ -1,0 +1,538 @@
+
+:host {
+  display: block;
+  width: 100%;
+  font-family: Inter, "Segoe UI", Arial, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+.client-footer {
+  --footer-blue: #123b68;
+  --footer-blue-dark: #0b2745;
+  --footer-blue-deep: #081d34;
+  --footer-text: #d2dce8;
+  --footer-muted: #9aadc1;
+  --footer-border: #ffffff1c;
+
+  width: 100%;
+  overflow: hidden;
+  color: #ffffff;
+  background: var(--footer-blue-deep);
+}
+
+/* =====================================================
+   PARTIE PRINCIPALE
+   ===================================================== */
+
+.footer-main {
+  position: relative;
+  padding: 72px 6% 65px;
+  overflow: hidden;
+  background:
+    radial-gradient(
+      circle at 10% 0%,
+      #123b6833 0,
+      transparent 35%
+    ),
+    linear-gradient(
+      135deg,
+      #081d34 0%,
+      #0b2745 55%,
+      #0b2d4f 100%
+    );
+}
+
+.footer-main::before {
+  position: absolute;
+  top: -230px;
+  right: -120px;
+  width: 480px;
+  height: 480px;
+  border: 1px solid #ffffff0d;
+  border-radius: 50%;
+  content: "";
+  pointer-events: none;
+}
+
+.footer-main::after {
+  position: absolute;
+  right: 8%;
+  bottom: -320px;
+  width: 550px;
+  height: 550px;
+  border: 1px solid #ffffff0a;
+  border-radius: 50%;
+  content: "";
+  pointer-events: none;
+}
+
+.footer-container {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(240px, 1.7fr) repeat(3, minmax(140px, 1fr));
+  gap: 48px;
+  width: 100%;
+  max-width: 1320px;
+  margin: 0 auto;
+}
+
+/* =====================================================
+   MARQUE
+   ===================================================== */
+
+.footer-brand {
+  display: flex;
+  align-items: flex-start;
+  gap: 17px;
+  min-width: 0;
+}
+
+.brand-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  flex-shrink: 0;
+  color: var(--footer-blue-dark);
+  background: #ffffff;
+  border: 1px solid #ffffff;
+  border-radius: 13px;
+  box-shadow: 0 8px 22px #00000020;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 30px;
+  font-weight: 900;
+  text-decoration: none;
+  transition:
+    color 0.25s ease,
+    background 0.25s ease,
+    transform 0.25s ease,
+    border-radius 0.25s ease;
+}
+
+.brand-logo:hover {
+  color: #ffffff;
+  background: var(--footer-blue);
+  border-color: #ffffff55;
+  border-radius: 50%;
+  transform: rotate(-5deg);
+}
+
+.footer-brand-content {
+  min-width: 0;
+}
+
+.footer-brand-title {
+  display: inline-block;
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.footer-brand-title h2 {
+  margin: 3px 0 0;
+  color: #ffffff;
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  line-height: 1.3;
+  transition: color 0.25s ease;
+}
+
+.footer-brand-title:hover h2 {
+  color: #c6d9ed;
+}
+
+.footer-brand-content p {
+  max-width: 340px;
+  margin: 18px 0 0;
+  color: var(--footer-text);
+  font-size: 13px;
+  line-height: 1.9;
+}
+
+/* Bouton boutique */
+
+.footer-shop-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 13px;
+  min-height: 43px;
+  margin-top: 23px;
+  padding: 11px 16px;
+  color: #ffffff;
+  background: #ffffff0b;
+  border: 1px solid #ffffff45;
+  border-radius: 7px;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  transition:
+    color 0.25s ease,
+    background 0.25s ease,
+    border-color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.footer-shop-button span {
+  display: inline-block;
+  font-size: 17px;
+  transition: transform 0.25s ease;
+}
+
+.footer-shop-button:hover {
+  color: var(--footer-blue-dark);
+  background: #ffffff;
+  border-color: #ffffff;
+  transform: translateY(-2px);
+}
+
+.footer-shop-button:hover span {
+  transform: translateX(4px);
+}
+
+/* =====================================================
+   COLONNES DE NAVIGATION
+   ===================================================== */
+
+.footer-column {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+}
+
+.footer-column h3 {
+  position: relative;
+  margin: 4px 0 26px;
+  padding-bottom: 13px;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+}
+
+.footer-column h3::after {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 30px;
+  height: 2px;
+  background: #91afcd;
+  border-radius: 2px;
+  content: "";
+  transition: width 0.25s ease;
+}
+
+.footer-column:hover h3::after {
+  width: 48px;
+}
+
+.footer-column a {
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+  margin-bottom: 15px;
+  color: var(--footer-muted);
+  font-size: 12px;
+  line-height: 1.7;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.footer-column a::before {
+  display: inline-block;
+  width: 0;
+  height: 1px;
+  margin-right: 0;
+  background: #c6d9ed;
+  vertical-align: middle;
+  content: "";
+  transition:
+    width 0.2s ease,
+    margin-right 0.2s ease;
+}
+
+.footer-column a:hover {
+  color: #ffffff;
+  transform: translateX(3px);
+}
+
+.footer-column a:hover::before {
+  width: 8px;
+  margin-right: 7px;
+}
+
+/* =====================================================
+   BARRE INFÉRIEURE
+   ===================================================== */
+
+.footer-bottom {
+  position: relative;
+  padding: 22px 6%;
+  background: #061729;
+  border-top: 1px solid #ffffff14;
+}
+
+.footer-bottom-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  width: 100%;
+  max-width: 1320px;
+  margin: 0 auto;
+}
+
+.footer-copyright {
+  margin: 0;
+  color: #91a4b9;
+  font-size: 11px;
+  line-height: 1.8;
+}
+
+.footer-links {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 25px;
+}
+
+.footer-links a {
+  color: #91a4b9;
+  font-size: 11px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.footer-links a:hover {
+  color: #ffffff;
+}
+
+/* =====================================================
+   ACCESSIBILITÉ ET INTERACTIONS
+   ===================================================== */
+
+.client-footer a:focus-visible,
+.client-footer button:focus-visible {
+  outline: 3px solid #a9c5e0;
+  outline-offset: 4px;
+}
+
+.client-footer a:active,
+.client-footer button:active {
+  transform: translateY(0);
+}
+
+/* =====================================================
+   RESPONSIVE : ÉCRANS MOYENS
+   ===================================================== */
+
+@media (max-width: 1100px) {
+  .footer-main {
+    padding: 60px 5%;
+  }
+
+  .footer-container {
+    grid-template-columns: minmax(220px, 1.5fr) repeat(2, minmax(150px, 1fr));
+    gap: 42px 35px;
+  }
+
+  .footer-brand {
+    grid-column: 1 / -1;
+    max-width: 560px;
+  }
+
+  .footer-brand-content p {
+    max-width: 460px;
+  }
+
+  .footer-bottom {
+    padding-right: 5%;
+    padding-left: 5%;
+  }
+}
+
+/* =====================================================
+   RESPONSIVE : TABLETTES
+   ===================================================== */
+
+@media (max-width: 760px) {
+  .footer-main {
+    padding: 50px 6% 40px;
+  }
+
+  .footer-container {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 38px 30px;
+  }
+
+  .footer-brand {
+    grid-column: 1 / -1;
+    max-width: 100%;
+  }
+
+  .footer-brand-content p {
+    max-width: 480px;
+  }
+
+  .footer-column h3 {
+    margin-bottom: 22px;
+  }
+
+  .footer-column a {
+    margin-bottom: 13px;
+  }
+
+  .footer-bottom-container {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 13px;
+  }
+
+  .footer-links {
+    justify-content: flex-start;
+    gap: 20px;
+  }
+}
+
+/* =====================================================
+   RESPONSIVE : MOBILES
+   ===================================================== */
+
+@media (max-width: 480px) {
+  .footer-main {
+    padding: 40px 20px 30px;
+  }
+
+  .footer-container {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 32px 18px;
+  }
+
+  .footer-brand {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .brand-logo {
+    width: 46px;
+    height: 46px;
+    border-radius: 11px;
+    font-size: 27px;
+  }
+
+  .footer-brand-title h2 {
+    font-size: 20px;
+    letter-spacing: 1.5px;
+  }
+
+  .footer-brand-content p {
+    margin-top: 13px;
+    font-size: 12px;
+    line-height: 1.85;
+  }
+
+  .footer-shop-button {
+    width: 100%;
+    min-height: 43px;
+    margin-top: 18px;
+    padding: 10px 12px;
+    font-size: 11px;
+  }
+
+  .footer-column h3 {
+    margin-top: 0;
+    margin-bottom: 18px;
+    padding-bottom: 11px;
+    font-size: 12px;
+  }
+
+  .footer-column h3::after {
+    width: 25px;
+  }
+
+  .footer-column a {
+    margin-bottom: 12px;
+    font-size: 11px;
+    line-height: 1.65;
+  }
+
+  .footer-bottom {
+    padding: 20px;
+  }
+
+  .footer-bottom-container {
+    gap: 14px;
+  }
+
+  .footer-copyright {
+    font-size: 10px;
+  }
+
+  .footer-links {
+    gap: 17px;
+  }
+
+  .footer-links a {
+    font-size: 10px;
+  }
+}
+
+/* =====================================================
+   TRÈS PETITS ÉCRANS
+   ===================================================== */
+
+@media (max-width: 340px) {
+  .footer-container {
+    grid-template-columns: 1fr;
+    gap: 27px;
+  }
+
+  .footer-brand {
+    grid-column: auto;
+  }
+
+  .footer-brand {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .footer-column {
+    padding-bottom: 4px;
+  }
+
+  .footer-bottom-container {
+    gap: 12px;
+  }
+
+  .footer-links {
+    gap: 14px;
+  }
+}
+
+/* =====================================================
+   PRÉFÉRENCES DE MOUVEMENT
+   ===================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .client-footer *,
+  .client-footer *::before,
+  .client-footer *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

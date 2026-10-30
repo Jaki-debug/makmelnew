@@ -1,0 +1,289 @@
+
+<div class="sidebar">
+
+  <!-- ========================= HEADER ========================= -->
+  <div class="sidebar-header">
+    <div class="brand">
+      <div class="brand-mark">M</div>
+      <div class="brand-content">
+        <span class="brand-name">BACKOFFICE</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================= NAVIGATION ========================= -->
+  <nav class="sidebar-nav">
+
+    <!-- ========================= ADMINISTRATION ========================= -->
+    <div class="sidebar-section">
+      <div class="section-title">Administration</div>
+
+      
+
+      <!-- Notifications -->
+    
+
+      <!-- Utilisateurs -->
+      <a
+        *ngIf="hasPermission('users.read')"
+        routerLink="/users"
+        routerLinkActive="active"
+        class="menu-item">
+
+        <span class="menu-icon">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+            <circle cx="9" cy="7" r="4"></circle>
+            <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+          </svg>
+        </span>
+
+        <span class="menu-label">Utilisateurs</span>
+      </a>
+
+      <!-- Rôles & permissions -->
+      <a
+        *ngIf="hasPermission('roles.read')"
+        routerLink="/roles"
+        routerLinkActive="active"
+        class="menu-item">
+
+        <span class="menu-icon">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 2l7 4v5c0 5-3.5 9.5-7 11-3.5-1.5-7-6-7-11V6l7-4z"></path>
+            <path d="m9 12 2 2 4-4"></path>
+          </svg>
+        </span>
+
+        <span class="menu-label">Rôles &amp; permissions</span>
+      </a>
+
+      <!-- Sécurité -->
+      <a
+        routerLink="/securite"
+        routerLinkActive="active"
+        class="menu-item">
+
+        <span class="menu-icon">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="3" y="11" width="18" height="10" rx="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+            <circle cx="12" cy="16" r="1"></circle>
+          </svg>
+        </span>
+
+        <span class="menu-label">Sécurité</span>
+      </a>
+
+      <!-- Journal d'audit -->
+      <a
+        routerLink="/admin/audit"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="menu-item">
+
+        <span class="menu-icon">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M8 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-3"></path>
+            <path d="M8 3v4h4"></path>
+            <path d="M8 11h7"></path>
+            <path d="M8 15h5"></path>
+            <circle cx="17" cy="7" r="4"></circle>
+            <path d="m20 10 2 2"></path>
+          </svg>
+        </span>
+
+        <span class="menu-label">Journal d'audit</span>
+      </a>
+    </div>
+
+
+    <!-- ========================= MAK & MEL ========================= -->
+    <div class="sidebar-section">
+      <div class="section-title">Mak &amp; Mel</div>
+
+      <!-- Dashboard Mak & Mel -->
+      <a
+        routerLink="/admin-dashboard-mak"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="menu-item">
+
+        <span class="menu-icon">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="3" y="3" width="7" height="7" rx="1"></rect>
+            <rect x="14" y="3" width="7" height="7" rx="1"></rect>
+            <rect x="3" y="14" width="7" height="7" rx="1"></rect>
+            <rect x="14" y="14" width="7" height="7" rx="1"></rect>
+          </svg>
+        </span>
+
+        <span class="menu-label">Dashboard</span>
+      </a>
+
+      <!-- Rapports et exports -->
+      <a
+        routerLink="/admin-rapports-mak"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="menu-item">
+
+        <span class="menu-icon">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <path d="M14 2v6h6"></path>
+            <path d="M8 13h8"></path>
+            <path d="M8 17h8"></path>
+            <path d="M8 9h2"></path>
+          </svg>
+        </span>
+
+        <span class="menu-label">Rapports et exports</span>
+      </a>
+
+      <!-- Produits -->
+      <a
+        routerLink="/produits"
+        routerLinkActive="active"
+        class="menu-item">
+
+        <span class="menu-icon">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M21 8l-9-5-9 5 9 5 9-5z"></path>
+            <path d="M3 8v9l9 5 9-5V8"></path>
+            <path d="M12 13v9"></path>
+          </svg>
+        </span>
+
+        <span class="menu-label">Produits</span>
+      </a>
+
+      <!-- Commandes reçues -->
+      <a
+        routerLink="/commandes-recu-mak"
+        routerLinkActive="active"
+        class="menu-item">
+
+        <span class="menu-icon">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="3" y="4" width="18" height="16" rx="2"></rect>
+            <path d="M3 9h18"></path>
+            <path d="M8 4v5"></path>
+            <path d="M16 4v5"></path>
+            <path d="m8 15 2 2 5-5"></path>
+          </svg>
+        </span>
+
+        <span class="menu-label">Commandes</span>
+      </a>
+
+      <!-- Clients -->
+      <a
+        routerLink="/admin/clients"
+        routerLinkActive="active"
+        class="menu-item">
+
+        <span class="menu-icon">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+            <circle cx="9" cy="7" r="4"></circle>
+            <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+          </svg>
+        </span>
+
+        <span class="menu-label">Clients</span>
+      </a>
+
+      <!-- Catégories -->
+      <a
+        routerLink="/categories"
+        routerLinkActive="active"
+        class="menu-item">
+
+        <span class="menu-icon">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M20 12v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h7"></path>
+            <path d="M15 4h5v5"></path>
+            <path d="m20 4-8 8"></path>
+          </svg>
+        </span>
+
+        <span class="menu-label">Catégories</span>
+      </a>
+
+      <!-- Inventaire -->
+      <a
+        routerLink="/inventory"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="menu-item">
+
+        <span class="menu-icon">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M3 3h18v18H3z"></path>
+            <path d="M3 9h18"></path>
+            <path d="M9 9v12"></path>
+          </svg>
+        </span>
+
+        <span class="menu-label">Inventaire</span>
+      </a>
+
+      <!-- Mouvements -->
+      <a
+        routerLink="/inventory/movements"
+        routerLinkActive="active"
+        class="menu-item">
+
+        <span class="menu-icon">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M7 7h12l-3-3"></path>
+            <path d="M19 7l-3 3"></path>
+            <path d="M17 17H5l3 3"></path>
+            <path d="M5 17l3-3"></path>
+          </svg>
+        </span>
+
+        <span class="menu-label">Mouvements</span>
+      </a>
+
+    </div>
+
+
+    <!-- ========================= COMME CHEZ NOUS ========================= -->
+    <div class="sidebar-section">
+      <div class="section-title">Comme Chez Nous</div>
+
+      <!-- Modules à venir -->
+      <div class="menu-item disabled">
+        <span class="menu-icon">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="3" y="3" width="7" height="7" rx="1"></rect>
+            <rect x="14" y="3" width="7" height="7" rx="1"></rect>
+            <rect x="3" y="14" width="7" height="7" rx="1"></rect>
+            <rect x="14" y="14" width="7" height="7" rx="1"></rect>
+          </svg>
+        </span>
+
+        <span class="menu-label">Modules à venir</span>
+      </div>
+    </div>
+
+  </nav>
+
+
+  <!-- ========================= FOOTER ========================= -->
+  <div class="sidebar-footer">
+    <div class="footer-content">
+      <div class="footer-status">
+        <span class="status-dot"></span>
+        <span>MAK &amp; MEL · Backoffice</span>
+      </div>
+
+      <span class="footer-version">v1.0</span>
+    </div>
+  </div>
+
+</div>

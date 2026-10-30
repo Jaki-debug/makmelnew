@@ -1,0 +1,276 @@
+<div class="physical-count-detail-page"> <div class="page-header">
+<div>
+  <h1>Détail de l’inventaire physique</h1>
+
+  <p>
+    Consultez les informations et les écarts constatés lors de cet inventaire.
+  </p>
+</div>
+
+<div class="header-actions">
+
+  <button
+    type="button"
+    class="btn-secondary"
+    (click)="retourHistorique()"
+  >
+    ← Retour
+  </button>
+
+  <button
+    type="button"
+    class="btn-secondary"
+    (click)="actualiser()"
+    [disabled]="chargement"
+  >
+    Actualiser
+  </button>
+
+</div>
+</div> <div *ngIf="chargement" class="loading-container" > Chargement du détail de l’inventaire... </div> <div *ngIf="!chargement && erreur" class="error-container" > {{ erreur }} </div> <div *ngIf="!chargement && !erreur && inventory" >
+<div class="information-card">
+
+  <div class="card-title">
+    Informations générales
+  </div>
+
+  <div class="information-grid">
+
+    <div class="information-item">
+
+      <span class="label">
+        Date
+      </span>
+
+      <strong>
+        {{ formatDate(inventory.createdAt) }}
+      </strong>
+
+    </div>
+
+
+    <div class="information-item">
+
+      <span class="label">
+        Motif
+      </span>
+
+      <strong>
+        {{ inventory.reason || '—' }}
+      </strong>
+
+    </div>
+
+
+    <div class="information-item">
+
+      <span class="label">
+        Réalisé par
+      </span>
+
+      <strong>
+        {{
+          inventory.createdByName ||
+          inventory.createdBy?.name ||
+          inventory.createdBy ||
+          'Utilisateur actuel'
+        }}
+      </strong>
+
+    </div>
+
+
+    <div class="information-item">
+
+      <span class="label">
+        Statut
+      </span>
+
+      <span class="status-badge">
+        ✓ Enregistré
+      </span>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<div class="summary-grid">
+
+  <div class="summary-card">
+
+    <span>
+      Variantes contrôlées
+    </span>
+
+    <strong>
+      {{ items.length }}
+    </strong>
+
+  </div>
+
+
+  <div class="summary-card">
+
+    <span>
+      Quantité théorique
+    </span>
+
+    <strong>
+      {{ getTotalTheorique() }}
+    </strong>
+
+  </div>
+
+
+  <div class="summary-card">
+
+    <span>
+      Quantité physique
+    </span>
+
+    <strong>
+      {{ getTotalPhysique() }}
+    </strong>
+
+  </div>
+
+
+  <div class="summary-card">
+
+    <span>
+      Écarts détectés
+    </span>
+
+    <strong>
+      {{ getNombreEcarts() }}
+    </strong>
+
+  </div>
+
+
+  <div class="summary-card">
+
+    <span>
+      Écart total
+    </span>
+
+    <strong
+      [ngClass]="getEcartClass(getTotalEcart())"
+    >
+      {{ getTotalEcart() > 0 ? '+' : '' }}{{ getTotalEcart() }}
+    </strong>
+
+  </div>
+
+</div>
+
+
+<div class="table-card">
+
+  <div class="card-title">
+    Détail des variantes contrôlées
+  </div>
+
+
+  <div
+    *ngIf="items.length === 0"
+    class="empty-container"
+  >
+    Aucun détail de variante disponible pour cet inventaire.
+  </div>
+
+
+  <div
+    *ngIf="items.length > 0"
+    class="table-container"
+  >
+
+    <table>
+
+      <thead>
+
+        <tr>
+
+          <th>SKU</th>
+
+          <th>Produit</th>
+
+          <th>Variante</th>
+
+          <th>Théorique</th>
+
+          <th>Physique</th>
+
+          <th>Écart</th>
+
+          <th>Statut</th>
+
+        </tr>
+
+      </thead>
+
+
+      <tbody>
+
+        <tr
+          *ngFor="let item of items"
+        >
+
+          <td>
+            {{ item.sku }}
+          </td>
+
+          <td>
+            {{ item.productName }}
+          </td>
+
+          <td>
+            {{ item.variantLabel }}
+          </td>
+
+          <td>
+            {{ item.systemQuantity }}
+          </td>
+
+          <td>
+            {{ item.actualQuantity }}
+          </td>
+
+          <td
+            [ngClass]="getEcartClass(item.difference)"
+          >
+
+            <strong>
+              {{
+                item.difference > 0
+                  ? '+' + item.difference
+                  : item.difference
+              }}
+            </strong>
+
+          </td>
+
+          <td>
+
+            <span
+              class="item-status"
+              [ngClass]="getEcartClass(item.difference)"
+            >
+              {{ getStatut(item.difference) }}
+            </span>
+
+          </td>
+
+        </tr>
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+</div>
+</div> </div>

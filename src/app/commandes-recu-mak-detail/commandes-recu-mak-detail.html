@@ -1,0 +1,557 @@
+<div class="page-container">
+
+  <!-- Fil d'Ariane -->
+
+  <nav class="breadcrumb" aria-label="Fil d'Ariane">
+    <a routerLink="/administration">Administration</a>
+    <span class="breadcrumb-separator">/</span>
+    <a routerLink="/administration/commandes">Commandes reçues</a>
+    <span class="breadcrumb-separator">/</span>
+    <span class="breadcrumb-current">Détail de la commande</span>
+  </nav>
+
+  <!-- En-tête -->
+
+  <header class="page-header">
+    <div class="page-header-content">
+      <span class="page-eyebrow">Détail de la commande</span>
+      <h1>Gestion de la commande</h1>
+      <p>Consultez les informations et gérez le traitement de cette commande.</p>
+    </div>
+
+<button
+  type="button"
+  class="btn btn-outline"
+  (click)="chargerDetail()"
+  [disabled]="chargement">
+  <span class="refresh-icon" aria-hidden="true">↻</span>
+  {{ chargement ? 'Actualisation...' : 'Actualiser' }}
+</button>
+
+  </header>
+
+  <!-- Chargement -->
+
+  <div class="loading-container" *ngIf="chargement">
+    <div class="spinner" aria-hidden="true"></div>
+    <p>Chargement des informations de la commande...</p>
+  </div>
+
+  <!-- Erreur générale -->
+
+  <div
+    class="alert alert-error page-error"
+    *ngIf="erreur && !chargement"
+    role="alert">
+    <span class="alert-icon" aria-hidden="true">!</span>
+    <span>{{ erreur }}</span>
+  </div>
+
+<ng-container *ngIf="commande && !chargement">
+
+<!-- Vue d'ensemble -->
+<section class="order-overview">
+  <div class="order-overview-main">
+    <div class="order-reference-content">
+      <span class="overview-label">Référence de commande</span>
+      <h2>{{ reference }}</h2>
+      <p>
+        Commande du
+        {{ dateCommande
+          ? (dateCommande | date:'dd/MM/yyyy à HH:mm')
+          : 'date non renseignée' }}
+      </p>
+    </div>
+  </div>
+
+  <div class="order-overview-status">
+    <span class="overview-label">Statut actuel</span>
+    <span class="status-badge" [ngClass]="classeStatut">
+      {{ statut }}
+    </span>
+  </div>
+</section>
+
+<!-- Résumé -->
+<section class="summary-grid" aria-label="Résumé de la commande">
+
+  <article class="summary-card">
+    <div class="summary-icon icon-amount" aria-hidden="true">FCFA</div>
+    <div class="summary-content">
+      <span class="summary-label">Montant total</span>
+      <strong>{{ montantTotal | number:'1.0-0' }} FCFA</strong>
+      <small>Montant de la commande</small>
+    </div>
+  </article>
+
+  <article class="summary-card">
+    <div class="summary-icon icon-items" aria-hidden="true">ART</div>
+    <div class="summary-content">
+      <span class="summary-label">Articles commandés</span>
+      <strong>{{ articles.length }}</strong>
+      <small>
+        {{ articles.length > 1
+          ? 'Articles dans la commande'
+          : 'Article dans la commande' }}
+      </small>
+    </div>
+  </article>
+
+  <article class="summary-card">
+    <div class="summary-icon icon-date" aria-hidden="true">DATE</div>
+    <div class="summary-content">
+      <span class="summary-label">Date de commande</span>
+      <strong>
+        {{ dateCommande
+          ? (dateCommande | date:'dd/MM/yyyy')
+          : 'Non renseignée' }}
+      </strong>
+      <small>
+        {{ dateCommande
+          ? (dateCommande | date:'HH:mm')
+          : 'Date indisponible' }}
+      </small>
+    </div>
+  </article>
+
+</section>
+
+<!-- Traitement de la commande -->
+<section class="content-card status-management">
+  <div class="section-heading">
+    <div class="section-icon" aria-hidden="true">01</div>
+    <div class="section-heading-text">
+      <h2>Traitement de la commande</h2>
+      <p>Modifiez le statut selon l'avancement de la commande.</p>
+    </div>
+  </div>
+
+  <form (ngSubmit)="changerStatut()" class="status-form">
+
+    <div class="form-group">
+      <label for="nouveauStatut">Nouveau statut</label>
+
+      <select
+        id="nouveauStatut"
+        name="nouveauStatut"
+        [(ngModel)]="nouveauStatut"
+        [disabled]="chargementStatut"
+        required>
+        <option
+          *ngFor="let item of statutsDisponibles"
+          [value]="item.valeur">
+          {{ item.libelle }}
+        </option>
+      </select>
+
+      <small class="form-help">
+        Le changement sera appliqué après confirmation par le serveur.
+      </small>
+    </div>
+
+    <div class="form-actions">
+      <button
+        type="submit"
+        class="btn btn-primary"
+        [disabled]="
+          chargementStatut ||
+          nouveauStatut ===
+          (commande?.status ?? commande?.statut ?? '').toUpperCase()
+        ">
+        <span *ngIf="!chargementStatut" aria-hidden="true">✓</span>
+        <span
+          class="spinner-small"
+          *ngIf="chargementStatut"
+          aria-hidden="true">
+        </span>
+        {{ chargementStatut
+          ? 'Enregistrement...'
+          : 'Enregistrer le statut' }}
+      </button>
+    </div>
+
+    <div
+      class="alert alert-error"
+      *ngIf="erreurStatut"
+      role="alert">
+      <span class="alert-icon" aria-hidden="true">!</span>
+      <span>{{ erreurStatut }}</span>
+    </div>
+
+    <div
+      class="alert alert-success"
+      *ngIf="succesStatut"
+      role="status">
+      <span class="alert-icon" aria-hidden="true">✓</span>
+      <span>{{ succesStatut }}</span>
+    </div>
+
+  </form>
+</section>
+
+<!-- Gestion du paiement -->
+<section class="content-card payment-management">
+
+  <div class="section-heading">
+    <div class="section-icon" aria-hidden="true">02</div>
+    <div class="section-heading-text">
+      <h2>Paiement à la boutique</h2>
+      <p>
+        Vérifiez le règlement reçu avant de confirmer le paiement.
+      </p>
+    </div>
+  </div>
+
+  <div class="information-list">
+
+    <div class="information-row">
+      <span class="information-label">Mode de paiement</span>
+      <strong>{{ paiement }}</strong>
+    </div>
+
+    <div class="information-row">
+      <span class="information-label">Statut du paiement</span>
+      <strong
+        class="payment-status"
+        [ngClass]="{
+          'status-success': ['SUCCESS', 'SUCCEEDED', 'PAID'].includes(statutPaiementActuel),
+          'status-pending': ['PENDING', 'PROCESSING'].includes(statutPaiementActuel),
+          'status-failed': ['FAILED', 'CANCELLED'].includes(statutPaiementActuel),
+          'status-refunded': ['REFUNDED', 'PARTIALLY_REFUNDED'].includes(statutPaiementActuel)
+        }">
+        {{ statutPaiement }}
+      </strong>
+    </div>
+
+    <div class="information-row">
+      <span class="information-label">Montant de la commande</span>
+      <strong>{{ montantTotal | number:'1.0-0' }} FCFA</strong>
+    </div>
+
+    <!-- Référence du paiement avec confirmation visuelle de copie -->
+    <div
+      class="information-row payment-reference-row"
+      *ngIf="paiementId">
+
+      <span class="information-label">Référence du paiement</span>
+
+      <div class="payment-reference">
+        <strong class="break-value">{{ paiementId }}</strong>
+
+        <button
+          type="button"
+          class="btn-copy"
+          [class.copied]="copieReussie"
+          [disabled]="!paiementId"
+          (click)="copierPaiementId()"
+          [attr.aria-label]="copieReussie
+            ? 'Référence copiée'
+            : 'Copier la référence du paiement'"
+          aria-live="polite">
+
+          <span *ngIf="!copieReussie">
+            Copier
+          </span>
+
+          <span *ngIf="copieReussie">
+            ✓ Copié !
+          </span>
+
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Chargement du paiement -->
+  <div class="loading-container payment-loading" *ngIf="chargementPaiement">
+    <div class="spinner" aria-hidden="true"></div>
+    <p>Recherche du paiement associé à cette commande...</p>
+  </div>
+
+  <!-- Confirmation du paiement -->
+  <form
+    class="status-form payment-form"
+    *ngIf="!chargementPaiement"
+    (ngSubmit)="confirmerPaiementBoutique()">
+
+    <div class="form-group">
+      <label for="referencePaiement">
+        Référence du reçu ou du règlement
+      </label>
+
+      <input
+        id="referencePaiement"
+        name="referencePaiement"
+        type="text"
+        [(ngModel)]="referencePaiement"
+        placeholder="Saisissez la référence du reçu"
+        maxlength="150"
+        autocomplete="off"
+        [disabled]="
+          chargementStatutPaiement ||
+          ['SUCCESS', 'SUCCEEDED', 'PAID'].includes(statutPaiementActuel)
+        "
+        required>
+
+      <small class="form-help">
+        Indiquez une référence permettant de retrouver le règlement reçu.
+      </small>
+    </div>
+
+    <div class="form-actions">
+      <button
+        type="submit"
+        class="btn btn-primary"
+        [disabled]="
+          chargementStatutPaiement ||
+          chargementPaiement ||
+          !paiementId ||
+          ['SUCCESS', 'SUCCEEDED', 'PAID'].includes(statutPaiementActuel) ||
+          !referencePaiement.trim()
+        ">
+
+        <span
+          *ngIf="!chargementStatutPaiement"
+          aria-hidden="true">✓</span>
+
+        <span
+          class="spinner-small"
+          *ngIf="chargementStatutPaiement"
+          aria-hidden="true">
+        </span>
+
+        {{
+          chargementStatutPaiement
+            ? 'Confirmation en cours...'
+            : ['SUCCESS', 'SUCCEEDED', 'PAID'].includes(statutPaiementActuel)
+              ? 'Paiement déjà confirmé'
+              : 'Confirmer le paiement reçu'
+        }}
+      </button>
+    </div>
+
+    <div
+      class="alert alert-error"
+      *ngIf="erreurStatutPaiement"
+      role="alert">
+      <span class="alert-icon" aria-hidden="true">!</span>
+      <span>{{ erreurStatutPaiement }}</span>
+    </div>
+
+    <div
+      class="alert alert-success"
+      *ngIf="succesStatutPaiement"
+      role="status">
+      <span class="alert-icon" aria-hidden="true">✓</span>
+      <span>{{ succesStatutPaiement }}</span>
+    </div>
+
+  </form>
+
+  <div
+    class="alert alert-success payment-confirmation"
+    *ngIf="
+      !chargementPaiement &&
+      ['SUCCESS', 'SUCCEEDED', 'PAID'].includes(statutPaiementActuel) &&
+      !succesStatutPaiement
+    "
+    role="status">
+    <span class="alert-icon" aria-hidden="true">✓</span>
+    <span>Le paiement est enregistré comme réussi.</span>
+  </div>
+
+</section>
+
+<!-- Informations générales et client -->
+<div class="details-grid">
+
+  <!-- Informations générales -->
+  <section class="content-card detail-card">
+
+    <div class="section-heading">
+      <div class="section-icon" aria-hidden="true">03</div>
+      <div class="section-heading-text">
+        <h2>Informations générales</h2>
+        <p>Références et modalités de traitement.</p>
+      </div>
+    </div>
+
+    <div class="information-list">
+
+      <div class="information-row">
+        <span class="information-label">Référence de commande</span>
+        <strong class="break-value">{{ reference }}</strong>
+      </div>
+
+      <div class="information-row">
+        <span class="information-label">Type de réception</span>
+        <strong>{{ typeReception }}</strong>
+      </div>
+
+      <div class="information-row">
+        <span class="information-label">Moyen de paiement</span>
+        <strong>{{ paiement }}</strong>
+      </div>
+
+      <div class="information-row">
+        <span class="information-label">Date de commande</span>
+        <strong>
+          {{ dateCommande
+            ? (dateCommande | date:'dd/MM/yyyy à HH:mm')
+            : 'Non renseignée' }}
+        </strong>
+      </div>
+
+      <div class="information-row">
+        <span class="information-label">Adresse de livraison</span>
+        <strong class="information-value">{{ adresseLivraison }}</strong>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Informations client -->
+  <section class="content-card detail-card">
+
+    <div class="section-heading">
+      <div class="section-icon" aria-hidden="true">04</div>
+      <div class="section-heading-text">
+        <h2>Informations du client</h2>
+        <p>Identité et coordonnées du client.</p>
+      </div>
+    </div>
+
+    <div class="customer-profile">
+      <div class="customer-avatar" aria-hidden="true">
+        {{ nomClient.charAt(0).toUpperCase() }}
+      </div>
+
+      <div class="customer-identity">
+        <strong>{{ nomClient }}</strong>
+        <span>Client de Mak &amp; Mel</span>
+      </div>
+    </div>
+
+    <div class="information-list">
+
+      <div class="information-row">
+        <span class="information-label">Prénom</span>
+        <strong>
+          {{ commande?.customerFirstName
+            || commande?.customer_first_name
+            || prenomClient }}
+        </strong>
+      </div>
+
+      <div class="information-row">
+        <span class="information-label">Nom</span>
+        <strong>
+          {{ commande?.customerLastName
+            || commande?.customer_last_name
+            || nomFamilleClient }}
+        </strong>
+      </div>
+
+      <div class="information-row">
+        <span class="information-label">Téléphone</span>
+        <strong>
+          {{ commande?.customerPhone
+            || commande?.customer_phone
+            || telephone }}
+        </strong>
+      </div>
+
+      <div class="information-row">
+        <span class="information-label">Adresse e-mail</span>
+        <strong class="email-value">
+          {{ commande?.customerEmail
+            || commande?.customer_email
+            || email }}
+        </strong>
+      </div>
+
+    </div>
+  </section>
+
+</div>
+
+<!-- Articles commandés -->
+<section class="content-card items-card">
+
+  <div class="section-heading items-heading">
+    <div class="section-icon" aria-hidden="true">05</div>
+    <div class="section-heading-text">
+      <h2>Articles commandés</h2>
+      <p>Liste des produits associés à cette commande.</p>
+    </div>
+  </div>
+
+  <div
+    class="table-container"
+    *ngIf="articles.length > 0; else aucuneCommande">
+
+    <table class="items-table">
+      <thead>
+        <tr>
+          <th>Article</th>
+          <th class="text-right">Prix unitaire</th>
+          <th class="text-center">Quantité</th>
+          <th class="text-right">Sous-total</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let article of articles">
+
+          <td>
+            <div class="product-cell">
+              <div class="product-icon" aria-hidden="true">ART</div>
+              <strong>{{ nomArticle(article) }}</strong>
+            </div>
+          </td>
+
+          <td class="text-right">
+            {{ prixUnitaire(article) | number:'1.0-0' }} FCFA
+          </td>
+
+          <td class="text-center">
+            <span class="quantity-badge">
+              {{ quantite(article) }}
+            </span>
+          </td>
+
+          <td class="text-right subtotal">
+            {{ sousTotal(article) | number:'1.0-0' }} FCFA
+          </td>
+
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <ng-template #aucuneCommande>
+    <div class="empty-state">
+      <div class="empty-icon" aria-hidden="true">—</div>
+      <h3>Aucun article trouvé</h3>
+      <p>Les articles de cette commande ne sont pas disponibles.</p>
+    </div>
+  </ng-template>
+
+  <div class="order-total">
+    <div class="order-total-label">
+      <span>Montant total de la commande</span>
+      <small>
+        {{ articles.length }}
+        {{ articles.length > 1 ? 'articles' : 'article' }}
+      </small>
+    </div>
+
+    <strong>{{ montantTotal | number:'1.0-0' }} FCFA</strong>
+  </div>
+
+</section>
+
+  </ng-container>
+
+</div>

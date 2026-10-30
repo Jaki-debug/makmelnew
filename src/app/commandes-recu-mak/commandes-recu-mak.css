@@ -1,0 +1,964 @@
+
+:host {
+  display: block;
+  min-width: 0;
+  color: #183153;
+  font-family: Inter, "Segoe UI", Arial, sans-serif;
+  font-size: 12px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.commandes-page {
+  width: 100%;
+  max-width: 100%;
+  min-height: 100%;
+  margin: 0;
+  padding: 20px;
+  overflow-x: clip;
+  background: #f3f6fb;
+}
+
+/* =========================================
+   EN-TÊTE
+========================================= */
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.page-heading {
+  min-width: 0;
+}
+
+.surtitre {
+  display: block;
+  margin-bottom: 5px;
+  color: #2563eb;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+}
+
+.page-heading h1 {
+  margin: 0;
+  color: #123b73;
+  font-size: 23px;
+  font-weight: 750;
+  letter-spacing: -0.5px;
+}
+
+.page-heading p {
+  margin: 5px 0 0;
+  color: #718198;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+/* =========================================
+   BOUTONS
+========================================= */
+
+.btn-primary,
+.btn-secondary {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 33px;
+  padding: 7px 12px;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 650;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.btn-primary {
+  border: 1px solid #123b73;
+  background: #123b73;
+  color: #ffffff;
+}
+
+.btn-primary:hover:not(:disabled) {
+  border-color: #0b2c59;
+  background: #0b2c59;
+}
+
+.btn-secondary {
+  border: 1px solid #d5dfec;
+  background: #ffffff;
+  color: #294665;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  border-color: #9bb9e2;
+  background: #eff5ff;
+  color: #123b73;
+}
+
+.btn-primary:disabled,
+.btn-secondary:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.btn-primary svg,
+.filter-actions svg {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* =========================================
+   CARTES STATISTIQUES
+========================================= */
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 13px;
+  margin-bottom: 19px;
+}
+
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid #e0e7f1;
+  border-radius: 9px;
+  background: #ffffff;
+  box-shadow: 0 2px 7px rgb(18 59 115 / 4%);
+}
+
+.stat-icon {
+  display: flex;
+  flex: 0 0 38px;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+}
+
+.stat-icon svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.stat-icon.blue {
+  background: #e8effb;
+  color: #123b73;
+}
+
+.stat-icon.blue-light {
+  background: #edf3ff;
+  color: #2563eb;
+}
+
+.stat-icon.blue-dark {
+  background: #dce8fb;
+  color: #0d3266;
+}
+
+.stat-content {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.stat-label {
+  color: #61748e;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.stat-content strong {
+  color: #123b73;
+  font-size: 23px;
+  font-weight: 750;
+  line-height: 1.2;
+}
+
+.stat-description {
+  color: #8a9ab0;
+  font-size: 10px;
+}
+
+/* =========================================
+   CONTENEUR PRINCIPAL
+========================================= */
+
+.content-card {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid #dfe7f1;
+  border-radius: 9px;
+  background: #ffffff;
+  box-shadow: 0 3px 10px rgb(18 59 115 / 4%);
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 15px 18px;
+  border-bottom: 1px solid #e8eef6;
+}
+
+.section-header h2 {
+  margin: 0;
+  color: #123b73;
+  font-size: 14px;
+  font-weight: 750;
+}
+
+.section-header p {
+  margin: 4px 0 0;
+  color: #7c8da4;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.result-count {
+  flex-shrink: 0;
+  padding: 5px 9px;
+  border: 1px solid #d4e2f8;
+  border-radius: 5px;
+  background: #edf3ff;
+  color: #123b73;
+  font-size: 10px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* =========================================
+   FILTRES
+========================================= */
+
+.filters {
+  display: grid;
+  grid-template-columns:
+    minmax(150px, 1.5fr)
+    repeat(2, minmax(120px, 1fr))
+    repeat(2, minmax(115px, 0.9fr))
+    auto;
+  align-items: end;
+  gap: 10px;
+  padding: 14px 18px;
+  border-bottom: 1px solid #e8eef6;
+  background: #ffffff;
+}
+
+.filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+
+.filter-field label,
+.page-size label {
+  color: #425a78;
+  font-size: 10px;
+  font-weight: 650;
+}
+
+.filter-field input,
+.filter-field select,
+.page-size select {
+  width: 100%;
+  min-width: 0;
+  height: 33px;
+  padding: 0 9px;
+  border: 1px solid #d5dfec;
+  border-radius: 5px;
+  outline: none;
+  background: #ffffff;
+  color: #294665;
+  font-family: inherit;
+  font-size: 11px;
+}
+
+.filter-field input::placeholder {
+  color: #9aa9bc;
+}
+
+.filter-field input:focus,
+.filter-field select:focus,
+.page-size select:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px rgb(37 99 235 / 10%);
+}
+
+.input-with-icon {
+  position: relative;
+  min-width: 0;
+}
+
+.input-with-icon > svg {
+  position: absolute;
+  top: 50%;
+  left: 9px;
+  width: 14px;
+  height: 14px;
+  transform: translateY(-50%);
+  fill: none;
+  stroke: #7186a2;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  pointer-events: none;
+}
+
+.input-with-icon input {
+  padding-left: 29px;
+}
+
+.filter-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* =========================================
+   ERREUR
+========================================= */
+
+.error-message {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin: 14px 18px;
+  padding: 10px 12px;
+  border: 1px solid #efcaca;
+  border-radius: 6px;
+  background: #fff5f5;
+  color: #a12b36;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.error-message > svg {
+  flex: 0 0 17px;
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+}
+
+.error-text {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.error-message button {
+  flex-shrink: 0;
+  padding: 4px;
+  border: 0;
+  background: transparent;
+  color: #123b73;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.error-message button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* =========================================
+   CHARGEMENT INITIAL
+========================================= */
+
+.loading-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 140px;
+  padding: 20px;
+  color: #718198;
+  font-size: 12px;
+}
+
+.loading-state p {
+  margin: 0;
+}
+
+.spinner {
+  display: inline-block;
+  flex: 0 0 19px;
+  width: 19px;
+  height: 19px;
+  border: 2px solid #dbe6f7;
+  border-top-color: #123b73;
+  border-radius: 50%;
+  animation: commandes-spin 0.7s linear infinite;
+}
+
+@keyframes commandes-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =========================================
+   INDICATEUR DISCRET D'ACTUALISATION
+   Les lignes existantes restent visibles.
+========================================= */
+
+.refresh-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 34px;
+  padding: 7px 18px;
+  border-bottom: 1px solid #e8eef6;
+  background: #f8fbff;
+  color: #61748e;
+  font-size: 10px;
+}
+
+.spinner-small {
+  flex-basis: 13px;
+  width: 13px;
+  height: 13px;
+  border-width: 2px;
+}
+
+/* =========================================
+   TABLEAU
+========================================= */
+
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-color: #c2d1e5 #f4f7fb;
+  scrollbar-width: thin;
+}
+
+table {
+  width: 100%;
+  min-width: 850px;
+  border-collapse: collapse;
+  table-layout: auto;
+}
+
+thead {
+  background: #edf2f9;
+}
+
+thead th {
+  padding: 10px;
+  border-bottom: 1px solid #dce5f0;
+  color: #294665;
+  font-size: 10px;
+  font-weight: 750;
+  text-align: left;
+  white-space: nowrap;
+}
+
+tbody td {
+  padding: 8px 10px;
+  border-bottom: 1px solid #edf1f6;
+  color: #50647e;
+  font-size: 10.5px;
+  line-height: 1.35;
+  vertical-align: middle;
+}
+
+tbody tr {
+  background: #ffffff;
+}
+
+tbody tr:hover {
+  background: #f4f8ff;
+}
+
+tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.numeric-cell {
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* =========================================
+   NUMÉRO DE COMMANDE
+========================================= */
+
+.order-number {
+  color: #123b73;
+  font-size: 10.5px;
+  font-weight: 750;
+  white-space: nowrap;
+}
+
+/* =========================================
+   CLIENT
+========================================= */
+
+.customer-name {
+  display: block;
+  max-width: 150px;
+  overflow: hidden;
+  color: #203c60;
+  font-weight: 650;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.customer-email {
+  display: block;
+  max-width: 150px;
+  margin-top: 2px;
+  overflow: hidden;
+  color: #8a9ab0;
+  font-size: 9px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* =========================================
+   DATE
+========================================= */
+
+.date-value,
+.date-time {
+  display: block;
+  white-space: nowrap;
+}
+
+.date-value {
+  color: #405873;
+}
+
+.date-time {
+  margin-top: 2px;
+  color: #8a9ab0;
+  font-size: 9px;
+}
+
+/* =========================================
+   MONTANT
+========================================= */
+
+.amount {
+  color: #123b73;
+  font-weight: 750;
+  white-space: nowrap;
+}
+
+/* =========================================
+   STATUTS
+========================================= */
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 125px;
+  padding: 4px 7px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 1.3;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.status-pending {
+  border-color: #f0dfac;
+  background: #fff8e6;
+  color: #8b6b1c;
+}
+
+.status-confirmed {
+  border-color: #cadcf8;
+  background: #edf4ff;
+  color: #1c4e91;
+}
+
+.status-processing,
+.status-ready {
+  border-color: #c8e3f7;
+  background: #edf8ff;
+  color: #17658e;
+}
+
+.status-delivery {
+  border-color: #d9d2fa;
+  background: #f2efff;
+  color: #6251a6;
+}
+
+.status-delivered {
+  border-color: #c9e5d7;
+  background: #edf8f2;
+  color: #26704e;
+}
+
+.status-cancelled {
+  border-color: #f0cccc;
+  background: #fff0f0;
+  color: #ad3742;
+}
+
+.status-refunded {
+  border-color: #d8e0eb;
+  background: #f1f4f8;
+  color: #586b84;
+}
+
+.status-default {
+  border-color: #d8e2ef;
+  background: #f3f6fa;
+  color: #526781;
+}
+
+/* =========================================
+   ACTIONS
+========================================= */
+
+.actions-heading,
+.actions-cell {
+  text-align: center;
+}
+
+.btn-detail {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 27px;
+  padding: 0;
+  border: 1px solid #cbdcf5;
+  border-radius: 5px;
+  background: #edf4ff;
+  color: #123b73;
+  cursor: pointer;
+}
+
+.btn-detail:hover {
+  border-color: #123b73;
+  background: #123b73;
+  color: #ffffff;
+}
+
+.btn-detail svg {
+  width: 15px;
+  height: 15px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* =========================================
+   AUCUNE COMMANDE
+========================================= */
+
+.empty-state {
+  padding: 35px 16px;
+  text-align: center;
+}
+
+.empty-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  margin: 0 auto 11px;
+  border-radius: 9px;
+  background: #eaf1fc;
+  color: #123b73;
+}
+
+.empty-icon svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.empty-state strong {
+  display: block;
+  color: #123b73;
+  font-size: 12px;
+}
+
+.empty-state p {
+  margin: 6px 0 13px;
+  color: #7c8da4;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+/* =========================================
+   PAGINATION
+========================================= */
+
+.table-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 11px 18px;
+  border-top: 1px solid #e2e9f2;
+  background: #ffffff;
+}
+
+.page-size {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.page-size select {
+  width: 63px;
+  height: 29px;
+  padding: 0 7px;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pagination-info {
+  margin-right: 5px;
+  color: #718198;
+  font-size: 10px;
+  white-space: nowrap;
+}
+
+.page-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 29px;
+  height: 28px;
+  padding: 0;
+  border: 1px solid #d5dfec;
+  border-radius: 5px;
+  background: #ffffff;
+  color: #123b73;
+  cursor: pointer;
+}
+
+.page-btn:hover:not(:disabled) {
+  border-color: #123b73;
+  background: #edf4ff;
+}
+
+.page-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.page-btn svg {
+  width: 15px;
+  height: 15px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* =========================================
+   ACCESSIBILITÉ
+========================================= */
+
+button:focus-visible,
+select:focus-visible,
+input:focus-visible {
+  outline: 2px solid #6093e5;
+  outline-offset: 2px;
+}
+
+/* =========================================
+   RESPONSIVE — TABLETTES
+========================================= */
+
+@media (max-width: 1200px) {
+  .filters {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .filter-actions {
+    align-self: end;
+  }
+
+  .table-wrapper table {
+    min-width: 850px;
+  }
+}
+
+@media (max-width: 850px) {
+  .commandes-page {
+    padding: 14px;
+  }
+
+  .stats-grid {
+    gap: 9px;
+  }
+
+  .stat-card {
+    gap: 9px;
+    padding: 11px;
+  }
+
+  .stat-icon {
+    flex-basis: 32px;
+    width: 32px;
+    height: 32px;
+  }
+
+  .stat-icon svg {
+    width: 17px;
+    height: 17px;
+  }
+
+  .stat-content strong {
+    font-size: 20px;
+  }
+
+  .filters {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    padding: 12px;
+  }
+
+  .section-header {
+    padding: 13px;
+  }
+
+  .table-footer {
+    padding: 11px 13px;
+  }
+}
+
+/* =========================================
+   RESPONSIVE — TÉLÉPHONES
+========================================= */
+
+@media (max-width: 560px) {
+  .commandes-page {
+    padding: 12px;
+  }
+
+  .page-header {
+    align-items: flex-start;
+  }
+
+  .page-heading h1 {
+    font-size: 19px;
+  }
+
+  .page-heading p {
+    max-width: 230px;
+    line-height: 1.5;
+  }
+
+  .page-header > .btn-primary {
+    padding: 7px 9px;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stat-card {
+    padding: 12px;
+  }
+
+  .filters {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .filter-actions {
+    flex-wrap: wrap;
+  }
+
+  .section-header {
+    align-items: flex-start;
+  }
+
+  .result-count {
+    font-size: 9px;
+  }
+
+  .table-wrapper table {
+    min-width: 850px;
+  }
+
+  .table-footer {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .pagination {
+    align-self: flex-end;
+  }
+
+  .error-message {
+    align-items: flex-start;
+    flex-wrap: wrap;
+    margin: 12px;
+  }
+
+  .error-text {
+    min-width: 150px;
+  }
+}
+
+/* =========================================
+   RÉDUCTION DES ANIMATIONS
+========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

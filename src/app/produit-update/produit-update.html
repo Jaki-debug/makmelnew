@@ -1,0 +1,1122 @@
+<div class="produit-update-page">
+
+  <div class="page-header">
+
+    <div class="page-title">
+
+      <button
+        type="button"
+        class="btn-retour"
+        (click)="retour()">
+
+        ← Retour aux produits
+
+      </button>
+
+      <h1>
+        Modifier le produit
+      </h1>
+
+      <p>
+        Modifiez les informations du produit.
+      </p>
+
+    </div>
+
+
+    <div class="header-actions">
+
+      <button
+        type="button"
+        class="btn-secondary"
+        (click)="voirDetail()"
+        [disabled]="chargement">
+
+        Voir le détail
+
+      </button>
+
+
+      <button
+        type="submit"
+        class="btn-primary"
+        [disabled]="enregistrement"
+        form="produit-update-form">
+
+        <span *ngIf="!enregistrement">
+          Enregistrer
+        </span>
+
+        <span *ngIf="enregistrement">
+          Enregistrement...
+        </span>
+
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- MESSAGE DE SUCCÈS -->
+
+  <div
+    class="alert alert-success small-success-alert"
+    *ngIf="messageSucces">
+
+    <span class="alert-icon">
+      ✓
+    </span>
+
+    <span>
+      {{ messageSucces }}
+    </span>
+
+  </div>
+
+
+  <!-- AVERTISSEMENT ENREGISTREMENT FINAL -->
+
+  <div
+    class="alert alert-warning"
+    *ngIf="erreurEnregistrementFinal">
+
+    <span class="alert-icon">
+      !
+    </span>
+
+    <span>
+      {{ erreurEnregistrementFinal }}
+    </span>
+
+  </div>
+
+
+  <!-- CHARGEMENT -->
+
+  <div
+    class="loading"
+    *ngIf="chargement">
+
+    <div class="loader"></div>
+
+    <p>
+      Chargement du produit...
+    </p>
+
+  </div>
+
+
+  <!-- ERREUR -->
+
+  <div
+    class="alert alert-error"
+    *ngIf="!chargement && erreur">
+
+    <span class="alert-icon">
+      !
+    </span>
+
+    <span>
+      {{ erreur }}
+    </span>
+
+  </div>
+
+
+  <form
+    id="produit-update-form"
+    *ngIf="!chargement && produit as produitActuel"
+    class="form-container"
+    (ngSubmit)="modifierProduit()">
+
+
+    <!-- INFORMATIONS GÉNÉRALES -->
+
+    <div class="form-card">
+
+      <div class="card-header">
+
+        <h2>
+          Informations générales
+        </h2>
+
+        <p>
+          Informations principales du produit.
+        </p>
+
+      </div>
+
+
+      <div class="form-body">
+
+        <div class="form-group">
+
+          <label for="name">
+            Nom du produit
+            <span>*</span>
+          </label>
+
+          <input
+            id="name"
+            type="text"
+            name="name"
+            [(ngModel)]="form.name"
+            placeholder="Nom du produit"
+            required>
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label for="brand">
+            Marque
+          </label>
+
+          <input
+            id="brand"
+            type="text"
+            name="brand"
+            [(ngModel)]="form.brand"
+            placeholder="Marque">
+
+        </div>
+
+
+        <div class="form-group full-width">
+
+          <label for="categoryId">
+            Catégorie
+            <span>*</span>
+          </label>
+
+          <select
+            id="categoryId"
+            name="categoryId"
+            [(ngModel)]="form.categoryId"
+            required>
+
+            <option value="">
+              Sélectionner une catégorie
+            </option>
+
+            <option
+              *ngFor="let categorie of categoriesAffichage"
+              [value]="categorie.id"
+              [disabled]="
+                estCategoriePrincipale(categorie) &&
+                categories.some(
+                  c => c.parentId === categorie.id
+                )
+              ">
+
+              {{ getCategorieLabel(categorie) }}
+
+            </option>
+
+          </select>
+
+          <small>
+            Sélectionnez une sous-catégorie lorsqu'elle existe.
+          </small>
+
+        </div>
+
+
+        <div class="form-group full-width">
+
+          <label for="description">
+            Description
+          </label>
+
+          <textarea
+            id="description"
+            name="description"
+            [(ngModel)]="form.description"
+            rows="6"
+            placeholder="Description du produit"></textarea>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- STATUT -->
+
+    <div class="form-card">
+
+      <div class="card-header">
+
+        <h2>
+          Statut
+        </h2>
+
+        <p>
+          Définissez l'état actuel du produit.
+        </p>
+
+      </div>
+
+
+      <div class="form-body">
+
+        <div class="form-group">
+
+          <label for="status">
+            Statut
+          </label>
+
+          <select
+            id="status"
+            name="status"
+            [(ngModel)]="form.status">
+
+            <option
+              *ngFor="let statut of statuts"
+              [value]="statut">
+
+              {{ getLibelleStatut(statut) }}
+
+            </option>
+
+          </select>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- SEO -->
+
+    <div class="form-card">
+
+      <div class="card-header">
+
+        <h2>
+          Référencement SEO
+        </h2>
+
+        <p>
+          Informations utilisées pour le référencement du produit.
+        </p>
+
+      </div>
+
+
+      <div class="form-body">
+
+        <div class="form-group full-width">
+
+          <label for="seoTitle">
+            Titre SEO
+          </label>
+
+          <input
+            id="seoTitle"
+            type="text"
+            name="seoTitle"
+            [(ngModel)]="form.seoTitle"
+            placeholder="Titre SEO">
+
+        </div>
+
+
+        <div class="form-group full-width">
+
+          <label for="seoDescription">
+            Description SEO
+          </label>
+
+          <textarea
+            id="seoDescription"
+            name="seoDescription"
+            [(ngModel)]="form.seoDescription"
+            rows="4"
+            placeholder="Description SEO"></textarea>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- VARIANTES -->
+
+    <div class="form-card variantes-card">
+
+      <div class="card-header variantes-header">
+
+        <div>
+
+          <h2>
+            Variantes du produit
+          </h2>
+
+          <p>
+            Modifiez les informations des variantes associées à ce produit.
+          </p>
+
+        </div>
+
+
+        <span class="variant-count">
+
+          {{ variantes.length }}
+
+          {{
+            variantes.length > 1
+              ? 'variantes'
+              : 'variante'
+          }}
+
+        </span>
+
+      </div>
+
+
+      <div
+        class="variantes-container"
+        *ngIf="variantes.length > 0">
+
+        <div
+          class="variante-item"
+          *ngFor="let variante of variantes">
+
+
+          <!-- AFFICHAGE NORMAL -->
+
+          <div
+            *ngIf="varianteEnEditionId !== variante.id">
+
+            <div class="variante-header">
+
+              <div>
+
+                <span class="variante-sku">
+                  {{ variante.sku }}
+                </span>
+
+                <h3>
+                  {{ variante.name || 'Variante sans nom' }}
+                </h3>
+
+              </div>
+
+
+              <div class="variante-header-actions">
+
+                <span
+                  class="variante-status"
+                  [class.variante-active]="variante.isActive"
+                  [class.variante-inactive]="!variante.isActive">
+
+                  {{
+                    variante.isActive
+                      ? 'Active'
+                      : 'Inactive'
+                  }}
+
+                </span>
+
+
+                <button
+                  type="button"
+                  class="btn-secondary btn-modifier-variante"
+                  (click)="modifierVariante(variante)">
+
+                  Modifier
+
+                </button>
+
+              </div>
+
+            </div>
+
+
+            <div class="variante-grid">
+
+              <div class="variante-field">
+
+                <span class="field-label">
+                  Taille
+                </span>
+
+                <span class="field-value">
+                  {{ variante.size || '—' }}
+                </span>
+
+              </div>
+
+
+              <div class="variante-field">
+
+                <span class="field-label">
+                  Couleur
+                </span>
+
+                <span class="field-value">
+                  {{ variante.color || '—' }}
+                </span>
+
+              </div>
+
+
+              <div class="variante-field">
+
+                <span class="field-label">
+                  Modèle
+                </span>
+
+                <span class="field-value">
+                  {{ variante.model || '—' }}
+                </span>
+
+              </div>
+
+
+              <div class="variante-field">
+
+                <span class="field-label">
+                  SKU
+                </span>
+
+                <span class="field-value">
+                  {{ variante.sku }}
+                </span>
+
+              </div>
+
+
+              <div class="variante-field">
+
+                <span class="field-label">
+                  Prix
+                </span>
+
+                <span class="field-value prix">
+
+                  {{ variante.price | number:'1.0-0' }} FCFA
+
+                </span>
+
+              </div>
+
+
+              <div class="variante-field">
+
+                <span class="field-label">
+                  Prix comparé
+                </span>
+
+                <span class="field-value">
+
+                  <span
+                    *ngIf="
+                      variante.compareAtPrice !== null &&
+                      variante.compareAtPrice !== undefined
+                    ">
+
+                    {{ variante.compareAtPrice | number:'1.0-0' }} FCFA
+
+                  </span>
+
+                  <span
+                    *ngIf="
+                      variante.compareAtPrice === null ||
+                      variante.compareAtPrice === undefined
+                    ">
+
+                    —
+
+                  </span>
+
+                </span>
+
+              </div>
+
+
+              <div class="variante-field">
+
+                <span class="field-label">
+                  Stock disponible
+                </span>
+
+                <span
+                  class="stock-value"
+                  [class.stock-zero]="variante.quantityAvailable === 0"
+                  [class.stock-low]="
+                    variante.quantityAvailable !== null &&
+                    variante.quantityAvailable !== undefined &&
+                    variante.quantityAvailable > 0 &&
+                    variante.quantityAvailable <= 5
+                  "
+                  [class.stock-normal]="
+                    variante.quantityAvailable !== null &&
+                    variante.quantityAvailable !== undefined &&
+                    variante.quantityAvailable > 5
+                  ">
+
+                  {{ variante.quantityAvailable ?? 0 }}
+
+                  {{
+                    (variante.quantityAvailable ?? 0) > 1
+                      ? 'unités'
+                      : 'unité'
+                  }}
+
+                </span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- MODIFICATION VARIANTE -->
+
+          <div
+            class="variante-edition"
+            *ngIf="varianteEnEditionId === variante.id">
+
+            <div class="variante-header">
+
+              <div>
+
+                <span class="variante-sku">
+                  Modification de la variante
+                </span>
+
+                <h3>
+                  {{ variante.name || 'Variante sans nom' }}
+                </h3>
+
+              </div>
+
+            </div>
+
+
+            <!-- ERREUR VARIANTE -->
+
+            <div
+              class="alert alert-error variante-error"
+              *ngIf="erreurVariante">
+
+              <span class="alert-icon">
+                !
+              </span>
+
+              <span>
+                {{ erreurVariante }}
+              </span>
+
+            </div>
+
+
+            <div class="variante-edit-grid">
+
+
+              <div class="form-group">
+
+                <label
+                  [for]="'variante-sku-' + variante.id">
+
+                  SKU
+                  <span>*</span>
+
+                </label>
+
+                <input
+                  [id]="'variante-sku-' + variante.id"
+                  type="text"
+                  [name]="'varianteSku-' + variante.id"
+                  [(ngModel)]="variantesEnEdition[variante.id].sku"
+                  placeholder="SKU"
+                  required>
+
+              </div>
+
+
+              <div class="form-group">
+
+                <label
+                  [for]="'variante-name-' + variante.id">
+
+                  Nom
+                  <span>*</span>
+
+                </label>
+
+                <input
+                  [id]="'variante-name-' + variante.id"
+                  type="text"
+                  [name]="'varianteName-' + variante.id"
+                  [(ngModel)]="variantesEnEdition[variante.id].name"
+                  placeholder="Nom de la variante"
+                  required>
+
+              </div>
+
+
+              <div class="form-group">
+
+                <label
+                  [for]="'variante-size-' + variante.id">
+
+                  Taille
+
+                </label>
+
+                <input
+                  [id]="'variante-size-' + variante.id"
+                  type="text"
+                  [name]="'varianteSize-' + variante.id"
+                  [(ngModel)]="variantesEnEdition[variante.id].size"
+                  placeholder="Ex : M, L, XL">
+
+              </div>
+
+
+              <div class="form-group">
+
+                <label
+                  [for]="'variante-color-' + variante.id">
+
+                  Couleur
+
+                </label>
+
+                <input
+                  [id]="'variante-color-' + variante.id"
+                  type="text"
+                  [name]="'varianteColor-' + variante.id"
+                  [(ngModel)]="variantesEnEdition[variante.id].color"
+                  placeholder="Couleur">
+
+              </div>
+
+
+              <div class="form-group">
+
+                <label
+                  [for]="'variante-model-' + variante.id">
+
+                  Modèle
+
+                </label>
+
+                <input
+                  [id]="'variante-model-' + variante.id"
+                  type="text"
+                  [name]="'varianteModel-' + variante.id"
+                  [(ngModel)]="variantesEnEdition[variante.id].model"
+                  placeholder="Modèle">
+
+              </div>
+
+
+              <div class="form-group">
+
+                <label
+                  [for]="'variante-price-' + variante.id">
+
+                  Prix
+                  <span>*</span>
+
+                </label>
+
+                <input
+                  [id]="'variante-price-' + variante.id"
+                  type="number"
+                  [name]="'variantePrice-' + variante.id"
+                  [(ngModel)]="variantesEnEdition[variante.id].price"
+                  min="0"
+                  step="1"
+                  placeholder="Prix"
+                  required>
+
+              </div>
+
+
+              <div class="form-group">
+
+                <label
+                  [for]="'variante-compare-price-' + variante.id">
+
+                  Prix comparé
+
+                </label>
+
+                <input
+                  [id]="'variante-compare-price-' + variante.id"
+                  type="number"
+                  [name]="'varianteComparePrice-' + variante.id"
+                  [(ngModel)]="variantesEnEdition[variante.id].compareAtPrice"
+                  min="0"
+                  step="1"
+                  placeholder="Prix avant réduction">
+
+              </div>
+
+
+              <div class="form-group">
+
+                <label
+                  [for]="'variante-low-stock-' + variante.id">
+
+                  Seuil de stock faible
+
+                </label>
+
+                <input
+                  [id]="'variante-low-stock-' + variante.id"
+                  type="number"
+                  [name]="'varianteLowStock-' + variante.id"
+                  [(ngModel)]="variantesEnEdition[variante.id].lowStockThreshold"
+                  min="0"
+                  step="1"
+                  placeholder="Ex : 5">
+
+              </div>
+
+
+              <div class="form-group variante-active-field">
+
+                <label>
+                  Statut
+                </label>
+
+                <label class="checkbox-label">
+
+                  <input
+                    type="checkbox"
+                    [name]="'varianteActive-' + variante.id"
+                    [(ngModel)]="variantesEnEdition[variante.id].isActive">
+
+                  <span>
+                    Variante active
+                  </span>
+
+                </label>
+
+              </div>
+
+            </div>
+
+
+            <div class="variante-edit-actions">
+
+              <button
+                type="button"
+                class="btn-secondary"
+                [disabled]="varianteEnregistrementId === variante.id"
+                (click)="annulerModificationVariante(variante.id)">
+
+                Annuler
+
+              </button>
+
+
+              <button
+                type="button"
+                class="btn-primary"
+                [disabled]="varianteEnregistrementId === variante.id"
+                (click)="enregistrerVariante(variante)">
+
+                <span
+                  *ngIf="varianteEnregistrementId !== variante.id">
+
+                  Enregistrer la variante
+
+                </span>
+
+                <span
+                  *ngIf="varianteEnregistrementId === variante.id">
+
+                  Enregistrement...
+
+                </span>
+
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div
+        class="empty-section"
+        *ngIf="variantes.length === 0">
+
+        <div class="empty-icon">
+          ◇
+        </div>
+
+        <h4>
+          Aucune variante
+        </h4>
+
+        <p>
+          Aucune variante n'est actuellement associée à ce produit.
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <!-- IMAGES -->
+
+    <div class="form-card images-card">
+
+      <div class="card-header images-header">
+
+        <div>
+
+          <h2>
+            Images du produit
+          </h2>
+
+          <p>
+            Ajoutez, remplacez ou supprimez les images du produit.
+          </p>
+
+        </div>
+
+
+        <div class="images-header-actions">
+
+          <span
+            class="variant-count"
+            *ngIf="!chargementImages">
+
+            {{ images.length }}
+
+            {{
+              images.length > 1
+                ? 'images'
+                : 'image'
+            }}
+
+          </span>
+
+
+          <label
+            class="btn-primary btn-add-image"
+            [class.disabled]="imageOperationEnCours">
+
+            + Ajouter une image
+
+            <input
+              type="file"
+              accept="image/jpeg,image/png,image/webp,image/gif"
+              [disabled]="imageOperationEnCours"
+              (change)="ajouterImage($event)">
+
+          </label>
+
+        </div>
+
+      </div>
+
+
+      <div
+        class="images-loading"
+        *ngIf="chargementImages">
+
+        <div class="loader small"></div>
+
+        <p>
+          Chargement des images...
+        </p>
+
+      </div>
+
+
+      <div
+        class="images-error"
+        *ngIf="!chargementImages && erreurImages">
+
+        {{ erreurImages }}
+
+      </div>
+
+
+      <div
+        class="images-gallery"
+        *ngIf="
+          !chargementImages &&
+          !erreurImages &&
+          images.length > 0
+        ">
+
+        <div
+          class="image-card"
+          *ngFor="let image of images; let i = index">
+
+          <div class="image-container">
+
+            <img
+              [src]="image.url"
+              [alt]="produitActuel.name"
+              loading="lazy"
+              (error)="imageErreur(image)">
+
+            <span
+              class="primary-badge"
+              *ngIf="image.isPrimary">
+
+              Image principale
+
+            </span>
+
+          </div>
+
+
+          <div class="image-info">
+
+            <span class="image-number">
+              Image {{ i + 1 }}
+            </span>
+
+            <span
+              class="image-name"
+              *ngIf="image.nom">
+
+              {{ image.nom }}
+
+            </span>
+
+          </div>
+
+
+          <div class="image-actions">
+
+            <label
+              class="image-action-button replace"
+              [class.disabled]="imageOperationEnCours">
+
+              Remplacer
+
+              <input
+                type="file"
+                accept="image/jpeg,image/png,image/webp,image/gif"
+                [disabled]="imageOperationEnCours"
+                (change)="remplacerImage($event, image)">
+
+            </label>
+
+
+            <button
+              type="button"
+              class="image-action-button delete"
+              [disabled]="imageOperationEnCours"
+              (click)="supprimerImage(image)">
+
+              Supprimer
+
+            </button>
+
+          </div>
+
+
+          <div
+            class="image-operation"
+            *ngIf="
+              imageOperationEnCours &&
+              imageOperationId === image.id
+            ">
+
+            Traitement en cours...
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div
+        class="empty-section"
+        *ngIf="
+          !chargementImages &&
+          !erreurImages &&
+          images.length === 0
+        ">
+
+        <div class="empty-icon">
+          □
+        </div>
+
+        <h4>
+          Aucune image
+        </h4>
+
+        <p>
+          Aucune image n'est actuellement associée à ce produit.
+        </p>
+
+
+        <label
+          class="btn-primary empty-add-image"
+          [class.disabled]="imageOperationEnCours">
+
+          + Ajouter la première image
+
+          <input
+            type="file"
+            accept="image/jpeg,image/png,image/webp,image/gif"
+            [disabled]="imageOperationEnCours"
+            (change)="ajouterImage($event)">
+
+        </label>
+
+      </div>
+
+    </div>
+
+
+    <!-- ACTIONS FINALES -->
+
+    <div class="bottom-actions">
+
+      <button
+        type="button"
+        class="btn-secondary"
+        (click)="retour()">
+
+        Annuler
+
+      </button>
+
+
+      <button
+        type="submit"
+        class="btn-primary"
+        [disabled]="enregistrement">
+
+        <span *ngIf="!enregistrement">
+          Enregistrer les modifications
+        </span>
+
+        <span *ngIf="enregistrement">
+          Enregistrement...
+        </span>
+
+      </button>
+
+    </div>
+
+  </form>
+
+</div>

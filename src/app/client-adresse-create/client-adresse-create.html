@@ -1,0 +1,287 @@
+<app-client-header></app-client-header>
+
+<div class="adresse-create-page">
+
+<div class="page-header">
+
+<div>
+  <h1>Ajouter une adresse</h1>
+
+  <p>
+    Ajoutez une nouvelle adresse de livraison.
+  </p>
+</div>
+
+<button
+  type="button"
+  class="btn-retour"
+  (click)="annuler()">
+
+  Retour
+
+</button>
+
+</div>
+
+<div class="message erreur" *ngIf="erreur">
+
+{{ erreur }}
+
+</div>
+
+<div class="message succes" *ngIf="succes">
+
+{{ succes }}
+
+</div>
+
+<div class="form-card">
+
+<form (ngSubmit)="enregistrer()">
+
+  <div class="form-row">
+
+    <div class="form-group">
+
+      <label for="label">
+        Nom de l'adresse
+      </label>
+
+      <input
+        id="label"
+        type="text"
+        name="label"
+        [(ngModel)]="form.label"
+        placeholder="Ex. Maison"
+        required>
+
+    </div>
+
+    <div class="form-group">
+
+      <label for="recipientName">
+        Nom du destinataire
+      </label>
+
+      <input
+        id="recipientName"
+        type="text"
+        name="recipientName"
+        [(ngModel)]="form.recipientName"
+        placeholder="Nom complet"
+        required>
+
+    </div>
+
+  </div>
+
+  <div class="form-row">
+
+    <div class="form-group">
+
+      <label for="phone">
+        Téléphone
+      </label>
+
+      <input
+        id="phone"
+        type="tel"
+        name="phone"
+        [(ngModel)]="form.phone"
+        placeholder="Ex. 90 00 00 00"
+        required>
+
+    </div>
+
+    <div class="form-group">
+
+      <label for="countryCode">
+        Pays
+      </label>
+
+      <select
+        id="countryCode"
+        name="countryCode"
+        [(ngModel)]="form.countryCode">
+
+        <option value="TG">
+          Togo
+        </option>
+
+        <option value="BJ">
+          Bénin
+        </option>
+
+        <option value="GH">
+          Ghana
+        </option>
+
+        <option value="CI">
+          Côte d'Ivoire
+        </option>
+
+        <option value="BF">
+          Burkina Faso
+        </option>
+
+      </select>
+
+    </div>
+
+  </div>
+
+  <div class="form-group">
+
+    <label for="addressLine1">
+      Adresse
+    </label>
+
+    <input
+      id="addressLine1"
+      type="text"
+      name="addressLine1"
+      [(ngModel)]="form.addressLine1"
+      placeholder="Quartier, rue, numéro..."
+      required>
+
+  </div>
+
+  <div class="form-group">
+
+    <label for="addressLine2">
+      Complément d'adresse
+      <span>(facultatif)</span>
+    </label>
+
+    <input
+      id="addressLine2"
+      type="text"
+      name="addressLine2"
+      [(ngModel)]="form.addressLine2"
+      placeholder="Appartement, étage, repère...">
+
+  </div>
+
+  <div class="form-row">
+
+    <div class="form-group">
+
+      <label for="city">
+        Ville
+      </label>
+
+      <input
+        id="city"
+        type="text"
+        name="city"
+        [(ngModel)]="form.city"
+        placeholder="Ex. Lomé"
+        required>
+
+    </div>
+
+    <div class="form-group">
+
+      <label for="region">
+        Région
+      </label>
+
+      <input
+        id="region"
+        type="text"
+        name="region"
+        [(ngModel)]="form.region"
+        placeholder="Ex. Maritime"
+        required>
+
+    </div>
+
+  </div>
+
+  <div class="form-row">
+
+    <div class="form-group">
+
+      <label for="latitude">
+        Latitude
+        <span>(facultatif)</span>
+      </label>
+
+      <input
+        id="latitude"
+        type="number"
+        name="latitude"
+        [(ngModel)]="form.latitude"
+        step="any"
+        placeholder="Ex. 6.1319">
+
+    </div>
+
+    <div class="form-group">
+
+      <label for="longitude">
+        Longitude
+        <span>(facultatif)</span>
+      </label>
+
+      <input
+        id="longitude"
+        type="number"
+        name="longitude"
+        [(ngModel)]="form.longitude"
+        step="any"
+        placeholder="Ex. 1.2228">
+
+    </div>
+
+  </div>
+
+  <div class="option-principale">
+
+    <label class="checkbox-label">
+
+      <input
+        type="checkbox"
+        name="isDefault"
+        [(ngModel)]="form.isDefault">
+
+      <span>
+        Définir comme adresse principale
+      </span>
+
+    </label>
+
+  </div>
+
+  <div class="form-actions">
+
+    <button
+      type="button"
+      class="btn-annuler"
+      [disabled]="sauvegarde"
+      (click)="annuler()">
+
+      Annuler
+
+    </button>
+
+    <button
+      type="submit"
+      class="btn-enregistrer"
+      [disabled]="sauvegarde">
+
+      {{
+        sauvegarde
+          ? 'Enregistrement...'
+          : 'Enregistrer l’adresse'
+      }}
+
+    </button>
+
+  </div>
+
+</form>
+
+</div>
+
+</div>

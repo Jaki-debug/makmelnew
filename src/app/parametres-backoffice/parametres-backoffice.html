@@ -1,0 +1,207 @@
+<div class="parametres-page">
+
+  <!-- En-tête -->
+  <div class="parametres-header">
+    <h1>Préférences</h1>
+    <p>Gérez les préférences de votre back-office.</p>
+  </div>
+
+  <div class="parametres-content">
+
+    <!-- Notifications sonores -->
+    <section class="parametres-card">
+
+      <div class="card-header">
+        <div>
+          <h2>Notifications sonores</h2>
+          <p>
+            Choisissez le son et le volume à l'arrivée d'une notification.
+          </p>
+        </div>
+      </div>
+
+      <div class="settings-list">
+
+        <!-- Activation du son -->
+        <div class="setting-item">
+          <div class="setting-information">
+            <h3>Son activé</h3>
+            <p>
+              Jouer un son quand une nouvelle notification arrive.
+            </p>
+          </div>
+
+          <div class="choice-group">
+
+            <label class="choice">
+              <input
+                type="radio"
+                name="son-actif"
+                [value]="true"
+                [ngModel]="sonActif"
+                (ngModelChange)="changerSonActif($event)">
+              <span>Oui</span>
+            </label>
+
+            <label class="choice">
+              <input
+                type="radio"
+                name="son-actif"
+                [value]="false"
+                [ngModel]="sonActif"
+                (ngModelChange)="changerSonActif($event)">
+              <span>Non</span>
+            </label>
+
+          </div>
+        </div>
+
+        <!-- Choix du son -->
+        <div class="setting-item">
+          <div class="setting-information">
+            <h3>Choix du son</h3>
+            <p>
+              Un aperçu est joué à chaque changement.
+            </p>
+          </div>
+
+          <select
+            [(ngModel)]="sonType"
+            [disabled]="!sonActif"
+            (change)="changerTypeSon()">
+
+            <option
+              *ngFor="let son of sons"
+              [value]="son.valeur">
+              {{ son.libelle }}
+            </option>
+
+          </select>
+        </div>
+
+        <!-- Volume -->
+        <div class="setting-item">
+          <div class="setting-information">
+            <h3>Volume</h3>
+            <p>
+              Réglez le volume, puis relâchez pour écouter.
+            </p>
+          </div>
+
+          <div class="volume-control">
+
+            <input
+              type="range"
+              min="0"
+              max="100"
+              step="5"
+              aria-label="Volume du son des notifications"
+              [(ngModel)]="sonVolume"
+              [disabled]="!sonActif"
+              (change)="changerVolume()">
+
+            <span class="volume-value">
+              {{ sonVolume }} %
+            </span>
+
+            <button
+              type="button"
+              class="preview-button"
+              [disabled]="!sonActif"
+              (click)="ecouterSon()">
+              ▶ Écouter
+            </button>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Apparence -->
+    <section class="parametres-card">
+
+      <div class="card-header">
+        <div>
+          <h2>Apparence</h2>
+          <p>
+            Personnalisez l'affichage du back-office.
+          </p>
+        </div>
+      </div>
+
+      <div class="settings-list">
+
+        <!-- Mode d'affichage -->
+        <div class="setting-item">
+          <div class="setting-information">
+            <h3>Mode</h3>
+            <p>
+              Choisissez le thème de l'interface.
+            </p>
+          </div>
+
+          <div class="choice-group">
+
+            <label class="choice">
+              <input
+                type="radio"
+                name="theme"
+                value="light"
+                [(ngModel)]="mode"
+                (change)="changerMode('light')">
+              <span>Clair</span>
+            </label>
+
+            <label class="choice">
+              <input
+                type="radio"
+                name="theme"
+                value="dark"
+                [(ngModel)]="mode"
+                (change)="changerMode('dark')">
+              <span>Sombre</span>
+            </label>
+
+          </div>
+        </div>
+
+        <!-- Densité de l'interface -->
+        <div class="setting-item">
+          <div class="setting-information">
+            <h3>Densité de l'interface</h3>
+            <p>
+              Contrôlez l'espace entre les éléments.
+            </p>
+          </div>
+
+          <div class="choice-group">
+
+            <label class="choice">
+              <input
+                type="radio"
+                name="density"
+                value="standard"
+                [(ngModel)]="densite"
+                (change)="changerDensite('standard')">
+              <span>Standard</span>
+            </label>
+
+            <label class="choice">
+              <input
+                type="radio"
+                name="density"
+                value="compact"
+                [(ngModel)]="densite"
+                (change)="changerDensite('compact')">
+              <span>Compacte</span>
+            </label>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+</div>

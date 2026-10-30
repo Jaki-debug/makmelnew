@@ -1,0 +1,301 @@
+<div class="slow-moving-page">
+
+<div class="page-header">
+
+<div class="page-title">
+
+  <h1>Rotation lente</h1>
+
+  <p>
+    Produits pas ou peu vendus récemment.
+  </p>
+
+</div>
+
+<button
+  type="button"
+  class="btn-refresh"
+  (click)="actualiser()"
+  [disabled]="loading">
+
+  <span *ngIf="!loading">
+    Actualiser
+  </span>
+
+  <span *ngIf="loading">
+    Actualisation...
+  </span>
+
+</button>
+
+</div>
+
+<div class="filters-card">
+
+<div class="filter-group">
+
+  <label for="days">
+    Aucune vente depuis
+  </label>
+
+  <select
+    id="days"
+    class="days-select"
+    [value]="days"
+    (change)="changerPeriode(+$any($event.target).value)"
+    [disabled]="loading">
+
+    <option value="30">
+      30 jours
+    </option>
+
+    <option value="60">
+      60 jours
+    </option>
+
+    <option value="90">
+      90 jours
+    </option>
+
+    <option value="120">
+      120 jours
+    </option>
+
+    <option value="180">
+      180 jours
+    </option>
+
+  </select>
+
+</div>
+
+<div class="filter-result">
+
+  {{ total }} produit(s)
+
+</div>
+
+</div>
+
+<div *ngIf="error" class="error-message">
+
+{{ error }}
+
+</div>
+
+<div *ngIf="loading && items.length === 0" class="loading-state">
+
+<div class="loader"></div>
+
+<p>
+  Chargement de la rotation lente...
+</p>
+
+</div>
+
+<div *ngIf=" !loading && !error && items.length === 0 " class="empty-state">
+
+<div class="empty-icon">
+  ✓
+</div>
+
+<h3>
+  Aucun produit à rotation lente
+</h3>
+
+<p>
+  Aucun produit ne correspond au seuil de
+  {{ days }} jours.
+</p>
+
+</div>
+
+<div *ngIf=" !loading && items.length > 0 " class="content-card">
+
+<div class="card-header">
+
+  <div>
+
+    <h2>
+      Produits à rotation lente
+    </h2>
+
+    <p>
+      Aucune vente depuis {{ days }} jours ou plus.
+    </p>
+
+  </div>
+
+</div>
+
+
+<div class="table-container">
+
+  <table>
+
+    <thead>
+
+      <tr>
+
+        <th>
+          SKU
+        </th>
+
+        <th>
+          Produit
+        </th>
+
+        <th>
+          Variante
+        </th>
+
+        <th>
+          Disponible
+        </th>
+
+        <th>
+          Dernière vente
+        </th>
+
+        <th>
+          Sans vente depuis
+        </th>
+
+      </tr>
+
+    </thead>
+
+
+    <tbody>
+
+      <tr
+        *ngFor="let item of items">
+
+        <td>
+
+          <span
+            class="sku"
+            [title]="getSku(item)">
+
+            {{ getSku(item) }}
+
+          </span>
+
+        </td>
+
+
+        <td>
+
+          <span class="product-name">
+
+            {{ getProductName(item) }}
+
+          </span>
+
+        </td>
+
+
+        <td>
+
+          <span class="variant-name">
+
+            {{ getVariantName(item) }}
+
+          </span>
+
+        </td>
+
+
+        <td class="number-cell">
+
+          <span class="quantity">
+
+            {{ getQuantity(item) }}
+
+          </span>
+
+        </td>
+
+
+        <td>
+
+          <span class="last-sale">
+
+            {{ getLastSale(item) }}
+
+          </span>
+
+        </td>
+
+
+        <td>
+
+          <span
+            class="rotation-badge"
+            [ngClass]="getRotationClass(item)">
+
+            {{ getDaysWithoutSale(item) }}
+
+          </span>
+
+        </td>
+
+      </tr>
+
+    </tbody>
+
+  </table>
+
+</div>
+
+
+<div class="pagination-container">
+
+  <div class="pagination-left">
+
+    <span class="pagination-results">
+      {{ total }} produit(s)
+    </span>
+
+  </div>
+
+
+  <div class="pagination-right">
+
+    <button
+      type="button"
+      class="pagination-button"
+      (click)="pagePrecedente()"
+      [disabled]="page === 1 || loading"
+      title="Page précédente">
+
+      ‹
+
+    </button>
+
+
+    <span class="pagination-current">
+
+      {{ page }} / {{ totalPages }}
+
+    </span>
+
+
+    <button
+      type="button"
+      class="pagination-button"
+      (click)="pageSuivante()"
+      [disabled]="page >= totalPages || loading"
+      title="Page suivante">
+
+      ›
+
+    </button>
+
+  </div>
+
+</div>
+
+</div>
+
+</div>

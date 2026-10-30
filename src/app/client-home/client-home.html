@@ -1,0 +1,401 @@
+
+<!-- =====================================================
+     EN-TÊTE
+     ===================================================== -->
+
+<app-client-header></app-client-header>
+
+<main class="client-home">
+
+  <!-- ===================================================
+       BANNIÈRE PRINCIPALE
+       =================================================== -->
+
+  <section class="hero-section">
+
+    <div class="hero-content">
+
+      <span class="hero-label">MAK &amp; MEL</span>
+
+      <h1>
+        Votre style,<br>
+        votre univers.
+      </h1>
+
+      <p>
+        Découvrez notre sélection de mode, beauté,
+        chaussures, accessoires et bien plus encore.
+      </p>
+
+      <div class="hero-actions">
+
+        <button
+          type="button"
+          class="btn-primary"
+          routerLink="/client/produitcatalogue">
+          Découvrir la boutique
+        </button>
+
+        <button
+          type="button"
+          class="btn-secondary"
+          routerLink="/client/produitcatalogue">
+          Voir les produits
+        </button>
+
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="hero-card">
+        <span>Bienvenue dans notre univers</span>
+        <strong>MAK &amp; MEL</strong>
+        <small>Mode · Beauté · Lifestyle</small>
+      </div>
+    </div>
+
+  </section>
+
+
+  <!-- ===================================================
+       CATÉGORIES PRINCIPALES
+       =================================================== -->
+
+  <section class="categories-section">
+
+    <div class="section-header">
+      <div>
+        <span class="section-label">NOS UNIVERS</span>
+        <h2>Explorez nos catégories</h2>
+        <p>
+          Retrouvez nos principales catégories et découvrez
+          les produits qui correspondent à vos envies.
+        </p>
+      </div>
+    </div>
+
+    <!-- Chargement -->
+
+    <div
+      class="categories-loading"
+      *ngIf="chargementCategories"
+      role="status"
+      aria-live="polite">
+
+      <span
+        class="client-loading-spinner"
+        aria-hidden="true">
+      </span>
+
+      <p>Chargement des catégories...</p>
+    </div>
+
+    <!-- Erreur -->
+
+    <div
+      class="client-data-error"
+      *ngIf="!chargementCategories && erreurCategories"
+      role="alert">
+
+      <h3>Catégories temporairement indisponibles</h3>
+
+      <p>{{ erreurCategories }}</p>
+
+      <button
+        type="button"
+        class="placeholder-button"
+        (click)="chargerCategories()">
+        Réessayer
+      </button>
+
+    </div>
+
+    <!-- Grille des catégories principales -->
+
+    <div
+      class="categories-grid"
+      *ngIf="
+        !chargementCategories &&
+        !erreurCategories &&
+        categories.length > 0
+      ">
+
+      <ng-container
+        *ngFor="
+          let categorie of categories;
+          trackBy: suivreCategorie
+        ">
+
+        <button
+          *ngIf="
+            categorie.parentId === null ||
+            categorie.parentId === undefined ||
+            categorie.parentId === ''
+          "
+          type="button"
+          class="category-card category-card--image"
+          (click)="voirCategorie(categorie)">
+
+          <!-- Image de la catégorie -->
+
+          <div class="category-photo-wrapper">
+
+            <img
+              class="category-photo"
+              [src]="
+                categorie.imageId
+                  ? '/api/v1/files/' + categorie.imageId
+                  : 'assets/images/products/product-default.jpg'
+              "
+              [alt]="categorie.name"
+              loading="lazy"
+              decoding="async"
+              (error)="imageErreurCategorie(categorie)"
+            >
+
+            <span class="category-photo-overlay"></span>
+
+          </div>
+
+          <!-- Nom de la catégorie -->
+
+          <div class="category-card__content">
+
+            <h3>{{ categorie.name }}</h3>
+
+            <span class="category-discover">
+              Découvrir la catégorie
+            </span>
+
+          </div>
+
+        </button>
+
+      </ng-container>
+
+    </div>
+
+    <!-- Aucune catégorie principale disponible -->
+
+    <div
+      class="categories-empty"
+      *ngIf="
+        !chargementCategories &&
+        !erreurCategories &&
+        categories.length === 0
+      ">
+
+      <div class="empty-icon" aria-hidden="true">◇</div>
+
+      <h3>Catégories disponibles bientôt</h3>
+
+      <p>
+        Nos principales catégories seront affichées ici
+        dès qu'elles seront disponibles.
+      </p>
+
+    </div>
+
+  </section>
+
+
+  <!-- ===================================================
+       PRODUITS POPULAIRES
+       =================================================== -->
+
+  <section class="products-section">
+
+    <div class="section-header">
+
+      <div>
+        <span class="section-label">NOTRE SÉLECTION</span>
+        <h2>Produits populaires</h2>
+        <p>
+          Découvrez une sélection de produits disponibles
+          dans notre boutique.
+        </p>
+      </div>
+
+      <button
+        type="button"
+        class="view-all"
+        routerLink="/client/produitcatalogue">
+        Voir toute la boutique
+      </button>
+
+    </div>
+
+    <!-- Chargement des produits -->
+
+    <div
+      class="products-loading"
+      *ngIf="chargementProduits"
+      role="status"
+      aria-live="polite">
+
+      <span
+        class="client-loading-spinner"
+        aria-hidden="true">
+      </span>
+
+      <p>Chargement des produits...</p>
+
+    </div>
+
+    <!-- Erreur de chargement -->
+
+    <div
+      class="client-data-error"
+      *ngIf="!chargementProduits && erreurProduits"
+      role="alert">
+
+      <h3>Produits temporairement indisponibles</h3>
+
+      <p>{{ erreurProduits }}</p>
+
+      <button
+        type="button"
+        class="placeholder-button"
+        (click)="chargerProduits()">
+        Réessayer
+      </button>
+
+    </div>
+
+    <!-- Liste des produits -->
+
+    <div
+      class="products-grid"
+      *ngIf="
+        !chargementProduits &&
+        !erreurProduits &&
+        produitsPopulaires.length > 0
+      ">
+
+      <article
+        class="product-card"
+        *ngFor="
+          let produit of produitsPopulaires;
+          trackBy: suivreProduit
+        ">
+
+        <!-- Image du produit -->
+
+        <button
+          type="button"
+          class="product-card__image-button"
+          (click)="voirProduit(produit)"
+          [attr.aria-label]="'Voir le produit ' + nomProduit(produit)">
+
+          <img
+            class="product-card__image"
+            [src]="getImage(produit)"
+            [alt]="nomProduit(produit)"
+            loading="lazy"
+            decoding="async"
+            (error)="imageErreur(produit)"
+          >
+
+        </button>
+
+        <!-- Informations du produit -->
+
+        <div class="product-card__body">
+
+          <h3>{{ nomProduit(produit) }}</h3>
+
+          <p
+            class="product-card__description"
+            *ngIf="descriptionProduit(produit)">
+            {{ descriptionProduit(produit) }}
+          </p>
+
+          <div class="product-card__footer">
+
+            <strong
+              class="product-card__price"
+              *ngIf="prixProduit(produit)">
+              {{ prixProduit(produit) }}
+            </strong>
+
+            <button
+              type="button"
+              class="product-card__details"
+              (click)="voirProduit(produit)">
+              Voir le produit
+            </button>
+
+          </div>
+
+        </div>
+
+      </article>
+
+    </div>
+
+    <!-- Aucun produit -->
+
+    <div
+      class="products-placeholder"
+      *ngIf="
+        !chargementProduits &&
+        !erreurProduits &&
+        produitsPopulaires.length === 0
+      ">
+
+      <div class="placeholder-icon" aria-hidden="true">◇</div>
+
+      <h3>Nos produits arrivent bientôt</h3>
+
+      <p>
+        Nos produits apparaîtront ici dès qu'ils seront
+        disponibles dans notre boutique.
+      </p>
+
+      <button
+        type="button"
+        class="placeholder-button"
+        routerLink="/client/produitcatalogue">
+        Explorer la boutique
+      </button>
+
+    </div>
+
+  </section>
+
+
+  <!-- ===================================================
+       BANNIÈRE FINALE
+       =================================================== -->
+
+  <section class="promotion-section">
+
+    <div class="promotion-content">
+
+      <span class="section-label">MAK &amp; MEL</span>
+
+      <h2>Découvrez toute notre collection.</h2>
+
+      <p>
+        Parcourez notre boutique et trouvez les articles
+        qui correspondent à votre style et à vos envies.
+      </p>
+
+      <button
+        type="button"
+        class="btn-promotion"
+        routerLink="/client/produitcatalogue">
+        Accéder à la boutique
+      </button>
+
+    </div>
+
+  </section>
+
+</main>
+
+<!-- =====================================================
+     PIED DE PAGE
+     ===================================================== -->
+
+<app-client-footer></app-client-footer>

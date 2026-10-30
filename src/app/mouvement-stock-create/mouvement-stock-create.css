@@ -1,0 +1,445 @@
+/* ========================================
+   CONTENEUR PRINCIPAL
+======================================== */
+
+.mouvement-stock-create {
+  width: 100%;
+  max-width: 1200px;
+  min-width: 0;
+  margin: 0 auto;
+  padding: 24px 28px;
+  box-sizing: border-box;
+  color: #1e293b;
+  font-family: "Inter", "Segoe UI", Arial, sans-serif;
+}
+
+/* ========================================
+   EN-TÊTE DE PAGE
+======================================== */
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.page-header h1 {
+  margin: 0 0 6px;
+  color: #102b66;
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.page-header p {
+  margin: 0;
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* ========================================
+   CARTE DU FORMULAIRE
+======================================== */
+
+.form-card {
+  width: 100%;
+  max-width: 100%;
+  padding: 26px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  box-shadow: 0 4px 18px rgba(15, 23, 42, 0.045);
+  box-sizing: border-box;
+}
+
+/* ========================================
+   EN-TÊTE DU FORMULAIRE
+======================================== */
+
+.form-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid #e8edf4;
+}
+
+.form-header h2 {
+  margin: 0 0 6px;
+  color: #102b66;
+  font-size: 19px;
+  font-weight: 700;
+}
+
+.form-header p {
+  margin: 0;
+  color: #64748b;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+/* ========================================
+   GRILLE DU FORMULAIRE
+======================================== */
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px 22px;
+  align-items: start;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  gap: 8px;
+}
+
+.form-group-full {
+  grid-column: 1 / -1;
+}
+
+/* ========================================
+   LABELS
+======================================== */
+
+.form-group label {
+  display: block;
+  margin: 0;
+  color: #334155;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+/* ========================================
+   CHAMPS ET LISTES DÉROULANTES
+======================================== */
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  min-width: 0;
+  height: 44px;
+  padding: 0 13px;
+  color: #1e293b;
+  background-color: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 7px;
+  outline: none;
+  box-sizing: border-box;
+  font-family: inherit;
+  font-size: 13px;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.form-group input::placeholder {
+  color: #94a3b8;
+}
+
+.form-group input:hover,
+.form-group select:hover {
+  border-color: #94a3b8;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: #3157a4;
+  box-shadow: 0 0 0 3px rgba(49, 87, 164, 0.12);
+}
+
+.form-group input:disabled,
+.form-group select:disabled {
+  color: #94a3b8;
+  background-color: #f1f5f9;
+  cursor: not-allowed;
+}
+
+/* ========================================
+   AFFICHAGE DES QUANTITÉS
+======================================== */
+
+.quantity-display {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  min-height: 44px;
+  padding: 10px 13px;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  border-radius: 7px;
+  box-sizing: border-box;
+}
+
+.quantity-value {
+  color: #102b66;
+  font-size: 19px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.quantity-unit {
+  color: #64748b;
+  font-size: 12px;
+}
+
+/* ========================================
+   DIFFÉRENCE D'AJUSTEMENT
+======================================== */
+
+.difference-display {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  min-height: 44px;
+  padding: 10px 13px;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  box-sizing: border-box;
+}
+
+.difference-value {
+  font-size: 19px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.difference-unit {
+  font-size: 12px;
+}
+
+.difference-display.positive {
+  color: #15803d;
+  background: #f0fdf4;
+  border-color: #bbf7d0;
+}
+
+.difference-display.negative {
+  color: #b91c1c;
+  background: #fef2f2;
+  border-color: #fecaca;
+}
+
+.difference-display.neutral {
+  color: #475569;
+  background: #f8fafc;
+  border-color: #e2e8f0;
+}
+
+/* ========================================
+   INFORMATION SUR L'AJUSTEMENT
+======================================== */
+
+.form-info {
+  margin-top: 20px;
+  padding: 12px 15px;
+  color: #1e40af;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-left: 4px solid #3157a4;
+  border-radius: 6px;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+/* ========================================
+   MESSAGE D'ERREUR
+======================================== */
+
+.form-error {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: 18px;
+  padding: 13px 15px;
+  color: #b91c1c;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-left: 4px solid #dc2626;
+  border-radius: 7px;
+  font-size: 13px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.form-error strong {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* ========================================
+   BOUTONS D'ACTION
+======================================== */
+
+.form-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 26px;
+  padding-top: 20px;
+  border-top: 1px solid #e8edf4;
+}
+
+.cancel-button,
+.submit-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 115px;
+  min-height: 42px;
+  padding: 10px 18px;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.15s ease;
+}
+
+.cancel-button {
+  color: #475569;
+  background: #ffffff;
+  border-color: #cbd5e1;
+}
+
+.cancel-button:hover:not(:disabled) {
+  background: #f8fafc;
+  border-color: #94a3b8;
+}
+
+.submit-button {
+  color: #ffffff;
+  background: #102b66;
+  border-color: #102b66;
+}
+
+.submit-button:hover:not(:disabled) {
+  background: #1e4087;
+  border-color: #1e4087;
+  box-shadow: 0 3px 8px rgba(16, 43, 102, 0.16);
+}
+
+.cancel-button:active:not(:disabled),
+.submit-button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.cancel-button:disabled,
+.submit-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ========================================
+   RESPONSIVE : TABLETTES
+======================================== */
+
+@media (max-width: 900px) {
+  .mouvement-stock-create {
+    padding: 22px 20px;
+  }
+
+  .form-card {
+    padding: 22px;
+  }
+
+  .form-grid {
+    gap: 18px;
+  }
+}
+
+/* ========================================
+   RESPONSIVE : MOBILES
+======================================== */
+
+@media (max-width: 600px) {
+  .mouvement-stock-create {
+    padding: 16px 12px;
+  }
+
+  .page-header {
+    margin-bottom: 18px;
+  }
+
+  .page-header h1 {
+    font-size: 22px;
+  }
+
+  .page-header p {
+    font-size: 13px;
+  }
+
+  .form-card {
+    padding: 17px 14px;
+    border-radius: 9px;
+  }
+
+  .form-header {
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+  }
+
+  .form-header h2 {
+    font-size: 17px;
+  }
+
+  .form-header p {
+    font-size: 12px;
+  }
+
+  .form-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 17px;
+  }
+
+  .form-group-full {
+    grid-column: auto;
+  }
+
+  .form-actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+    gap: 10px;
+    margin-top: 22px;
+  }
+
+  .cancel-button,
+  .submit-button {
+    width: 100%;
+  }
+}
+
+/* ========================================
+   PETITS ÉCRANS
+======================================== */
+
+@media (max-width: 360px) {
+  .mouvement-stock-create {
+    padding: 12px 8px;
+  }
+
+  .form-card {
+    padding: 14px 10px;
+  }
+
+  .form-group input,
+  .form-group select {
+    font-size: 12px;
+  }
+}
